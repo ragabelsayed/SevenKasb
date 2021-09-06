@@ -5,6 +5,7 @@ import '/config/palette.dart';
 import '/widget/rounded_text_btn.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routName = '/log_in';
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sugarcane_juice_app/config/routes.dart';
 import '/screens/login_screen.dart';
 
 void main() {
@@ -20,7 +21,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       // theme: ThemeData(primaryColor: Colors.green),
-      home: LoginScreen(),
+      // home: LoginScreen(),
+      initialRoute: LoginScreen.routName,
+      routes: AppRoutes.routes,
     );
   }
 }
