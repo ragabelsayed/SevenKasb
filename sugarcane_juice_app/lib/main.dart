@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/config/routes.dart';
 import '/screens/login_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
+      // statusBarColor: Palette.primaryLightColor,
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.light,
+      // statusBarIconBrightness: Brightness.light,
+      // statusBarBrightness: Brightness.light,
     ),
   );
   runApp(MyApp());

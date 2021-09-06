@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sugarcane_juice_app/providers/auth.dart';
+import '/providers/auth.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/rounded_text_btn.dart';
@@ -15,9 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailcontroller = TextEditingController();
   bool _isPassowrdVisible = true;
-
-  // String name = 'khaled';
-  // String passowrd = 'khaled';
+  bool _errorMessage = false;
   Map<String, String> userData = {'name': 'khaled', 'passowrd': 'khaled'};
 
   @override
@@ -33,9 +30,13 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_isValid) {
       _formKey.currentState!.save();
       if (data[0] == userData['name'] && data[1] == userData['password']) {
+        setState(() => _errorMessage = false);
+        // navigate to next screen
+
         print(true);
       } else {
         print(false);
+        setState(() => _errorMessage = !_errorMessage);
       }
     }
   }
@@ -150,7 +151,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: size.height * 0.03),
+                if (!_errorMessage) SizedBox(height: size.height * 0.03),
+                if (_errorMessage)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          'The name or password not correct',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
                 RoundedTextButton(
                   text: 'LOGIN',
                   onPressed: _saveForm,
