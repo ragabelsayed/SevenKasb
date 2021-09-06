@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sugarcane_juice_app/providers/auth.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/rounded_text_btn.dart';
@@ -14,14 +15,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailcontroller = TextEditingController();
   bool _isPassowrdVisible = true;
+
   // String name = 'khaled';
   // String passowrd = 'khaled';
   Map<String, String> userData = {'name': 'khaled', 'passowrd': 'khaled'};
-  void saveData() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('userData', [userData['name']!, userData['password']!]);
-  }
-  // SharedPreferences data = SharedPreferences.getInstance();
 
   @override
   void initState() {
@@ -31,12 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
-    var data = await SharedPreferences.getInstance().then(
-      (prefs) => prefs.getStringList('userData'),
-    );
+    var data = await Auth.fetchData();
+
     if (_isValid) {
       _formKey.currentState!.save();
-      if (data![0] == userData['name'] && data[1] == userData['password']) {
+      if (data[0] == userData['name'] && data[1] == userData['password']) {
         print(true);
       } else {
         print(false);
@@ -56,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    Auth.saveData();
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
@@ -144,9 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (newValue!.isEmpty) {
                         return 'Please enter your password';
                       }
-                      if (newValue.length < 7) {
-                        return 'Passoword is wrong';
-                      }
+                      // if (newValue.length < 7) {
+                      //   return 'Passoword is wrong';
+                      // }
                     },
                     onSaved: (newValue) {
                       userData['password'] = newValue!;
