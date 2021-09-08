@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/auth.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
@@ -25,19 +26,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
-    var data = await Auth.fetchData();
+    // var data = await Auth.fetchDataFromDevice();
 
     if (_isValid) {
       _formKey.currentState!.save();
-      if (data[0] == userData['name'] && data[1] == userData['password']) {
-        setState(() => _errorMessage = false);
-        // navigate to next screen
-
+      // Auth.logIn();
+      // context.read(authProvider);
+      context.read(authProvider).login();
+      if (context.read(authProvider).isAuth) {
         print(true);
       } else {
         print(false);
-        setState(() => _errorMessage = !_errorMessage);
       }
+
+      // if (data[0] == userData['name'] && data[1] == userData['password']) {
+      //   setState(() => _errorMessage = false);
+      //   // navigate to next screen
+
+      //   print(true);
+      // } else {
+      //   print(false);
+      //   setState(() => _errorMessage = !_errorMessage);
+      // }
     }
   }
 
@@ -53,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Auth.saveData();
+    // Auth.saveDataOnDevice();
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
