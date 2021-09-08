@@ -16,7 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailcontroller = TextEditingController();
   bool _isPassowrdVisible = true;
   bool _errorMessage = false;
-  Map<String, String> userData = {'name': 'khaled', 'passowrd': 'khaled'};
+  Map<String, String> userData = {'name': 'khaled', 'password': 'khaled'};
 
   @override
   void initState() {
@@ -29,24 +29,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (_isValid) {
       _formKey.currentState!.save();
-      // Auth.logIn();
 
-      context.read(authProvider).login();
-      if (context.read(authProvider).isAuth) {
-        print(true);
-      } else {
-        print(false);
-      }
-
-      // if (data[0] == userData['name'] && data[1] == userData['password']) {
-      //   setState(() => _errorMessage = false);
-      //   // navigate to next screen
-
-      //   print(true);
-      // } else {
-      //   print(false);
-      //   setState(() => _errorMessage = !_errorMessage);
-      // }
+      context
+          .read(authProvider)
+          .login(name: userData['name']!, password: userData['password']!)
+          .onError(
+        (error, stackTrace) {
+          return setState(() {
+            _errorMessage = !_errorMessage;
+          });
+        },
+      );
     }
   }
 
