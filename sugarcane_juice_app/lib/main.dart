@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/config/routes.dart';
 import 'package:sugarcane_juice_app/screens/home_screen.dart';
+import 'package:sugarcane_juice_app/screens/splash_screen.dart';
 import '/screens/login_screen.dart';
 import 'providers/auth.dart';
 
@@ -36,8 +37,8 @@ class MyApp extends StatelessWidget {
                   builder: (ctx, authResultsnapshot) =>
                       authResultsnapshot.connectionState ==
                               ConnectionState.waiting
-                          ? LoginScreen()
-                          : HomeScreen(),
+                          ? SplashScreen()
+                          : LoginScreen(),
                 ),
           // initialRoute: LoginScreen.routName,
           routes: AppRoutes.routes,

@@ -26,12 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
-    // var data = await Auth.fetchDataFromDevice();
 
     if (_isValid) {
       _formKey.currentState!.save();
       // Auth.logIn();
-      // context.read(authProvider);
+
       context.read(authProvider).login();
       if (context.read(authProvider).isAuth) {
         print(true);
@@ -63,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // Auth.saveDataOnDevice();
+
     return Scaffold(
       body: SafeArea(
         child: SizedBox(

@@ -66,11 +66,6 @@ class Auth with ChangeNotifier {
 
       notifyListeners();
       _saveDataOnDevice(token: _token);
-      // final prefs = await SharedPreferences.getInstance();
-      // final userData = json.encode({
-      //   'token': _token,
-      // });
-      // prefs.setString('userData', userData);
     } catch (e) {
       throw e;
     }
@@ -92,6 +87,13 @@ class Auth with ChangeNotifier {
     _token = extractedUserData['token'];
     notifyListeners();
     return true;
+  }
+
+  Future<void> logOut() async {
+    _token = '';
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 
   // static void logIn({
