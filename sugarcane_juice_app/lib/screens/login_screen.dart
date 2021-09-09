@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/auth.dart';
 import '/config/constants.dart';
@@ -57,6 +58,13 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      // appBar: AppBar(
+      //   systemOverlayStyle: SystemUiOverlayStyle(
+      //     statusBarColor: Palette.primaryLightColor,
+      //   ),
+      //   toolbarHeight: 0.0,
+      //   elevation: 0.0,
+      // ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,

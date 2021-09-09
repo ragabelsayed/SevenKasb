@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
     
+  flutter_zoom_drawer: ^2.1.1
   http: ^0.13.3
   flutter_riverpod: ^0.14.0+3
   shared_preferences: ^2.0.7

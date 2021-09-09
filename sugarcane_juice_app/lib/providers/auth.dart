@@ -15,10 +15,6 @@ final authProvider = ChangeNotifierProvider<Auth>((ref) {
 
 class Auth with ChangeNotifier {
   late String _token = '';
-  // DateTime _expiryDate;
-  // String _userId;
-  // Timer _authTimer;
-  // const Auth._();
   Uri url = Uri.parse(uri);
   // static Uri url = Uri.http('10.0.2.2:5000', '/api/auth/login');
 
@@ -33,14 +29,6 @@ class Auth with ChangeNotifier {
   String get token {
     return _token;
   }
-  //  String get token {
-  //   if (_expiryDate != null &&
-  //       _expiryDate.isAfter(DateTime.now()) &&
-  //       _token != null) {
-  //     return _token;
-  //   }
-  //   return null;
-  // }
 
   Future<void> _authenticate({
     required String name,
