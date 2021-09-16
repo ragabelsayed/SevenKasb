@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '/config/palette.dart';
 
 class MenuItems {
-  static const home = MenuItem('Home', Icons.home);
-  static const promos = MenuItem('promo', Icons.card_giftcard);
-  static const notification = MenuItem('Notification', Icons.notifications);
-  static const help = MenuItem('Help', Icons.help);
-  static const aboutUs = MenuItem('About Us', Icons.info_outline);
-  static const rateUs = MenuItem('Rate Us', Icons.star_border);
+  static const home = MenuItem('Home', FaIcon(FontAwesomeIcons.home));
+  static const bills = MenuItem('Bill', FaIcon(FontAwesomeIcons.moneyBill));
+  static const notification =
+      MenuItem('Notification', FaIcon(FontAwesomeIcons.solidStickyNote));
+  static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
+  static const aboutUs =
+      MenuItem('About Us', FaIcon(FontAwesomeIcons.infoCircle));
+  static const rateUs = MenuItem('Rate Us', FaIcon(FontAwesomeIcons.star));
 
   static const all = [
     home,
-    promos,
+    bills,
     notification,
     help,
     aboutUs,
@@ -21,7 +24,7 @@ class MenuItems {
 
 class MenuItem {
   final String title;
-  final IconData iconData;
+  final Widget iconData;
   const MenuItem(this.title, this.iconData);
 }
 
@@ -52,7 +55,8 @@ class MenuScreen extends StatelessWidget {
                   primary: Colors.white,
                   side: BorderSide(color: Colors.white),
                 ),
-                icon: Icon(Icons.exit_to_app),
+                icon: FaIcon(FontAwesomeIcons.signOutAlt),
+                // Icon(Icons.exit_to_app),
                 label: Text('LogOut'),
                 onPressed: () {},
               ),
@@ -72,7 +76,7 @@ class MenuScreen extends StatelessWidget {
           selected: currentItem == item,
           // minLeadingWidth: 20,
           selectedTileColor: Palette.primaryLightColor,
-          leading: Icon(item.iconData),
+          leading: item.iconData,
           title: Text(item.title),
           onTap: () {
             onSelectedItem(item);
