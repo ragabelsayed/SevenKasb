@@ -4,9 +4,8 @@ import '/config/palette.dart';
 
 class MenuItems {
   static const home = MenuItem('Home', FaIcon(FontAwesomeIcons.home));
-  static const bills = MenuItem('Bill', FaIcon(FontAwesomeIcons.moneyBill));
-  static const notification =
-      MenuItem('Notification', FaIcon(FontAwesomeIcons.solidStickyNote));
+  static const bills = MenuItem('Bill', FaIcon(FontAwesomeIcons.receipt));
+  static const stock = MenuItem('Stock', FaIcon(FontAwesomeIcons.warehouse));
   static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
   static const aboutUs =
       MenuItem('About Us', FaIcon(FontAwesomeIcons.infoCircle));
@@ -15,7 +14,7 @@ class MenuItems {
   static const all = [
     home,
     bills,
-    notification,
+    stock,
     help,
     aboutUs,
     rateUs,

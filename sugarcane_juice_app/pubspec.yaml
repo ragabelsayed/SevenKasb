@@ -23,7 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
+  
+  syncfusion_flutter_datagrid: ^19.2.62-beta
   font_awesome_flutter: ^9.1.0
   flutter_zoom_drawer: ^2.1.1
   http: ^0.13.3
