@@ -1,9 +1,20 @@
-import 'package:sugarcane_juice_app/models/bill_item.dart';
+class BillItems {
+  final String id;
+  final double price;
+  final double quentity;
+
+  const BillItems({
+    required this.id,
+    required this.price,
+    required this.quentity,
+  });
+}
 
 class Bill {
   final String id;
   final String userId;
   final double price;
+  final double paid;
   final String clientName;
   final DateTime dateTime;
   final List<BillItems> billItems;
@@ -12,6 +23,7 @@ class Bill {
     required this.id,
     required this.userId,
     required this.price,
+    required this.paid,
     required this.clientName,
     required this.dateTime,
     required this.billItems,

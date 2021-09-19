@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
+import 'package:sugarcane_juice_app/providers/bill_provider.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class BillScreen extends StatelessWidget {
+class BillScreen extends ConsumerWidget {
   static const routName = '/bill';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final bill = watch(billProvider);
+    bill.fetchAndSetData();
     return Scaffold(
       appBar: AppBar(
         // systemOverlayStyle:
