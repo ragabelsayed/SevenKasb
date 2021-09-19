@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/src/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sugarcane_juice_app/providers/auth.dart';
 import '/config/palette.dart';
 
 class MenuItems {
@@ -57,7 +59,11 @@ class MenuScreen extends StatelessWidget {
                 icon: FaIcon(FontAwesomeIcons.signOutAlt),
                 // Icon(Icons.exit_to_app),
                 label: Text('LogOut'),
-                onPressed: () {},
+                onPressed: () {
+                  print('out 1');
+                  context.read(authProvider).logOut();
+                  print('out 2');
+                },
               ),
             ),
             // Spacer()
