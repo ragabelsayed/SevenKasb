@@ -17,7 +17,7 @@ const billUri = 'http://10.0.2.2:5000/api/bill';
 // }
 
 final billProvider = ChangeNotifierProvider<BillNotifier>((ref) {
-  String _token = ref.read(authProvider).token;
+  String _token = ref.watch(authProvider).token;
   return BillNotifier(authToken: _token);
 });
 
@@ -35,20 +35,19 @@ class BillNotifier extends ChangeNotifier {
         'charset': 'utf-8',
         'Authorization': 'Bearer $authToken',
       });
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(extractedData);
+      final extractedData = json.decode(response.body) as List;
+      // print(extractedData.length);
       final List<Bill> _loadedProducts = [];
-      // extractedData.forEach(
-      //   (prodId, prodData) {
-      //     _loadedProducts.add(
-      //       Bill.fromJson(
-
-      //       ),
-      //     );
-      //   },
-      // );
-
-      // _items = _loadedProducts;
+      extractedData.forEach(
+        (bill) {
+          _loadedProducts.add(
+            Bill.fromJson(
+              json: bill,
+            ),
+          );
+        },
+      );
+      _items = _loadedProducts;
       // notifyListeners();
     } catch (error) {
       print(error);

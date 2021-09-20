@@ -1,18 +1,21 @@
 class BillItems {
-  final String id;
-  final double price;
-  final double quentity;
+  final int id;
+  final String itemName;
+  // final double price;
+  // final double quentity;
 
   const BillItems({
     required this.id,
-    required this.price,
-    required this.quentity,
+    required this.itemName,
+    // required this.price,
+    // required this.quentity,
   });
 }
 
 class Bill {
-  final String id;
-  final String userId;
+  final int id;
+  final int type;
+  final Map<String, dynamic> user;
   final double price;
   final double paid;
   final String clientName;
@@ -21,7 +24,8 @@ class Bill {
 
   const Bill({
     required this.id,
-    required this.userId,
+    required this.type,
+    required this.user,
     required this.price,
     required this.paid,
     required this.clientName,
@@ -29,22 +33,37 @@ class Bill {
     required this.billItems,
   });
 
-  // factory Bill.fromJson({required Map<String, dynamic> data}) {
-  //   return Bill(
-  //     id: prodId,
-  //     title: data['title'],
-  //     description: data['description'],
-  //     images: data['imageUrl'].cast<String>(),
-  //     colors: [
-  //       Color(0xFFF6625E),
-  //       Color(0xFF836DB8),
-  //       Color(0xFFDECB9C),
-  //       Colors.white,
-  //     ],
-  //     price: data['price'],
-  //     rating: data['rating'],
-  //     isFavourite: data['isFavourite'],
-  //     isPopular: data['isPopular'],
-  //   );
-  // }
+  factory Bill.fromJson({required Map<String, dynamic> json}) {
+    List _billItemList = json['billItems'];
+
+    return Bill(
+      id: json['id'],
+      type: json['type'],
+      user: json['user'],
+      price: json['cost'],
+      paid: json['paid'],
+      clientName: json['clientName'],
+      dateTime: DateTime.parse('${json['createdAt']}'),
+      billItems: _billItemList
+          .map(
+            (e) => BillItems(
+              id: e['itemId'],
+              itemName: e['name'] ?? '',
+              // price: e['price'],
+              // quentity: e['quentity'],
+            ),
+          )
+          .toList(),
+      // List.from(
+      //   _billItemList.map(
+      //     (e) => BillItems(
+      //       id: e['itemId'],
+      //       itemName: e['name'] ?? '',
+      //       // price: e['price'],
+      //       // quentity: e['quentity'],
+      //     ),
+      //   ),
+      // ),
+    );
+  }
 }
