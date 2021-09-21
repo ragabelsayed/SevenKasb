@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:sugarcane_juice_app/screens/bill_screen.dart';
+import 'package:sugarcane_juice_app/screens/bill/bill_screen.dart';
 import 'package:sugarcane_juice_app/screens/main/main_screen.dart';
 import 'package:sugarcane_juice_app/screens/menu/menu_screen.dart';
 

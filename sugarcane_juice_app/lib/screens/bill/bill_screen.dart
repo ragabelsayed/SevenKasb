@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
+import 'package:sugarcane_juice_app/screens/bill/widget/bill_view.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
-// import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class BillScreen extends ConsumerWidget {
   static const routName = '/bill';
@@ -56,12 +58,19 @@ class BillScreen extends ConsumerWidget {
                 ? Center(child: CircularProgressIndicator())
                 : _buildDataTable(billList: billList, context: context),
       ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add new bill',
+        child: Icon(Icons.add),
+        // backgroundColor: Colors.green,
+        backgroundColor: Colors.amber,
+        onPressed: () {},
+      ),
     );
   }
 
   Widget _buildDataTable(
       {required List<Bill> billList, required BuildContext context}) {
-    final columns = ['ClientName', 'ItemName', 'Data', ''];
+    final columns = ['BillId', 'ClientName', 'Data', ''];
     return SingleChildScrollView(
       child: DataTable(
         columns: _getColumns(columns),
@@ -70,7 +79,8 @@ class BillScreen extends ConsumerWidget {
         //     MaterialStateProperty.resolveWith<Color>((states) => Colors.amber),
         // dividerThickness: 5.0,
         // checkboxHorizontalMargin: 100,
-        columnSpacing: 40,
+        // columnSpacing: 40,
+        // horizontalMargin: 10.0,
         // decoration: BoxDecoration(
         //   border: Border(bottom: BorderSide()),
         // ),
@@ -79,17 +89,26 @@ class BillScreen extends ConsumerWidget {
     );
   }
 
-  List<DataColumn> _getColumns(List<String> columns) =>
-      columns.map((column) => DataColumn(label: Text(column))).toList();
+  List<DataColumn> _getColumns(List<String> columns) => columns
+      .map(
+        (column) => DataColumn(
+          // numeric: true,
+          label: column.isNotEmpty
+              ? Text(column)
+              : FaIcon(FontAwesomeIcons.receipt),
+        ),
+      )
+      .toList();
 
   List<DataRow> _getRow(
           {required List<Bill> bills, required BuildContext context}) =>
       bills.map(
         (bill) {
-          final cells = [bill.clientName, bill.price, bill.dateTime.year];
-          // return DataRow(
-          //   cells: _getCells(bill),
-          // );
+          final cells = [
+            bill.id,
+            bill.clientName,
+            DateFormat.Md().format(bill.dateTime)
+          ];
           return DataRow(
             cells: [
               ..._getCells(cells),
@@ -104,31 +123,20 @@ class BillScreen extends ConsumerWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return Dialog(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 20,
-                            ),
-                            child: Column(
-                              children: [
-                                Text('Code: '),
-                              ],
-                            ),
-                          ),
-                        );
+                        return BillView(bill: bill);
                       },
                     );
                   },
                 ),
-                //   ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       primary: Colors.amberAccent,
-                //       // onPrimary: Colors.amber,
-                //     ),
-                //     onPressed: () {},
-                //     child: Icon(Icons.forward_rounded),
+
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(
+                //     primary: Colors.amberAccent,
+                //     // onPrimary: Colors.amber,
                 //   ),
+                //   onPressed: () {},
+                //   child: Icon(Icons.forward_rounded),
+                // ),
               ),
             ],
           );
