@@ -12,11 +12,37 @@ class BillScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final bill = watch(billProvider);
-    bill.fetchAndSetData();
-    List<Bill> billList = bill.items;
-    print('${billList[1].clientName}');
-    // print('${billList[1].billItems[1].itemName}');
-    print('${billList[1].dateTime.year}');
+    bill.fetchAndSetData().whenComplete(() {
+      List<Bill> billList = bill.items;
+      print('${billList[1].id}');
+      print('${billList[1].clientName}');
+      print('${billList[1].paid}');
+      print('${billList[1].price}');
+      print('${billList[1].dateTime.year}');
+      print('${billList[1].type}');
+      print('1111111111');
+      print('${billList[1].billItems[0].itemName}');
+      print('${billList[1].billItems[0].id}');
+      print('${billList[1].billItems[0].price}');
+      print('${billList[1].billItems[0].quentity}');
+      print('222222222');
+      print('${billList[1].billItems[0].item.id}');
+      print('${billList[1].billItems[0].item.name}');
+      print('${billList[1].billItems[0].item.price}');
+      print('${billList[1].billItems[0].item.quentity}');
+      print('${billList[1].billItems[0].item.type}');
+      print('333333');
+      print('${billList[1].billItems[0].item.unit.id}');
+      print('${billList[1].billItems[0].item.unit.name}');
+      // print('${billList[1].billItems[1].itemName}');
+    });
+    // .then((_) {
+    //   List<Bill> billList = bill.items;
+    //   print('${billList[1].clientName}');
+    //   // print('${billList[1].billItems[1].itemName}');
+    //   print('${billList[1].dateTime.year}');
+    // });
+
     return Scaffold(
       appBar: AppBar(
         // systemOverlayStyle:
@@ -26,7 +52,8 @@ class BillScreen extends ConsumerWidget {
         backgroundColor: Palette.primaryColor,
         leading: MenuWidget(),
       ),
-      body: _buildDataTable(billList: billList, context: context),
+      body: Text('ggggggggggggg'),
+      // body: _buildDataTable(billList: billList, context: context),
     );
   }
 

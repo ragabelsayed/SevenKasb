@@ -1,21 +1,25 @@
+import 'package:sugarcane_juice_app/models/item.dart';
+import 'package:sugarcane_juice_app/models/unit.dart';
+
 class BillItems {
   final int id;
   final String itemName;
-  // final double price;
-  // final double quentity;
-
+  final double price;
+  final double quentity;
+  final Item item;
   const BillItems({
     required this.id,
     required this.itemName,
-    // required this.price,
-    // required this.quentity,
+    required this.price,
+    required this.quentity,
+    required this.item,
   });
 }
 
 class Bill {
   final int id;
   final int type;
-  final Map<String, dynamic> user;
+  // final Map<String, dynamic> user;
   final double price;
   final double paid;
   final String clientName;
@@ -25,7 +29,7 @@ class Bill {
   const Bill({
     required this.id,
     required this.type,
-    required this.user,
+    // required this.user,
     required this.price,
     required this.paid,
     required this.clientName,
@@ -35,22 +39,32 @@ class Bill {
 
   factory Bill.fromJson({required Map<String, dynamic> json}) {
     List _billItemList = json['billItems'];
-
     return Bill(
       id: json['id'],
-      type: json['type'],
-      user: json['user'],
-      price: json['cost'],
-      paid: json['paid'],
-      clientName: json['clientName'],
+      type: json['type'] ?? 0,
+      // user: json['user'],
+      price: json['cost'] ?? 00,
+      paid: json['paid'] ?? 00,
+      clientName: json['clientName'] ?? '',
       dateTime: DateTime.parse('${json['createdAt']}'),
       billItems: _billItemList
           .map(
             (e) => BillItems(
               id: e['itemId'],
               itemName: e['name'] ?? '',
-              // price: e['price'],
-              // quentity: e['quentity'],
+              price: e['price'],
+              quentity: e['quentity'],
+              item: Item(
+                id: e['itemNavigation']['id'],
+                name: e['itemNavigation']['name'] ?? '',
+                price: e['itemNavigation']['price'],
+                quentity: e['itemNavigation']['quentity'],
+                unit: Unit(
+                  id: e['itemNavigation']['unitNavigation']['id'],
+                  name: e['itemNavigation']['unitNavigation']['name'] ?? '',
+                ),
+                type: e['itemNavigation']['type'],
+              ),
             ),
           )
           .toList(),
