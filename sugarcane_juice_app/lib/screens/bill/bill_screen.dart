@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
@@ -44,7 +43,11 @@ class BillScreen extends ConsumerWidget {
       appBar: AppBar(
         // systemOverlayStyle:
         //     SystemUiOverlayStyle(statusBarColor: Palette.primaryLightColor),
-        title: Text('Bills'),
+        title: Text('الفواتير',
+            style: Theme.of(context)
+                .textTheme
+                .headline5!
+                .copyWith(color: Colors.white)),
         centerTitle: true,
         backgroundColor: Palette.primaryColor,
         leading: MenuWidget(),
@@ -70,17 +73,26 @@ class BillScreen extends ConsumerWidget {
 
   Widget _buildDataTable(
       {required List<Bill> billList, required BuildContext context}) {
-    final columns = ['BillId', 'ClientName', 'Data', ''];
+    final columns = [
+      'عرض',
+      'التاريخ',
+      'العميل',
+      'الكود',
+    ];
     return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: DataTable(
         columns: _getColumns(columns),
         rows: _getRow(bills: billList, context: context),
+        headingTextStyle: Theme.of(context).textTheme.headline6,
+        columnSpacing: MediaQuery.of(context).size.width / 8,
+
         // dataRowColor:
         //     MaterialStateProperty.resolveWith<Color>((states) => Colors.amber),
         // dividerThickness: 5.0,
         // checkboxHorizontalMargin: 100,
-        // columnSpacing: 40,
         // horizontalMargin: 10.0,
+        horizontalMargin: 0.0,
         // decoration: BoxDecoration(
         //   border: Border(bottom: BorderSide()),
         // ),
@@ -92,10 +104,14 @@ class BillScreen extends ConsumerWidget {
   List<DataColumn> _getColumns(List<String> columns) => columns
       .map(
         (column) => DataColumn(
-          // numeric: true,
-          label: column.isNotEmpty
-              ? Text(column)
-              : FaIcon(FontAwesomeIcons.receipt),
+          numeric: true,
+          label: SizedBox(
+            width: 56,
+            child: Text(
+              column,
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       )
       .toList();
@@ -114,10 +130,14 @@ class BillScreen extends ConsumerWidget {
               ..._getCells(cells),
               DataCell(
                 TextButton(
-                  child: Icon(
-                    Icons.forward_rounded,
-                    size: 30,
-                    color: Colors.amber,
+                  child: Transform.rotate(
+                    angle: 600,
+                    origin: Offset(0.0, 0.0),
+                    child: Icon(
+                      Icons.forward_rounded,
+                      size: 30,
+                      color: Colors.amber,
+                    ),
                   ),
                   onPressed: () {
                     showDialog(
@@ -138,7 +158,7 @@ class BillScreen extends ConsumerWidget {
                 //   child: Icon(Icons.forward_rounded),
                 // ),
               ),
-            ],
+            ].reversed.toList(),
           );
         },
       ).toList();
@@ -147,7 +167,14 @@ class BillScreen extends ConsumerWidget {
     var cellList = cells
         .map(
           (cell) => DataCell(
-            Text('$cell'),
+            SizedBox(
+              width: 56,
+              child: Text(
+                '$cell',
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             // placeholder: true,
           ),
         )
