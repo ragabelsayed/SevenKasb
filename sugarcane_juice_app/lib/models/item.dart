@@ -8,7 +8,7 @@ class Item {
   final Unit unit;
   final int type;
 
-  Item({
+  const Item({
     required this.id,
     required this.name,
     required this.price,
@@ -16,4 +16,18 @@ class Item {
     required this.unit,
     required this.type,
   });
+
+  factory Item.fromJson({required Map<String, dynamic> json}) {
+    return Item(
+      id: json['id'],
+      name: json['name'],
+      type: json['type'] ?? 0,
+      price: json['price'] ?? 00,
+      quentity: json['quentity'],
+      unit: Unit(
+        id: json['unitNavigation']['id'],
+        name: json['unitNavigation']['name'],
+      ),
+    );
+  }
 }

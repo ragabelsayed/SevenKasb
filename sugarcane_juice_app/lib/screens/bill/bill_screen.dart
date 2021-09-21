@@ -43,11 +43,13 @@ class BillScreen extends ConsumerWidget {
       appBar: AppBar(
         // systemOverlayStyle:
         //     SystemUiOverlayStyle(statusBarColor: Palette.primaryLightColor),
-        title: Text('الفواتير',
-            style: Theme.of(context)
-                .textTheme
-                .headline5!
-                .copyWith(color: Colors.white)),
+        title: Text(
+          'الفواتير',
+          style: Theme.of(context)
+              .textTheme
+              .headline5!
+              .copyWith(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Palette.primaryColor,
         leading: MenuWidget(),
