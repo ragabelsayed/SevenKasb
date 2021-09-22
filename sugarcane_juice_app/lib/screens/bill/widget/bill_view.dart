@@ -132,6 +132,13 @@ class BillView extends StatelessWidget {
     );
   }
 
+  double _getItemsTotal({required double price, required double quentity}) {
+    return price * quentity;
+  }
+  // double _getBillTotal({required double itemTotal) {
+
+  // }
+
   Widget _buildDataTable({required Bill bill, required BuildContext context}) {
     final billColumns = ['Product', 'quentity', 'Price', 'Total'];
     return DataTable(
@@ -169,7 +176,10 @@ class BillView extends StatelessWidget {
             // billItem.item.quentity,
             '${billItem.item.quentity} ${billItem.item.unit.name}',
             billItem.item.price,
-            billItem.price
+            _getItemsTotal(
+              price: billItem.item.price,
+              quentity: billItem.item.quentity,
+            ),
           ];
           return DataRow(
             cells: _getCells(cells),

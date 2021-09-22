@@ -27,8 +27,20 @@ class MainScreen extends ConsumerWidget {
         ),
         centerTitle: true,
         leading: MenuWidget(),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
       ),
       body: _buildDataTable(itemList: items.items, context: context),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add new bill',
+        child: Icon(Icons.add),
+        // backgroundColor: Colors.green,
+        backgroundColor: Colors.amber,
+        onPressed: () {},
+      ),
     );
   }
 
@@ -36,12 +48,12 @@ class MainScreen extends ConsumerWidget {
       {required List<Item> itemList, required BuildContext context}) {
     final columns = [
       'عرض',
-      'التاريخ',
-      'العميل',
-      'الكود',
+      'الكمية',
+      'السعر',
+      'الصنف',
     ];
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      // padding: const EdgeInsets.symmetric(horizontal: 10),
       child: DataTable(
         columns: _getColumns(columns),
         rows: _getRow(items: itemList, context: context),
@@ -56,12 +68,12 @@ class MainScreen extends ConsumerWidget {
   List<DataColumn> _getColumns(List<String> columns) => columns
       .map(
         (column) => DataColumn(
-          numeric: true,
+          // numeric: true,
           label: SizedBox(
             width: 56,
             child: Text(
               column,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.right,
             ),
           ),
         ),
@@ -73,9 +85,9 @@ class MainScreen extends ConsumerWidget {
       items.map(
         (item) {
           final cells = [
-            item.id,
             item.name,
             item.price,
+            item.quentity,
           ];
           return DataRow(
             cells: [
@@ -100,15 +112,6 @@ class MainScreen extends ConsumerWidget {
                     );
                   },
                 ),
-
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     primary: Colors.amberAccent,
-                //     // onPrimary: Colors.amber,
-                //   ),
-                //   onPressed: () {},
-                //   child: Icon(Icons.forward_rounded),
-                // ),
               ),
             ].reversed.toList(),
           );
@@ -122,7 +125,7 @@ class MainScreen extends ConsumerWidget {
             width: 56,
             child: Text(
               '$cell',
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.right,
               overflow: TextOverflow.ellipsis,
             ),
           ),
