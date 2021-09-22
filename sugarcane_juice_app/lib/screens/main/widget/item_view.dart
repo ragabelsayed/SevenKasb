@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
+import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
 
 class ItemView extends StatefulWidget {
@@ -38,7 +39,7 @@ class _ItemViewState extends State<ItemView> {
         key: _form,
         child: ListView(
           children: [
-            _buildTitle(context, 'اسم الصنف:'),
+            DialogTitle(name: 'اسم الصنف:'),
             TextFormField(
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.next,
@@ -63,7 +64,7 @@ class _ItemViewState extends State<ItemView> {
               },
             ),
             // SizedBox(height: 10),
-            _buildTitle(context, 'السعر:'),
+            DialogTitle(name: 'السعر:'),
             TextFormField(
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.next,
@@ -76,6 +77,7 @@ class _ItemViewState extends State<ItemView> {
                 errorBorder: AppConstants.errorBorder,
                 focusedBorder: AppConstants.focusedBorder,
               ),
+              onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
               validator: (newValue) {
                 if (newValue!.isEmpty) {
                   // return 'Please enter your password';
@@ -86,7 +88,7 @@ class _ItemViewState extends State<ItemView> {
                 // userData['password'] = newValue!;
               },
             ),
-            _buildTitle(context, 'الكمية:'),
+            DialogTitle(name: 'الكمية:'),
             TextFormField(
               textInputAction: TextInputAction.next,
               textDirection: TextDirection.rtl,
@@ -100,7 +102,7 @@ class _ItemViewState extends State<ItemView> {
               ),
               initialValue: '${widget.item.quentity}',
             ),
-            _buildTitle(context, 'وحدة القياس:'),
+            DialogTitle(name: 'وحدة القياس:'),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
@@ -127,25 +129,6 @@ class _ItemViewState extends State<ItemView> {
           ],
         ),
       );
-  Text _buildTitle(BuildContext context, String? name) {
-    return Text.rich(
-      TextSpan(
-        text: name,
-        style: Theme.of(context)
-            .textTheme
-            .merge(
-              TextTheme(
-                headline6: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            )
-            .headline6,
-      ),
-      textDirection: TextDirection.rtl,
-    );
-  }
 
   Column _getShow(BuildContext context) {
     return Column(

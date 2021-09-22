@@ -5,6 +5,7 @@ import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/item_provider.dart';
 import 'package:sugarcane_juice_app/screens/main/widget/item_view.dart';
 import '../../widget/menu_widget.dart';
+import 'widget/item_input_form.dart';
 
 class MainScreen extends ConsumerWidget {
   static const routName = '/main';
@@ -35,11 +36,15 @@ class MainScreen extends ConsumerWidget {
       ),
       body: _buildDataTable(itemList: items.items, context: context),
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Add new bill',
+        tooltip: 'اضافة صنف',
         child: Icon(Icons.add),
-        // backgroundColor: Colors.green,
         backgroundColor: Colors.amber,
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => IputItemForm(),
+          );
+        },
       ),
     );
   }
