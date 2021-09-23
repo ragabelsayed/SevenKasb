@@ -3,7 +3,6 @@ import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
-import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
 
 class ItemView extends StatefulWidget {
   final Item item;
@@ -14,79 +13,47 @@ class ItemView extends StatefulWidget {
 }
 
 class _ItemViewState extends State<ItemView> {
-  final _form = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   bool _isModfiy = false;
+
+  void _saveForm() {
+    final _isValid = _formKey.currentState!.validate();
+    // if (_isValid) {
+    //   _formKey.currentState!.save();
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: SizedBox(
-        height: !_isModfiy
-            ? MediaQuery.of(context).size.height / 2
-            : MediaQuery.of(context).size.height / 2 + 100,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 20,
-          ),
-          child: !_isModfiy ? _getShow(context) : _getForm(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
         ),
+        child: !_isModfiy ? _getShow(context) : _getForm(),
       ),
     );
   }
 
   Form _getForm() => Form(
-        key: _form,
+        key: _formKey,
         child: ListView(
+          shrinkWrap: true,
           children: [
             DialogTitle(name: 'اسم الصنف:'),
-            TextFormField(
-              keyboardType: TextInputType.name,
-              textInputAction: TextInputAction.next,
-              textDirection: TextDirection.rtl,
-              maxLines: 1,
-              decoration: InputDecoration(
-                fillColor: Palette.primaryLightColor,
-                filled: true,
-                border: AppConstants.border,
-                errorBorder: AppConstants.errorBorder,
-                focusedBorder: AppConstants.focusedBorder,
-              ),
-              onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
-              validator: (newValue) {
-                if (newValue!.isEmpty) {
-                  return 'Please enter your name or email';
-                }
-              },
+            _buildTextFormField(
               initialValue: '${widget.item.name}',
-              onSaved: (newValue) {
-                // userData['name'] = newValue!;
-              },
+              error: AppConstants.nameError,
+              type: TextInputType.name,
+              action: TextInputAction.next,
             ),
-            // SizedBox(height: 10),
             DialogTitle(name: 'السعر:'),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              textDirection: TextDirection.rtl,
-              maxLines: 1,
-              decoration: InputDecoration(
-                fillColor: Palette.primaryLightColor,
-                filled: true,
-                border: AppConstants.border,
-                errorBorder: AppConstants.errorBorder,
-                focusedBorder: AppConstants.focusedBorder,
-              ),
-              onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
-              validator: (newValue) {
-                if (newValue!.isEmpty) {
-                  // return 'Please enter your password';
-                }
-              },
+            _buildTextFormField(
               initialValue: '${widget.item.price}',
-              onSaved: (newValue) {
-                // userData['password'] = newValue!;
-              },
+              error: AppConstants.priceError,
+              type: TextInputType.number,
+              action: TextInputAction.next,
             ),
             DialogTitle(name: 'الكمية:'),
             TextFormField(
@@ -103,137 +70,183 @@ class _ItemViewState extends State<ItemView> {
               initialValue: '${widget.item.quentity}',
             ),
             DialogTitle(name: 'وحدة القياس:'),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.done,
-              textDirection: TextDirection.rtl,
-              decoration: InputDecoration(
-                fillColor: Palette.primaryLightColor,
-                filled: true,
-                border: AppConstants.border,
-                errorBorder: AppConstants.errorBorder,
-                focusedBorder: AppConstants.focusedBorder,
-              ),
-              validator: (newValue) {
-                if (newValue!.isEmpty) {
-                  // return 'Please enter your password';
-                }
-              },
+            _buildTextFormField(
               initialValue: '${widget.item.unit.name}',
-              onSaved: (newValue) {
-                // userData['password'] = newValue!;
-              },
+              error: AppConstants.unitError,
+              type: TextInputType.emailAddress,
+              action: TextInputAction.done,
             ),
             const SizedBox(height: 20),
-            _getBtn(context),
+            if (_isModfiy)
+              DialogButtons(
+                name: 'حفظ',
+                onPressed: () {
+                  _saveForm();
+                  setState(() => _isModfiy = !_isModfiy);
+                },
+              ),
           ],
         ),
       );
 
-  Column _getShow(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      textDirection: TextDirection.rtl,
-      children: [
-        Center(
-          child: Text(
-            'Alasra',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline6,
+  Widget _getShow(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 2,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        textDirection: TextDirection.rtl,
+        children: [
+          Center(
+            child: Text(
+              'Alasra',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          textDirection: TextDirection.rtl,
-          children: [
-            Text(
-              ' :رقم الصنف',
-              textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            Text(
-              '${widget.item.id}',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          textDirection: TextDirection.rtl,
-          children: [
-            Text(
-              ' :اسم الصنف',
-              textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            Text(
-              '${widget.item.name}',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          textDirection: TextDirection.rtl,
-          children: [
-            Text(
-              ' :وحدة القياس',
-              textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            Text(
-              '${widget.item.unit.name}',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          textDirection: TextDirection.rtl,
-          children: [
-            Text(
-              ':السعر',
-              textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            Text(
-              '${widget.item.price}',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          textDirection: TextDirection.rtl,
-          children: [
-            Text(
-              ' :الكمية',
-              textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            Text(
-              '${widget.item.quentity}',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-          ],
-        ),
-        const Expanded(child: SizedBox()),
-        _getBtn(context),
-      ],
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            textDirection: TextDirection.rtl,
+            children: [
+              Text(
+                ' :رقم الصنف',
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Text(
+                '${widget.item.id}',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            textDirection: TextDirection.rtl,
+            children: [
+              Text(
+                ' :اسم الصنف',
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Text(
+                '${widget.item.name}',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            textDirection: TextDirection.rtl,
+            children: [
+              Text(
+                ' :وحدة القياس',
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Text(
+                '${widget.item.unit.name}',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            textDirection: TextDirection.rtl,
+            children: [
+              Text(
+                ':السعر',
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Text(
+                '${widget.item.price}',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            textDirection: TextDirection.rtl,
+            children: [
+              Text(
+                ' :الكمية',
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Text(
+                '${widget.item.quentity}',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ],
+          ),
+          const Expanded(child: SizedBox()),
+          if (!_isModfiy)
+            DialogButtons(
+                name: 'تعديل',
+                onPressed: () {
+                  setState(() => _isModfiy = !_isModfiy);
+                }),
+        ],
+      ),
     );
   }
 
-  Row _getBtn(BuildContext context) {
+  TextFormField _buildTextFormField({
+    required String initialValue,
+    required String error,
+    required TextInputType type,
+    required TextInputAction action,
+  }) {
+    return TextFormField(
+      keyboardType: type,
+      textInputAction: action,
+      textDirection: TextDirection.rtl,
+      maxLines: 1,
+      decoration: InputDecoration(
+        fillColor: Palette.primaryLightColor,
+        filled: true,
+        border: AppConstants.border,
+        errorBorder: AppConstants.errorBorder,
+        focusedBorder: AppConstants.focusedBorder,
+      ),
+      initialValue: initialValue,
+      onFieldSubmitted: (value) {
+        if (value.isNotEmpty) {
+          _formKey.currentState!.validate();
+        }
+      },
+      validator: (newValue) {
+        if (newValue!.isEmpty) {
+          return error;
+        }
+      },
+      onSaved: (newValue) {
+        // userData['name'] = newValue!;
+      },
+    );
+  }
+}
+
+class DialogButtons extends StatelessWidget {
+  final String name;
+
+  final VoidCallback onPressed;
+  const DialogButtons({
+    required this.name,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         SizedBox(
@@ -263,14 +276,8 @@ class _ItemViewState extends State<ItemView> {
                     topRight: Radius.circular(30),
                   ),
                 )),
-            child: !_isModfiy ? Text('تعديل') : Text('حفظ'),
-            onPressed: !_isModfiy
-                ? () {
-                    setState(() => _isModfiy = !_isModfiy);
-                  }
-                : () {
-                    setState(() => _isModfiy = !_isModfiy);
-                  },
+            child: Text('$name'),
+            onPressed: onPressed,
           ),
         ),
       ],

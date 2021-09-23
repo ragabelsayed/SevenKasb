@@ -10,6 +10,10 @@ class AppConstants {
   //   height: 1.5,
   // );
 
+  static const nameError = 'قُمْ بإدخال اسم الصنف رجاءً';
+  static const priceError = 'قُمْ بإدخال سعر الصنف رجاءً';
+  static const unitError = 'قُمْ بإدخال وحدة القياس';
+
   static OutlineInputBorder border = OutlineInputBorder(
     borderSide: BorderSide.none,
     borderRadius: BorderRadius.circular(50.0),
