@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
+import 'package:sugarcane_juice_app/widget/dialog_btns.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 
 class ItemView extends StatefulWidget {
@@ -191,10 +192,11 @@ class _ItemViewState extends State<ItemView> {
           const Expanded(child: SizedBox()),
           if (!_isModfiy)
             DialogButtons(
-                name: 'تعديل',
-                onPressed: () {
-                  setState(() => _isModfiy = !_isModfiy);
-                }),
+              name: 'تعديل',
+              onPressed: () {
+                setState(() => _isModfiy = !_isModfiy);
+              },
+            ),
         ],
       ),
     );
@@ -232,55 +234,6 @@ class _ItemViewState extends State<ItemView> {
       onSaved: (newValue) {
         // userData['name'] = newValue!;
       },
-    );
-  }
-}
-
-class DialogButtons extends StatelessWidget {
-  final String name;
-
-  final VoidCallback onPressed;
-  const DialogButtons({
-    required this.name,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width / 3,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Palette.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                  ),
-                )),
-            child: Text('غلق'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
-        const SizedBox(width: 5),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width / 3,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Palette.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(30),
-                  ),
-                )),
-            child: Text('$name'),
-            onPressed: onPressed,
-          ),
-        ),
-      ],
     );
   }
 }
