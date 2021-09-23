@@ -105,90 +105,16 @@ class _ItemViewState extends State<ItemView> {
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            textDirection: TextDirection.rtl,
-            children: [
-              Text(
-                ' :رقم الصنف',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              Text(
-                '${widget.item.id}',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2,
-              ),
-            ],
-          ),
+          _buildItemRow(name: ' :رقم الصنف', value: '${widget.item.id}'),
           const SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            textDirection: TextDirection.rtl,
-            children: [
-              Text(
-                ' :اسم الصنف',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              Text(
-                '${widget.item.name}',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2,
-              ),
-            ],
-          ),
+          _buildItemRow(name: ' :اسم الصنف', value: '${widget.item.name}'),
           const SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            textDirection: TextDirection.rtl,
-            children: [
-              Text(
-                ' :وحدة القياس',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              Text(
-                '${widget.item.unit.name}',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2,
-              ),
-            ],
-          ),
+          _buildItemRow(
+              name: ' :وحدة القياس', value: '${widget.item.unit.name}'),
           const SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            textDirection: TextDirection.rtl,
-            children: [
-              Text(
-                ':السعر',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              Text(
-                '${widget.item.price}',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2,
-              ),
-            ],
-          ),
+          _buildItemRow(name: ':السعر', value: '${widget.item.price}'),
           const SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            textDirection: TextDirection.rtl,
-            children: [
-              Text(
-                ' :الكمية',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              Text(
-                '${widget.item.quentity}',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2,
-              ),
-            ],
-          ),
+          _buildItemRow(name: ' :الكمية', value: '${widget.item.quentity}'),
           const Expanded(child: SizedBox()),
           if (!_isModfiy)
             DialogButtons(
@@ -202,38 +128,54 @@ class _ItemViewState extends State<ItemView> {
     );
   }
 
+  Row _buildItemRow({required String name, required String value}) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        textDirection: TextDirection.rtl,
+        children: [
+          Text(
+            name,
+            textAlign: TextAlign.right,
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          Text(
+            value,
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
+        ],
+      );
+
   TextFormField _buildTextFormField({
     required String initialValue,
     required String error,
     required TextInputType type,
     required TextInputAction action,
-  }) {
-    return TextFormField(
-      keyboardType: type,
-      textInputAction: action,
-      textDirection: TextDirection.rtl,
-      maxLines: 1,
-      decoration: InputDecoration(
-        fillColor: Palette.primaryLightColor,
-        filled: true,
-        border: AppConstants.border,
-        errorBorder: AppConstants.errorBorder,
-        focusedBorder: AppConstants.focusedBorder,
-      ),
-      initialValue: initialValue,
-      onFieldSubmitted: (value) {
-        if (value.isNotEmpty) {
-          _formKey.currentState!.validate();
-        }
-      },
-      validator: (newValue) {
-        if (newValue!.isEmpty) {
-          return error;
-        }
-      },
-      onSaved: (newValue) {
-        // userData['name'] = newValue!;
-      },
-    );
-  }
+  }) =>
+      TextFormField(
+        keyboardType: type,
+        textInputAction: action,
+        textDirection: TextDirection.rtl,
+        maxLines: 1,
+        decoration: InputDecoration(
+          fillColor: Palette.primaryLightColor,
+          filled: true,
+          border: AppConstants.border,
+          errorBorder: AppConstants.errorBorder,
+          focusedBorder: AppConstants.focusedBorder,
+        ),
+        initialValue: initialValue,
+        onFieldSubmitted: (value) {
+          if (value.isNotEmpty) {
+            _formKey.currentState!.validate();
+          }
+        },
+        validator: (newValue) {
+          if (newValue!.isEmpty) {
+            return error;
+          }
+        },
+        onSaved: (newValue) {
+          // userData['name'] = newValue!;
+        },
+      );
 }
