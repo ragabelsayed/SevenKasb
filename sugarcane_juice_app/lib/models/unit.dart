@@ -1,6 +1,6 @@
 class Unit {
-  final int id;
-  final String name;
+  int? id;
+  String name;
 
-  const Unit({required this.id, required this.name});
+  Unit({this.id, this.name = ''});
 }

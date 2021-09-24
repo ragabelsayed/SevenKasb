@@ -45,4 +45,74 @@ class ItemNotifier extends ChangeNotifier {
       // throw error;
     }
   }
+
+  // Future<void> addItem(Item item) async {
+  //   try {
+  //     final newItem = Item(
+  //       name: item.name,
+  //       price: item.price,
+  //       quentity: item.quentity,
+  //       unit: item.unit,
+  //     );
+  //     _items.add(newItem);
+  //     final response = await http.post(
+  //       url,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'charset': 'utf-8',
+  //         'Authorization': 'Bearer $authToken',
+  //       },
+  //       body: json.encode({
+  //         'id': 4,
+  //         'name': item.name,
+  //         'price': item.price,
+  //         'quentity': double.tryParse(item.quentity),
+  //         'unitNavigation': {'name': item.unit.name},
+  //         'type': 0
+  //       }),
+  //     );
+  //     print(response.statusCode);
+
+  //     notifyListeners();
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+
+  // Future<void> updateProduct(String id, Product newProduct) async {
+  //   final prodIndex = _items.indexWhere((prod) => prod.id == id);
+  //   if (prodIndex >= 0) {
+  //
+  //     try {
+  //       await http.patch(url,
+  //           body: json.encode({
+  //             'title': newProduct.title,
+  //             'description': newProduct.description,
+  //             'imageUrl': newProduct.imageUrl,
+  //             'price': newProduct.price,
+  //           }));
+  //     } catch (error) {
+  //       throw error;
+  //     }
+  //     _items[prodIndex] = newProduct;
+  //     notifyListeners();
+  //   }
+  // }
+
+  // Future<void> deleteProduct(String id) async {
+
+  //   final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+  //   var existingProduct = _items[existingProductIndex];
+  //   _items.removeAt(existingProductIndex);
+  //   notifyListeners();
+  //   final response = await http.delete(url);
+  //   if (response.statusCode >= 400) {
+  //     _items.insert(existingProductIndex, existingProduct);
+  //     notifyListeners();
+  //     throw HttpException('Could not delete product.');
+  //   }
+  //   existingProduct = null;
+
+  //   // _items.removeWhere((prod) => prod.id == id);
+  // }
 }

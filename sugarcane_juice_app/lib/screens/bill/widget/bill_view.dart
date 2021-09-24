@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
@@ -177,8 +179,8 @@ class BillView extends StatelessWidget {
             '${billItem.item.quentity} ${billItem.item.unit.name}',
             billItem.item.price,
             _getItemsTotal(
-              price: billItem.item.price,
-              quentity: billItem.item.quentity,
+              price: double.parse(billItem.item.price),
+              quentity: double.parse(billItem.item.quentity),
             ),
           ];
           return DataRow(
