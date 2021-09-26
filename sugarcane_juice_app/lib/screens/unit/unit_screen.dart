@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
+import 'package:sugarcane_juice_app/providers/unit_provider.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 
 class UnitScreen extends ConsumerWidget {
@@ -8,8 +9,8 @@ class UnitScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    // final items = watch(itemProvider);
-    // items.fetchAndSetData();
+    final units = watch(unitProvider);
+    units.fetchAndSetData();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
