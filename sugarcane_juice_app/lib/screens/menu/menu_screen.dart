@@ -11,7 +11,7 @@ class MenuItems {
   static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
   static const aboutUs =
       MenuItem('About Us', FaIcon(FontAwesomeIcons.infoCircle));
-  static const rateUs = MenuItem('Rate Us', FaIcon(FontAwesomeIcons.star));
+  static const unit = MenuItem('Units', FaIcon(FontAwesomeIcons.balanceScale));
 
   static const all = [
     home,
@@ -19,7 +19,7 @@ class MenuItems {
     stock,
     help,
     aboutUs,
-    rateUs,
+    unit,
   ];
 }
 

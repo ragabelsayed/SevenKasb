@@ -3,6 +3,7 @@ import 'package:sugarcane_juice_app/screens/bill/bill_screen.dart';
 import 'package:sugarcane_juice_app/screens/home_screen.dart';
 import 'package:sugarcane_juice_app/screens/login_screen.dart';
 import 'package:sugarcane_juice_app/screens/main/main_screen.dart';
+import 'package:sugarcane_juice_app/screens/unit/unit_screen.dart';
 
 class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
@@ -10,5 +11,6 @@ class AppRoutes {
     HomeScreen.routName: (ctx) => HomeScreen(),
     MainScreen.routName: (ctx) => MainScreen(),
     BillScreen.routName: (ctx) => BillScreen(),
+    UnitScreen.routName: (ctx) => UnitScreen(),
   };
 }

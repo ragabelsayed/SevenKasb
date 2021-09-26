@@ -3,6 +3,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:sugarcane_juice_app/screens/bill/bill_screen.dart';
 import 'package:sugarcane_juice_app/screens/main/main_screen.dart';
 import 'package:sugarcane_juice_app/screens/menu/menu_screen.dart';
+import 'package:sugarcane_juice_app/screens/unit/unit_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routName = '/home';
@@ -40,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return MainScreen();
       case MenuItems.bills:
         return BillScreen();
+      case MenuItems.unit:
+        return UnitScreen();
       default:
         return MainScreen();
     }
