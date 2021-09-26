@@ -28,18 +28,18 @@ class UnitNotifier extends ChangeNotifier {
         'Authorization': 'Bearer $authToken',
       });
       final extractedData = json.decode(response.body) as List;
-      print(extractedData);
-      // final List<Unit> _loadedProducts = [];
-      // extractedData.forEach(
-      //   (unit) {
-      //     _loadedProducts.add(
-      //       Unit.fromJson(
-      //         json: unit,
-      //       ),
-      //     );
-      //   },
-      // );
-      // _items = _loadedProducts;
+      // print(extractedData);
+      final List<Unit> _loadedProducts = [];
+      extractedData.forEach(
+        (unit) {
+          _loadedProducts.add(
+            Unit.fromJson(
+              json: unit,
+            ),
+          );
+        },
+      );
+      _items = _loadedProducts;
       // notifyListeners();
     } catch (error) {
       print(error);
