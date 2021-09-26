@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/src/provider.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
+import 'package:sugarcane_juice_app/models/unit.dart';
+import 'package:sugarcane_juice_app/providers/unit_provider.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 
 class InputUnit extends StatefulWidget {
@@ -20,6 +23,8 @@ class _InputUnitState extends State<InputUnit> {
       });
     } else {
       print(_unitName);
+      context.read(unitProvider).addUnit(Unit(name: _unitName));
+      Navigator.of(context).pop();
     }
   }
 

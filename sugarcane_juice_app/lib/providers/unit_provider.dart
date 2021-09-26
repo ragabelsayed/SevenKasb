@@ -28,7 +28,6 @@ class UnitNotifier extends ChangeNotifier {
         'Authorization': 'Bearer $authToken',
       });
       final extractedData = json.decode(response.body) as List;
-      // print(extractedData);
       final List<Unit> _loadedProducts = [];
       extractedData.forEach(
         (unit) {
@@ -44,6 +43,28 @@ class UnitNotifier extends ChangeNotifier {
     } catch (error) {
       print(error);
       // throw error;
+    }
+  }
+
+  Future<void> addUnit(Unit unit) async {
+    try {
+      final newUnit = Unit(
+        name: unit.name,
+      );
+      _items.add(newUnit);
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
+        },
+        body: json.encode({'name': unit.name}),
+      );
+      print(response.statusCode);
+      // notifyListeners();
+    } catch (error) {
+      throw error;
     }
   }
 }
