@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/unit_provider.dart';
+import 'package:sugarcane_juice_app/screens/unit/widget/input_unit.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 
@@ -48,10 +49,10 @@ class UnitScreen extends ConsumerWidget {
         child: Icon(Icons.add),
         backgroundColor: Colors.amber,
         onPressed: () {
-          // showDialog(
-          //   context: context,
-          //   builder: (context) => ,
-          // );
+          showDialog(
+            context: context,
+            builder: (context) => InputUnit(),
+          );
         },
       ),
     );
