@@ -7,54 +7,70 @@ import 'package:sugarcane_juice_app/screens/unit/widget/input_unit.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 
-class UnitScreen extends ConsumerWidget {
+class UnitScreen extends StatefulWidget {
   static const routName = '/unit';
+  @override
+  _UnitScreenState createState() => _UnitScreenState();
+}
+
+class _UnitScreenState extends State<UnitScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read(unitProvider).fetchAndSetData();
+  }
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final units = watch(unitProvider);
-    units.fetchAndSetData();
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Palette.primaryColor,
-        title: Text(
-          'وحدة القياس',
-          style: Theme.of(context)
-              .textTheme
-              .headline5!
-              .copyWith(color: Colors.white),
-        ),
-        centerTitle: true,
-        leading: MenuWidget(),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-        ),
-      ),
-      body: units.items.isEmpty
-          ? Center(
-              child: Text(
-              '.⚖ اضف اول وحدة قياس',
-              style: Theme.of(context).textTheme.subtitle1,
-            ))
-          : ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              itemCount: units.items.length,
-              itemBuilder: (context, index) =>
-                  _buildUnitView(context: context, unit: units.items[index]),
+  Widget build(BuildContext context) {
+    // final units = watch(unitProvider);
+    // units.fetchAndSetData();
+    return Consumer(
+      builder: (context, watch, child) {
+        final units = watch(unitProvider);
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Palette.primaryColor,
+            title: Text(
+              'وحدة القياس',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5!
+                  .copyWith(color: Colors.white),
             ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'اضافة وحدة قياس جديدة',
-        child: Icon(Icons.add),
-        backgroundColor: Colors.amber,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => InputUnit(),
-          );
-        },
-      ),
+            centerTitle: true,
+            leading: MenuWidget(),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(20),
+              ),
+            ),
+          ),
+          body: units.items.isEmpty
+              ? Center(
+                  child: Text(
+                  '.⚖ اضف اول وحدة قياس',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ))
+              : ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  itemCount: units.items.length,
+                  itemBuilder: (context, index) => _buildUnitView(
+                      context: context, unit: units.items[index]),
+                ),
+          floatingActionButton: FloatingActionButton(
+            tooltip: 'اضافة وحدة قياس جديدة',
+            child: Icon(Icons.add),
+            backgroundColor: Colors.amber,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => InputUnit(),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -102,7 +118,10 @@ class UnitScreen extends ConsumerWidget {
                         const SizedBox(width: 10),
                         TextButton(
                           child: Text('حذف'),
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read(unitProvider).deleteUnit(unit: unit);
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ],
                     ),

@@ -39,7 +39,7 @@ class UnitNotifier extends ChangeNotifier {
         },
       );
       _items = _loadedProducts;
-      // notifyListeners();
+      notifyListeners();
     } catch (error) {
       print(error);
       // throw error;
@@ -61,10 +61,39 @@ class UnitNotifier extends ChangeNotifier {
         },
         body: json.encode({'name': unit.name}),
       );
-      print(response.statusCode);
+      // print(response.statusCode);
       // notifyListeners();
     } catch (error) {
       throw error;
+    }
+  }
+
+  Future<void> deleteUnit({required Unit unit}) async {
+    Uri url = Uri.parse('http://10.0.2.2:5000/api/unit/${unit.id}');
+
+    // final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    // var existingProduct = _items[existingProductIndex];
+    // _items.removeAt(existingProductIndex);
+
+    _items.remove(unit);
+    notifyListeners();
+    if (unit.id != null) {
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
+        },
+      );
+      print(response.statusCode);
+
+      // if (response.statusCode >= 400) {
+      //   _items.insert(existingProductIndex, existingProduct);
+      //   notifyListeners();
+      //   throw HttpException('Could not delete product.');
+      // }
+      // existingProduct = null;
     }
   }
 }

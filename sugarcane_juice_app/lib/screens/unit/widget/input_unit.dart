@@ -22,7 +22,6 @@ class _InputUnitState extends State<InputUnit> {
         _isError = !_isError;
       });
     } else {
-      print(_unitName);
       context.read(unitProvider).addUnit(Unit(name: _unitName));
       Navigator.of(context).pop();
     }
