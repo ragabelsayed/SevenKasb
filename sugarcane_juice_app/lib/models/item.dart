@@ -12,7 +12,7 @@ class Item {
     this.id,
     required this.name,
     required this.price,
-    this.quentity = '00.0',
+    this.quentity = '0.0',
     required this.unit,
     this.type,
   });

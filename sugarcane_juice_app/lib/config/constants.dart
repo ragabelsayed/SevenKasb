@@ -12,6 +12,7 @@ class AppConstants {
 
   static const nameError = 'قُمْ بإدخال اسم الصنف رجاءً';
   static const priceError = 'قُمْ بإدخال سعر الصنف رجاءً';
+  static const quentityError = 'قُمْ بإدخال الكمية رجاءً';
   static const unitError = 'قُمْ بإدخال وحدة القياس';
 
   static OutlineInputBorder border = OutlineInputBorder(

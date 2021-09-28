@@ -99,7 +99,7 @@ class _ItemViewState extends State<ItemView> {
         children: [
           Center(
             child: Text(
-              'Alasra',
+              'الصنف',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline6,
             ),

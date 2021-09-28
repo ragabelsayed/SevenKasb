@@ -15,7 +15,7 @@ class IputItemForm extends StatefulWidget {
 
 class _IputItemFormState extends State<IputItemForm> {
   final _formKey = GlobalKey<FormState>();
-  late Item _item = Item(name: '', price: '', unit: Unit());
+  late Item _item = Item(name: '', price: '', quentity: '', unit: Unit());
   String name = '';
   String price = '';
   String unit = '';
@@ -27,6 +27,7 @@ class _IputItemFormState extends State<IputItemForm> {
       // context.read(itemProvider).addItem(_item);
       print(_item.name);
       print(_item.price);
+      print(_item.quentity);
       print(_item.unit.name);
     }
   }
@@ -72,6 +73,18 @@ class _IputItemFormState extends State<IputItemForm> {
                 action: TextInputAction.next,
                 onSave: (value) {
                   _item.price = value;
+                },
+              ),
+              const SizedBox(height: 10),
+              _buildTextFormField(
+                hintText: '    الكمية',
+                // value: _item.price,
+                // value: price,
+                error: AppConstants.quentityError,
+                type: TextInputType.number,
+                action: TextInputAction.next,
+                onSave: (value) {
+                  _item.quentity = value;
                 },
               ),
               const SizedBox(height: 10),
