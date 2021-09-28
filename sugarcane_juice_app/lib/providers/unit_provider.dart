@@ -48,10 +48,6 @@ class UnitNotifier extends ChangeNotifier {
 
   Future<void> addUnit(Unit unit) async {
     try {
-      final newUnit = Unit(
-        name: unit.name,
-      );
-      _items.add(newUnit);
       final response = await http.post(
         url,
         headers: {
@@ -61,6 +57,12 @@ class UnitNotifier extends ChangeNotifier {
         },
         body: json.encode({'name': unit.name}),
       );
+      final newUnit = Unit(
+        id: json.decode(response.body)['unit']['id'],
+        name: unit.name,
+      );
+      _items.add(newUnit);
+
       // print(response.statusCode);
       // notifyListeners();
     } catch (error) {
@@ -77,23 +79,22 @@ class UnitNotifier extends ChangeNotifier {
 
     _items.remove(unit);
     notifyListeners();
-    if (unit.id != null) {
-      final response = await http.delete(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'charset': 'utf-8',
-          'Authorization': 'Bearer $authToken',
-        },
-      );
-      print(response.statusCode);
 
-      // if (response.statusCode >= 400) {
-      //   _items.insert(existingProductIndex, existingProduct);
-      //   notifyListeners();
-      //   throw HttpException('Could not delete product.');
-      // }
-      // existingProduct = null;
-    }
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'charset': 'utf-8',
+        'Authorization': 'Bearer $authToken',
+      },
+    );
+    print(response.statusCode);
+
+    // if (response.statusCode >= 400) {
+    //   _items.insert(existingProductIndex, existingProduct);
+    //   notifyListeners();
+    //   throw HttpException('Could not delete product.');
+    // }
+    // existingProduct = null;
   }
 }
