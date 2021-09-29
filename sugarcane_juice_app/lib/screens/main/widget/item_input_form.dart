@@ -4,6 +4,7 @@ import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/screens/main/widget/dropdown_unit_btn.dart';
+import 'package:sugarcane_juice_app/screens/main/widget/type_toggle_btn.dart';
 
 class IputItemForm extends StatefulWidget {
   const IputItemForm({Key? key}) : super(key: key);
@@ -14,16 +15,13 @@ class IputItemForm extends StatefulWidget {
 
 class _IputItemFormState extends State<IputItemForm> {
   final _formKey = GlobalKey<FormState>();
-  late Item _item = Item(name: '', price: '', unit: Unit());
+  late Item _item = Item(name: '', price: '', unit: Unit(), type: 0);
 
   void _saveForm() {
     final _isValid = _formKey.currentState!.validate();
     if (_isValid) {
       _formKey.currentState!.save();
       // context.read(itemProvider).addItem(_item);
-      print(_item.name);
-      print(_item.price);
-      print(_item.unit.id);
     }
   }
 
@@ -91,6 +89,10 @@ class _IputItemFormState extends State<IputItemForm> {
               //   },
               // ),
               DropdownUnitBtn(unitId: (newValue) => _item.unit.id = newValue),
+              const SizedBox(height: 15),
+              TypeToggleBtn(
+                itemType: (type) => _item.type = type,
+              ),
               const SizedBox(height: 30),
               _getBtn(context),
             ],

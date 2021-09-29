@@ -6,7 +6,7 @@ class Item {
   String price;
   String quentity;
   Unit unit;
-  int? type;
+  int type;
 
   Item({
     this.id,
@@ -14,7 +14,7 @@ class Item {
     required this.price,
     this.quentity = '0.0',
     required this.unit,
-    this.type,
+    required this.type,
   });
 
   factory Item.fromJson({required Map<String, dynamic> json}) {
