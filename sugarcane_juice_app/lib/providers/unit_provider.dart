@@ -17,6 +17,17 @@ class UnitNotifier extends ChangeNotifier {
   UnitNotifier({required this.authToken});
   late String authToken;
   List<Unit> _items = [];
+  String? _currentUnit;
+
+  String? get currentUnit {
+    return _currentUnit;
+  }
+
+  void setCurrentUnit(String currentUnit) {
+    _currentUnit = currentUnit;
+    notifyListeners();
+  }
+
   List<Unit> get items => [..._items];
 
   Uri url = Uri.parse(unitUri);

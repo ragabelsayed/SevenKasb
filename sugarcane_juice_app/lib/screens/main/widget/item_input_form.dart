@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/src/provider.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
-import 'package:sugarcane_juice_app/providers/item_provider.dart';
+import 'package:sugarcane_juice_app/screens/main/widget/dropdown_unit_btn.dart';
 
 class IputItemForm extends StatefulWidget {
   const IputItemForm({Key? key}) : super(key: key);
@@ -15,10 +14,7 @@ class IputItemForm extends StatefulWidget {
 
 class _IputItemFormState extends State<IputItemForm> {
   final _formKey = GlobalKey<FormState>();
-  late Item _item = Item(name: '', price: '', quentity: '', unit: Unit());
-  String name = '';
-  String price = '';
-  String unit = '';
+  late Item _item = Item(name: '', price: '', unit: Unit());
 
   void _saveForm() {
     final _isValid = _formKey.currentState!.validate();
@@ -27,8 +23,7 @@ class _IputItemFormState extends State<IputItemForm> {
       // context.read(itemProvider).addItem(_item);
       print(_item.name);
       print(_item.price);
-      print(_item.quentity);
-      print(_item.unit.name);
+      print(_item.unit.id);
     }
   }
 
@@ -54,8 +49,6 @@ class _IputItemFormState extends State<IputItemForm> {
               const SizedBox(height: 10),
               _buildTextFormField(
                 hintText: '    اسم الصنف',
-                // value: _item.name,
-                // value: name,
                 error: AppConstants.nameError,
                 type: TextInputType.name,
                 action: TextInputAction.next,
@@ -66,8 +59,6 @@ class _IputItemFormState extends State<IputItemForm> {
               const SizedBox(height: 10),
               _buildTextFormField(
                 hintText: '    سعر الصنف',
-                // value: _item.price,
-                // value: price,
                 error: AppConstants.priceError,
                 type: TextInputType.number,
                 action: TextInputAction.next,
@@ -75,30 +66,31 @@ class _IputItemFormState extends State<IputItemForm> {
                   _item.price = value;
                 },
               ),
+              // const SizedBox(height: 10),
+              // _buildTextFormField(
+              //   hintText: '    الكمية',
+              //   // value: _item.price,
+              //   // value: price,
+              //   error: AppConstants.quentityError,
+              //   type: TextInputType.number,
+              //   action: TextInputAction.next,
+              //   onSave: (value) {
+              //     _item.quentity = value;
+              //   },
+              // ),
               const SizedBox(height: 10),
-              _buildTextFormField(
-                hintText: '    الكمية',
-                // value: _item.price,
-                // value: price,
-                error: AppConstants.quentityError,
-                type: TextInputType.number,
-                action: TextInputAction.next,
-                onSave: (value) {
-                  _item.quentity = value;
-                },
-              ),
-              const SizedBox(height: 10),
-              _buildTextFormField(
-                hintText: '    وحدة القياس',
-                // value: _item.unit.name,
-                // value: unit,
-                error: AppConstants.unitError,
-                type: TextInputType.emailAddress,
-                action: TextInputAction.done,
-                onSave: (value) {
-                  _item.unit.name = value;
-                },
-              ),
+              // _buildTextFormField(
+              //   hintText: '    وحدة القياس',
+              //   // value: _item.unit.name,
+              //   // value: unit,
+              //   error: AppConstants.unitError,
+              //   type: TextInputType.emailAddress,
+              //   action: TextInputAction.done,
+              //   onSave: (value) {
+              //     _item.unit.name = value;
+              //   },
+              // ),
+              DropdownUnitBtn(unitId: (newValue) => _item.unit.id = newValue),
               const SizedBox(height: 30),
               _getBtn(context),
             ],
@@ -111,7 +103,6 @@ class _IputItemFormState extends State<IputItemForm> {
   TextFormField _buildTextFormField({
     required String hintText,
     required String error,
-    // required String value,
     required TextInputType type,
     required TextInputAction action,
     required Function(String) onSave,
@@ -141,15 +132,7 @@ class _IputItemFormState extends State<IputItemForm> {
           return error;
         }
       },
-      onSaved: (newValue) {
-        onSave(newValue!);
-        // value = newValue!;
-
-        // print(value);
-        // print(_item.price);
-        // print(_item.unit.name);
-        // userData['name'] = newValue!;
-      },
+      onSaved: (newValue) => onSave(newValue!),
     );
   }
 
