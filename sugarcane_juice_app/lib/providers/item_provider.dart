@@ -78,25 +78,39 @@ class ItemNotifier extends ChangeNotifier {
     }
   }
 
-  // Future<void> updateProduct(String id, Product newProduct) async {
-  //   final prodIndex = _items.indexWhere((prod) => prod.id == id);
-  //   if (prodIndex >= 0) {
-  //
-  //     try {
-  //       await http.patch(url,
-  //           body: json.encode({
-  //             'title': newProduct.title,
-  //             'description': newProduct.description,
-  //             'imageUrl': newProduct.imageUrl,
-  //             'price': newProduct.price,
-  //           }));
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //     _items[prodIndex] = newProduct;
-  //     notifyListeners();
-  //   }
-  // }
+  Future<void> updateItem(Item item) async {
+    Uri addurl = Uri.parse('http://10.0.2.2:5000/api/item/${item.id}');
+    final itemIndex = _items.indexWhere((oldItem) => oldItem == item);
+    if (itemIndex >= 0) {
+      try {
+        final newItem = Item(
+          name: item.name,
+          price: item.price,
+          unit: item.unit,
+          type: item.type,
+        );
+        _items[itemIndex] = newItem;
+        // notifyListeners();
+
+        final response = await http.put(
+          addurl,
+          headers: {
+            'Content-Type': 'application/json',
+            'charset': 'utf-8',
+            'Authorization': 'Bearer $authToken',
+          },
+          body: json.encode({
+            'name': item.name,
+            'price': item.price,
+            'unitId': item.unit.id!,
+            'type': item.type,
+          }),
+        );
+      } catch (error) {
+        throw error;
+      }
+    }
+  }
 
   // Future<void> deleteProduct(String id) async {
 

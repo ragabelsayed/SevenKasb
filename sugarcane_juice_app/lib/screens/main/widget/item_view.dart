@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
+import 'package:sugarcane_juice_app/screens/main/widget/dropdown_unit_btn.dart';
+import 'package:sugarcane_juice_app/screens/main/widget/type_toggle_btn.dart';
 import 'package:sugarcane_juice_app/widget/dialog_btns.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 
@@ -71,12 +73,17 @@ class _ItemViewState extends State<ItemView> {
               initialValue: '${widget.item.quentity}',
             ),
             DialogTitle(name: 'وحدة القياس:'),
-            _buildTextFormField(
-              initialValue: '${widget.item.unit.name}',
-              error: AppConstants.unitError,
-              type: TextInputType.emailAddress,
-              action: TextInputAction.done,
+            // _buildTextFormField(
+            //   initialValue: '${widget.item.unit.name}',
+            //   error: AppConstants.unitError,
+            //   type: TextInputType.emailAddress,
+            //   action: TextInputAction.done,
+            // ),
+            DropdownUnitBtn(
+              oldUnit: widget.item.unit,
+              unitId: (newUnit) => widget.item.id = newUnit,
             ),
+
             const SizedBox(height: 20),
             if (_isModfiy)
               DialogButtons(
