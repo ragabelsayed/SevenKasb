@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
+import 'package:sugarcane_juice_app/providers/item_provider.dart';
 import 'package:sugarcane_juice_app/screens/main/widget/dropdown_unit_btn.dart';
 import 'package:sugarcane_juice_app/screens/main/widget/type_toggle_btn.dart';
 
@@ -21,7 +24,8 @@ class _IputItemFormState extends State<IputItemForm> {
     final _isValid = _formKey.currentState!.validate();
     if (_isValid) {
       _formKey.currentState!.save();
-      // context.read(itemProvider).addItem(_item);
+      context.read(itemProvider).addItem(_item);
+      Navigator.of(context).pop();
     }
   }
 

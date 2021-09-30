@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:sugarcane_juice_app/models/item.dart';
+import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
 
 const itemUri = 'http://10.0.2.2:5000/api/item';
@@ -46,38 +47,36 @@ class ItemNotifier extends ChangeNotifier {
     }
   }
 
-  // Future<void> addItem(Item item) async {
-  //   try {
-  //     final newItem = Item(
-  //       name: item.name,
-  //       price: item.price,
-  //       quentity: item.quentity,
-  //       unit: item.unit,
-  //     );
-  //     _items.add(newItem);
-  //     final response = await http.post(
-  //       url,
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'charset': 'utf-8',
-  //         'Authorization': 'Bearer $authToken',
-  //       },
-  //       body: json.encode({
-  //         'id': 4,
-  //         'name': item.name,
-  //         'price': item.price,
-  //         'quentity': double.tryParse(item.quentity),
-  //         'unitNavigation': {'name': item.unit.name},
-  //         'type': 0
-  //       }),
-  //     );
-  //     print(response.statusCode);
-
-  //     notifyListeners();
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+  Future<void> addItem(Item item) async {
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
+        },
+        body: json.encode({
+          'name': item.name,
+          'price': item.price,
+          'unitId': item.unit.id!,
+          'type': item.type,
+        }),
+      );
+      final newItem = Item(
+        id: json.decode(response.body)['item']['id'],
+        name: item.name,
+        price: item.price,
+        quentity: json.decode(response.body)['item']['quentity'].toString(),
+        unit: item.unit,
+        type: item.type,
+      );
+      _items.add(newItem);
+      // notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // Future<void> updateProduct(String id, Product newProduct) async {
   //   final prodIndex = _items.indexWhere((prod) => prod.id == id);
