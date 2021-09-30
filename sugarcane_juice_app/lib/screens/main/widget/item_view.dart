@@ -83,7 +83,12 @@ class _ItemViewState extends State<ItemView> {
               oldUnit: widget.item.unit,
               unitId: (newUnit) => widget.item.id = newUnit,
             ),
-
+            // DialogTitle(name: 'نوع الصنف: '),
+            const SizedBox(height: 15),
+            TypeToggleBtn(
+              oldType: widget.item.type,
+              itemType: (type) {},
+            ),
             const SizedBox(height: 20),
             if (_isModfiy)
               DialogButtons(

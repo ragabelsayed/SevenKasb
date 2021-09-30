@@ -3,8 +3,8 @@ import '/config/palette.dart';
 
 class TypeToggleBtn extends StatefulWidget {
   final Function(int type) itemType;
-
-  const TypeToggleBtn({required this.itemType});
+  final int? oldType;
+  const TypeToggleBtn({required this.itemType, this.oldType});
   @override
   State<TypeToggleBtn> createState() => _TypeToggleBtnState();
 }
@@ -15,8 +15,26 @@ class _TypeToggleBtnState extends State<TypeToggleBtn> {
   @override
   void initState() {
     super.initState();
-    isSelected = [false, false, true];
-    widget.itemType(0);
+    if (widget.oldType != null) {
+      switch (widget.oldType) {
+        case 0:
+          isSelected = [false, false, true];
+          widget.itemType(0);
+          break;
+        case 1:
+          isSelected = [false, true, false];
+          widget.itemType(1);
+          break;
+        case 2:
+          isSelected = [true, false, false];
+          widget.itemType(2);
+          break;
+        default:
+      }
+    } else {
+      isSelected = [false, false, true];
+      widget.itemType(0);
+    }
   }
 
   @override
