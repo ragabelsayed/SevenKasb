@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
+import 'package:sugarcane_juice_app/providers/item_provider.dart';
+import 'package:sugarcane_juice_app/providers/unit_provider.dart';
 import 'package:sugarcane_juice_app/screens/main/widget/dropdown_unit_btn.dart';
 import 'package:sugarcane_juice_app/screens/main/widget/type_toggle_btn.dart';
 import 'package:sugarcane_juice_app/widget/dialog_btns.dart';
@@ -21,9 +25,11 @@ class _ItemViewState extends State<ItemView> {
 
   void _saveForm() {
     final _isValid = _formKey.currentState!.validate();
-    // if (_isValid) {
-    //   _formKey.currentState!.save();
-    // }
+    if (_isValid) {
+      _formKey.currentState!.save();
+      context.read(itemProvider).updateItem(newItem: widget.item);
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -50,6 +56,7 @@ class _ItemViewState extends State<ItemView> {
               error: AppConstants.nameError,
               type: TextInputType.name,
               action: TextInputAction.next,
+              onSave: (value) => widget.item.name = value,
             ),
             DialogTitle(name: 'السعر:'),
             _buildTextFormField(
@@ -57,21 +64,22 @@ class _ItemViewState extends State<ItemView> {
               error: AppConstants.priceError,
               type: TextInputType.number,
               action: TextInputAction.next,
+              onSave: (value) => widget.item.price = value,
             ),
-            DialogTitle(name: 'الكمية:'),
-            TextFormField(
-              textInputAction: TextInputAction.next,
-              textDirection: TextDirection.rtl,
-              readOnly: true,
-              decoration: InputDecoration(
-                fillColor: Palette.primaryLightColor,
-                filled: true,
-                border: AppConstants.border,
-                errorBorder: AppConstants.errorBorder,
-                focusedBorder: AppConstants.focusedBorder,
-              ),
-              initialValue: '${widget.item.quentity}',
-            ),
+            // DialogTitle(name: 'الكمية:'),
+            // TextFormField(
+            //   textInputAction: TextInputAction.next,
+            //   textDirection: TextDirection.rtl,
+            //   readOnly: true,
+            //   decoration: InputDecoration(
+            //     fillColor: Palette.primaryLightColor,
+            //     filled: true,
+            //     border: AppConstants.border,
+            //     errorBorder: AppConstants.errorBorder,
+            //     focusedBorder: AppConstants.focusedBorder,
+            //   ),
+            //   initialValue: '${widget.item.quentity}',
+            // ),
             DialogTitle(name: 'وحدة القياس:'),
             // _buildTextFormField(
             //   initialValue: '${widget.item.unit.name}',
@@ -81,13 +89,19 @@ class _ItemViewState extends State<ItemView> {
             // ),
             DropdownUnitBtn(
               oldUnit: widget.item.unit,
-              unitId: (newUnit) => widget.item.id = newUnit,
+              unitId: (newUnit) {
+                var updateUnit = context
+                    .read(unitProvider)
+                    .items
+                    .firstWhere((unit) => unit.id == newUnit);
+                return widget.item.unit = updateUnit;
+              },
             ),
-            // DialogTitle(name: 'نوع الصنف: '),
+            DialogTitle(name: 'نوع الصنف: '),
             const SizedBox(height: 15),
             TypeToggleBtn(
               oldType: widget.item.type,
-              itemType: (type) {},
+              itemType: (type) => widget.item.type = type,
             ),
             const SizedBox(height: 20),
             if (_isModfiy)
@@ -162,6 +176,7 @@ class _ItemViewState extends State<ItemView> {
     required String error,
     required TextInputType type,
     required TextInputAction action,
+    required Function(String) onSave,
   }) =>
       TextFormField(
         keyboardType: type,
@@ -186,8 +201,6 @@ class _ItemViewState extends State<ItemView> {
             return error;
           }
         },
-        onSaved: (newValue) {
-          // userData['name'] = newValue!;
-        },
+        onSaved: (newValue) => onSave(newValue!),
       );
 }

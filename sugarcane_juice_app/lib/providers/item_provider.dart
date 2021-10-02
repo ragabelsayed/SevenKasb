@@ -78,17 +78,11 @@ class ItemNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> updateItem(Item item) async {
-    Uri addurl = Uri.parse('http://10.0.2.2:5000/api/item/${item.id}');
-    final itemIndex = _items.indexWhere((oldItem) => oldItem == item);
+  Future<void> updateItem({required Item newItem}) async {
+    Uri addurl = Uri.parse('http://10.0.2.2:5000/api/item/${newItem.id}');
+    final itemIndex = _items.indexWhere((oldItem) => oldItem.id == newItem.id);
     if (itemIndex >= 0) {
       try {
-        final newItem = Item(
-          name: item.name,
-          price: item.price,
-          unit: item.unit,
-          type: item.type,
-        );
         _items[itemIndex] = newItem;
         // notifyListeners();
 
@@ -100,12 +94,13 @@ class ItemNotifier extends ChangeNotifier {
             'Authorization': 'Bearer $authToken',
           },
           body: json.encode({
-            'name': item.name,
-            'price': item.price,
-            'unitId': item.unit.id!,
-            'type': item.type,
+            'name': newItem.name,
+            'price': newItem.price,
+            'unitId': newItem.unit.id!,
+            'type': newItem.type,
           }),
         );
+        print(response.statusCode);
       } catch (error) {
         throw error;
       }

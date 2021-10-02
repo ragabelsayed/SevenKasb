@@ -7,13 +7,23 @@ import 'package:sugarcane_juice_app/screens/main/widget/item_view.dart';
 import '../../widget/menu_widget.dart';
 import 'widget/item_input_form.dart';
 
-class MainScreen extends ConsumerWidget {
+class MainScreen extends StatefulWidget {
   static const routName = '/main';
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read(itemProvider).fetchAndSetData();
+  }
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final items = watch(itemProvider);
-    items.fetchAndSetData();
+  Widget build(BuildContext context) {
+    // final items = watch(itemProvider);
+    // items.fetchAndSetData();
     return Scaffold(
       appBar: AppBar(
         // systemOverlayStyle:
@@ -34,7 +44,10 @@ class MainScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: _buildDataTable(itemList: items.items, context: context),
+      body: Consumer(builder: (context, watch, child) {
+        final items = watch(itemProvider);
+        return _buildDataTable(itemList: items.items, context: context);
+      }),
       floatingActionButton: FloatingActionButton(
         tooltip: 'اضافة صنف',
         child: Icon(Icons.add),
