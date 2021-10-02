@@ -107,6 +107,32 @@ class ItemNotifier extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteItem({required Item item}) async {
+    Uri url = Uri.parse('http://10.0.2.2:5000/api/item/${item.id}');
+
+    final existingItemIndex = _items.indexWhere((i) => i.id == item.id);
+    var existingItem = _items[existingItemIndex];
+    _items.removeAt(existingItemIndex);
+    // _items.remove(item);
+    notifyListeners();
+
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'charset': 'utf-8',
+        'Authorization': 'Bearer $authToken',
+      },
+    );
+    print(response.statusCode);
+
+    if (response.statusCode >= 400) {
+      _items.insert(existingItemIndex, existingItem);
+      notifyListeners();
+      // throw HttpException('Could not delete product.');
+    }
+    // existingItem = null;
+  }
   // Future<void> deleteProduct(String id) async {
 
   //   final existingProductIndex = _items.indexWhere((prod) => prod.id == id);

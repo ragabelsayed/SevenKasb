@@ -145,6 +145,8 @@ class _ItemViewState extends State<ItemView> {
           if (!_isModfiy)
             DialogButtons(
               name: 'تعديل',
+              idDeleted: true,
+              deleteItem: widget.item,
               onPressed: () {
                 setState(() => _isModfiy = !_isModfiy);
               },
