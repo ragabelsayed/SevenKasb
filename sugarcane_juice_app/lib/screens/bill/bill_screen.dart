@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
+import 'package:sugarcane_juice_app/screens/bill/new_bill_screen.dart';
 import 'package:sugarcane_juice_app/screens/bill/widget/bill_view.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 
@@ -14,30 +15,6 @@ class BillScreen extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final bill = watch(billProvider);
     late List<Bill> billList;
-    // bill.fetchAndSetData().whenComplete(() {
-    //   billList = bill.items;
-    //   print('${billList[1].id}');
-    //   print('${billList[1].clientName}');
-    //   print('${billList[1].paid}');
-    //   print('${billList[1].price}');
-    //   print('${billList[1].dateTime.year}');
-    //   print('${billList[1].type}');
-    //   print('1111111111');
-    //   print('${billList[1].billItems[0].itemName}');
-    //   print('${billList[1].billItems[0].id}');
-    //   print('${billList[1].billItems[0].price}');
-    //   print('${billList[1].billItems[0].quentity}');
-    //   print('222222222');
-    //   print('${billList[1].billItems[0].item.id}');
-    //   print('${billList[1].billItems[0].item.name}');
-    //   print('${billList[1].billItems[0].item.price}');
-    //   print('${billList[1].billItems[0].item.quentity}');
-    //   print('${billList[1].billItems[0].item.type}');
-    //   print('333333');
-    //   print('${billList[1].billItems[0].item.unit.id}');
-    //   print('${billList[1].billItems[0].item.unit.name}');
-    //   // print('${billList[1].billItems[1].itemName}');
-    // });
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +31,6 @@ class BillScreen extends ConsumerWidget {
         backgroundColor: Palette.primaryColor,
         leading: MenuWidget(),
       ),
-      // body: Text('ggggggggggggg'),
       body: FutureBuilder(
         future:
             bill.fetchAndSetData().whenComplete(() => billList = bill.items),
@@ -64,11 +40,12 @@ class BillScreen extends ConsumerWidget {
                 : _buildDataTable(billList: billList, context: context),
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Add new bill',
+        tooltip: 'إضافة فاتورة شراء جديدة',
         child: Icon(Icons.add),
-        // backgroundColor: Colors.green,
         backgroundColor: Colors.amber,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, NewBillScreen.routName);
+        },
       ),
     );
   }
