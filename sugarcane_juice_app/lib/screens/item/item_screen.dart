@@ -38,6 +38,7 @@ class _ItemScreenState extends State<ItemScreen> {
         ),
         centerTitle: true,
         leading: MenuWidget(),
+        // actions: [MenuWidget()],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),

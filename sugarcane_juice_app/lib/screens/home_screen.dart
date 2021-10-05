@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       slideWidth: MediaQuery.of(context).size.width * 0.7,
       showShadow: true,
       backgroundColor: Colors.amberAccent,
-
+      // isRtl: true,
       mainScreen: _getScreen(),
       menuScreen: MenuScreen(
         currentItem: currentItem,

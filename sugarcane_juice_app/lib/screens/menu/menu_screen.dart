@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/src/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
+import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import '/config/palette.dart';
 
 class MenuItems {
-  static const item = MenuItem('Home', FaIcon(FontAwesomeIcons.home));
-  static const bills = MenuItem('Bill', FaIcon(FontAwesomeIcons.receipt));
+  static const item = MenuItem('الاصناف', FaIcon(FontAwesomeIcons.home));
+  static const bills = MenuItem('الفواتير', FaIcon(FontAwesomeIcons.receipt));
   static const stock = MenuItem('Stock', FaIcon(FontAwesomeIcons.warehouse));
   static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
   static const aboutUs =
       MenuItem('About Us', FaIcon(FontAwesomeIcons.infoCircle));
-  static const unit = MenuItem('Units', FaIcon(FontAwesomeIcons.balanceScale));
+  static const unit =
+      MenuItem('وحدة القياس', FaIcon(FontAwesomeIcons.balanceScale));
 
   static const all = [
     item,
@@ -40,6 +42,7 @@ class MenuScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          // textDirection: TextDirection.rtl,
           children: [
             Spacer(),
             ...MenuItems.all.map((e) => _buildMenuItem(e)).toList(),
@@ -58,7 +61,10 @@ class MenuScreen extends StatelessWidget {
                 ),
                 icon: FaIcon(FontAwesomeIcons.signOutAlt),
                 // Icon(Icons.exit_to_app),
-                label: Text('LogOut'),
+                label: Text(
+                  'تسجيل الخروج',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                ),
                 onPressed: () {
                   print('out 1');
                   context.read(authProvider).logOut();
@@ -82,7 +88,14 @@ class MenuScreen extends StatelessWidget {
           // minLeadingWidth: 20,
           selectedTileColor: Palette.primaryLightColor,
           leading: item.iconData,
-          title: Text(item.title),
+          // trailing: item.iconData,
+          title:
+              //  DialogTitle(name: item.title),
+              Text(
+            item.title,
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+            // textDirection: TextDirection.rtl,
+          ),
           onTap: () {
             onSelectedItem(item);
           },
