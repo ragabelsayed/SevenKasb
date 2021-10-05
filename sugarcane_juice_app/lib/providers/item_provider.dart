@@ -19,6 +19,17 @@ class ItemNotifier extends ChangeNotifier {
   List<Item> _items = [];
   List<Item> get items => [..._items];
 
+  String? _currentItem;
+
+  String? get currentItem {
+    return _currentItem;
+  }
+
+  void setCurrentItem(String currentItem) {
+    _currentItem = currentItem;
+    notifyListeners();
+  }
+
   Uri url = Uri.parse(itemUri);
   Future<void> fetchAndSetData() async {
     try {

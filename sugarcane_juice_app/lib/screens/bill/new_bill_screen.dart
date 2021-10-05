@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
+import 'package:sugarcane_juice_app/screens/bill/widget/bill_input_form.dart';
 
 class NewBillScreen extends StatelessWidget {
   static const routName = '/new_bill';
@@ -21,9 +22,7 @@ class NewBillScreen extends StatelessWidget {
         backgroundColor: Palette.primaryColor,
         // leading: MenuWidget(),
       ),
-      body: ListView(
-        children: [],
-      ),
+      body: BillInputForm(),
     );
   }
 }

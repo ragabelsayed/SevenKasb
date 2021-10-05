@@ -6,8 +6,11 @@ import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/item_provider.dart';
-import 'package:sugarcane_juice_app/screens/main/widget/dropdown_unit_btn.dart';
-import 'package:sugarcane_juice_app/screens/main/widget/type_toggle_btn.dart';
+import 'package:sugarcane_juice_app/screens/item/widget/dropdown_unit_btn.dart';
+import 'package:sugarcane_juice_app/screens/item/widget/type_toggle_btn.dart';
+
+import 'dropdown_unit_btn.dart';
+import 'type_toggle_btn.dart';
 
 class IputItemForm extends StatefulWidget {
   const IputItemForm({Key? key}) : super(key: key);

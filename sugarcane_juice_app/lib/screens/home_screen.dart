@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:sugarcane_juice_app/screens/bill/bill_screen.dart';
-import 'package:sugarcane_juice_app/screens/main/main_screen.dart';
+import 'package:sugarcane_juice_app/screens/item/item_screen.dart';
 import 'package:sugarcane_juice_app/screens/menu/menu_screen.dart';
 import 'package:sugarcane_juice_app/screens/unit/unit_screen.dart';
+
+import 'item/item_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routName = '/home';
@@ -12,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  MenuItem currentItem = MenuItems.home;
+  MenuItem currentItem = MenuItems.item;
 
   Widget build(BuildContext context) {
     return ZoomDrawer(
@@ -37,14 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _getScreen() {
     switch (currentItem) {
-      case MenuItems.home:
-        return MainScreen();
+      case MenuItems.item:
+        return ItemScreen();
       case MenuItems.bills:
         return BillScreen();
       case MenuItems.unit:
         return UnitScreen();
       default:
-        return MainScreen();
+        return ItemScreen();
     }
   }
 }

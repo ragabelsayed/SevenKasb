@@ -2,12 +2,12 @@ import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 
 class BillItems {
-  final int id;
+  int id;
   // final String itemName;
-  final double price;
-  final double quentity;
-  final Item item;
-  const BillItems({
+  double price;
+  double quentity;
+  Item item;
+  BillItems({
     required this.id,
     // required this.itemName,
     required this.price,
@@ -17,17 +17,17 @@ class BillItems {
 }
 
 class Bill {
-  final int id;
-  // final Map<String, dynamic> user;
-  final double price;
-  final double paid;
-  final String clientName;
-  final DateTime dateTime;
-  final List<BillItems> billItems;
-  final int type;
+  int? id;
+  //  Map<String, dynamic> user;
+  double price;
+  double paid;
+  String clientName;
+  DateTime dateTime;
+  List<BillItems> billItems;
+  int type;
 
-  const Bill({
-    required this.id,
+  Bill({
+    this.id,
     required this.type,
     // required this.user,
     required this.price,

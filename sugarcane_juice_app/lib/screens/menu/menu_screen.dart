@@ -5,7 +5,7 @@ import 'package:sugarcane_juice_app/providers/auth.dart';
 import '/config/palette.dart';
 
 class MenuItems {
-  static const home = MenuItem('Home', FaIcon(FontAwesomeIcons.home));
+  static const item = MenuItem('Home', FaIcon(FontAwesomeIcons.home));
   static const bills = MenuItem('Bill', FaIcon(FontAwesomeIcons.receipt));
   static const stock = MenuItem('Stock', FaIcon(FontAwesomeIcons.warehouse));
   static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
@@ -14,7 +14,7 @@ class MenuItems {
   static const unit = MenuItem('Units', FaIcon(FontAwesomeIcons.balanceScale));
 
   static const all = [
-    home,
+    item,
     bills,
     stock,
     help,

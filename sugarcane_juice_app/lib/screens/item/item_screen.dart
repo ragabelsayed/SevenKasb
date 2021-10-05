@@ -3,17 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/item_provider.dart';
-import 'package:sugarcane_juice_app/screens/main/widget/item_view.dart';
+import 'package:sugarcane_juice_app/screens/item/widget/item_view.dart';
 import '../../widget/menu_widget.dart';
 import 'widget/item_input_form.dart';
 
-class MainScreen extends StatefulWidget {
+class ItemScreen extends StatefulWidget {
   static const routName = '/main';
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _ItemScreenState createState() => _ItemScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _ItemScreenState extends State<ItemScreen> {
   @override
   void initState() {
     super.initState();
