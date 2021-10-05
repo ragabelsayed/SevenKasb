@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
@@ -18,18 +19,14 @@ class BillScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        // systemOverlayStyle:
-        //     SystemUiOverlayStyle(statusBarColor: Palette.primaryLightColor),
         title: Text(
           'الفواتير',
-          style: Theme.of(context)
-              .textTheme
-              .headline5!
-              .copyWith(color: Colors.white),
+          style: AppConstants.appBarTitle,
         ),
         centerTitle: true,
         backgroundColor: Palette.primaryColor,
         leading: MenuWidget(),
+        shape: AppConstants.appBarBorder,
       ),
       body: FutureBuilder(
         future:

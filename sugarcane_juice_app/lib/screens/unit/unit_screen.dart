@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/unit_provider.dart';
@@ -32,18 +33,11 @@ class _UnitScreenState extends State<UnitScreen> {
             backgroundColor: Palette.primaryColor,
             title: Text(
               'وحدة القياس',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(color: Colors.white),
+              style: AppConstants.appBarTitle,
             ),
             centerTitle: true,
             leading: MenuWidget(),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20),
-              ),
-            ),
+            shape: AppConstants.appBarBorder,
           ),
           body: units.items.isEmpty
               ? Center(

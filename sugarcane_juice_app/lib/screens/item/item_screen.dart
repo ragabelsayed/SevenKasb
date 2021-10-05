@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sugarcane_juice_app/config/constants.dart';
+import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/item_provider.dart';
@@ -26,24 +29,14 @@ class _ItemScreenState extends State<ItemScreen> {
     // items.fetchAndSetData();
     return Scaffold(
       appBar: AppBar(
-        // systemOverlayStyle:
-        //     SystemUiOverlayStyle(statusBarColor: Palette.primaryLightColor),
         backgroundColor: Palette.primaryColor,
         title: Text(
-          'الاصناف',
-          style: Theme.of(context)
-              .textTheme
-              .headline5!
-              .copyWith(color: Colors.white),
+          'الأصناف',
+          style: AppConstants.appBarTitle,
         ),
         centerTitle: true,
         leading: MenuWidget(),
-        // actions: [MenuWidget()],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-        ),
+        shape: AppConstants.appBarBorder,
       ),
       body: Consumer(builder: (context, watch, child) {
         final items = watch(itemProvider);

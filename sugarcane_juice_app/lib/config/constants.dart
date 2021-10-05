@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:sugarcane_juice_app/config/palette.dart';
 
 class AppConstants {
   // static const kAnimationDuration = Duration(milliseconds: 200);
 
-  // static final headingStyle = TextStyle(
-  //   fontSize: SizeConfig.getProportionateScreentWidth(28),
-  //   fontWeight: FontWeight.bold,
-  //   color: Colors.black,
-  //   height: 1.5,
-  // );
+  static final appBarTitle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+    color: Colors.white,
+    // height: 1.5,
+  );
+
+  static ShapeBorder appBarBorder = RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(
+      bottom: Radius.circular(20),
+    ),
+  );
 
   static const nameError = 'قُمْ بإدخال اسم الصنف رجاءً';
   static const priceError = 'قُمْ بإدخال سعر الصنف رجاءً';
