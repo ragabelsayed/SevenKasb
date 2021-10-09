@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
@@ -58,12 +56,7 @@ class _ItemScreenState extends State<ItemScreen> {
 
   Widget _buildDataTable(
       {required List<Item> itemList, required BuildContext context}) {
-    final columns = [
-      'عرض',
-      'الكمية',
-      'السعر',
-      'الصنف',
-    ];
+    final columns = ['عرض', 'الكمية', 'السعر', 'الصنف'];
     return SingleChildScrollView(
       // padding: const EdgeInsets.symmetric(horizontal: 10),
       child: DataTable(
@@ -92,8 +85,10 @@ class _ItemScreenState extends State<ItemScreen> {
       )
       .toList();
 
-  List<DataRow> _getRow(
-          {required List<Item> items, required BuildContext context}) =>
+  List<DataRow> _getRow({
+    required List<Item> items,
+    required BuildContext context,
+  }) =>
       items.map(
         (item) {
           final cells = [
