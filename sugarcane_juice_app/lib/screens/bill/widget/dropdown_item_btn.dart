@@ -8,9 +8,9 @@ import 'package:sugarcane_juice_app/screens/item/widget/item_input_form.dart';
 import 'package:sugarcane_juice_app/screens/unit/widget/input_unit.dart';
 
 class DropdownItemBtn extends StatefulWidget {
-  final Function(int newBillItem) billItemId;
+  final Function(Item item) billItem;
   final BillItems? oldBillItem;
-  const DropdownItemBtn({required this.billItemId, this.oldBillItem});
+  const DropdownItemBtn({required this.billItem, this.oldBillItem});
 
   @override
   _DropdownItemBtnState createState() => _DropdownItemBtnState();
@@ -26,7 +26,7 @@ class _DropdownItemBtnState extends State<DropdownItemBtn> {
     super.initState();
     if (widget.oldBillItem != null) {
       _initdropdownValue = widget.oldBillItem!.item.name;
-      widget.billItemId(widget.oldBillItem!.id);
+      widget.billItem(widget.oldBillItem!.item);
       setState(() {
         isUpdated = !isUpdated;
       });
@@ -42,7 +42,7 @@ class _DropdownItemBtnState extends State<DropdownItemBtn> {
         List<String> itemMenu = [];
         itemList.forEach((unit) => itemMenu.add(unit.name));
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Container(
               height: 35,
@@ -79,9 +79,7 @@ class _DropdownItemBtnState extends State<DropdownItemBtn> {
             ),
             DropdownButton<String>(
               value: isUpdated ? _initdropdownValue : _dropdownValue,
-              style: const TextStyle(
-                color: Colors.black,
-              ),
+              style: const TextStyle(color: Colors.black),
               underline: Container(
                 height: 1,
                 color: Colors.amberAccent,
@@ -92,9 +90,9 @@ class _DropdownItemBtnState extends State<DropdownItemBtn> {
               onChanged: (String? newValue) {
                 context.read(itemProvider).setCurrentItem(newValue!);
                 if (newValue.isNotEmpty) {
-                  int id =
-                      itemList.firstWhere((unit) => unit.name == newValue).id!;
-                  widget.billItemId(id);
+                  Item item =
+                      itemList.firstWhere((item) => item.name == newValue);
+                  widget.billItem(item);
                   if (isUpdated) {
                     setState(() => isUpdated = !isUpdated);
                   }

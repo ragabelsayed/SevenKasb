@@ -2,16 +2,16 @@ import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 
 class BillItems {
-  int id;
+  // int id;
   // final String itemName;
   double price;
-  double quentity;
+  // double quentity;
   Item item;
   BillItems({
-    required this.id,
+    // required this.id,
     // required this.itemName,
     required this.price,
-    required this.quentity,
+    // required this.quentity,
     required this.item,
   });
 }
@@ -50,10 +50,10 @@ class Bill {
       billItems: _billItemList
           .map(
             (e) => BillItems(
-              id: e['itemId'],
+              // id: e['itemId'],
               // itemName: e['name'] ?? '',
               price: e['price'] ?? 0.0,
-              quentity: e['quentity'] ?? 0.0,
+              // quentity: e['quentity'] ?? 0.0,
               item: Item(
                 id: e['itemNavigation']['id'],
                 name: e['itemNavigation']['name'] ?? '',
