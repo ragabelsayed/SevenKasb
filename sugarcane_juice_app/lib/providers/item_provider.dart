@@ -83,7 +83,7 @@ class ItemNotifier extends ChangeNotifier {
         type: item.type,
       );
       _items.add(newItem);
-      // notifyListeners();
+      notifyListeners();
     } catch (error) {
       throw error;
     }

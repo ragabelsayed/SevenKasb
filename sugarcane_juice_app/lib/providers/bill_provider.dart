@@ -54,4 +54,17 @@ class BillNotifier extends ChangeNotifier {
       // throw error;
     }
   }
+
+  static double getItemsTotal(
+      {required String price, required String quentity}) {
+    return double.parse(price) * double.parse(quentity);
+  }
+
+  static double getRemaining({required double paid, required double total}) {
+    if (total >= paid) {
+      return total - paid;
+    } else {
+      return 0.0;
+    }
+  }
 }

@@ -73,7 +73,7 @@ class _DropdownItemBtnState extends State<DropdownItemBtn> {
                 ),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => IputItemForm(),
+                  builder: (context) => IputItemForm(isNew: true),
                 ),
               ),
             ),
@@ -100,9 +100,9 @@ class _DropdownItemBtnState extends State<DropdownItemBtn> {
               },
               items: itemMenu
                   .map(
-                    (unit) => DropdownMenuItem(
-                      value: unit,
-                      child: Text(unit),
+                    (item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(item),
                     ),
                   )
                   .toList(),

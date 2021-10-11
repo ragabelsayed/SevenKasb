@@ -13,7 +13,8 @@ import 'dropdown_unit_btn.dart';
 import 'type_toggle_btn.dart';
 
 class IputItemForm extends StatefulWidget {
-  const IputItemForm({Key? key}) : super(key: key);
+  final bool isNew;
+  const IputItemForm({this.isNew = false});
 
   @override
   _IputItemFormState createState() => _IputItemFormState();
@@ -21,7 +22,8 @@ class IputItemForm extends StatefulWidget {
 
 class _IputItemFormState extends State<IputItemForm> {
   final _formKey = GlobalKey<FormState>();
-  late Item _item = Item(name: '', price: '', unit: Unit(), type: 0);
+  late Item _item =
+      Item(name: '', price: '', quentity: '', unit: Unit(), type: 0);
 
   void _saveForm() {
     final _isValid = _formKey.currentState!.validate();
@@ -71,18 +73,17 @@ class _IputItemFormState extends State<IputItemForm> {
                   _item.price = value;
                 },
               ),
-              // const SizedBox(height: 10),
-              // _buildTextFormField(
-              //   hintText: '    الكمية',
-              //   // value: _item.price,
-              //   // value: price,
-              //   error: AppConstants.quentityError,
-              //   type: TextInputType.number,
-              //   action: TextInputAction.next,
-              //   onSave: (value) {
-              //     _item.quentity = value;
-              //   },
-              // ),
+              if (widget.isNew) const SizedBox(height: 10),
+              if (widget.isNew)
+                _buildTextFormField(
+                  hintText: '    الكمية',
+                  error: AppConstants.quentityError,
+                  type: TextInputType.number,
+                  action: TextInputAction.next,
+                  onSave: (value) {
+                    _item.quentity = value;
+                  },
+                ),
               const SizedBox(height: 10),
               // _buildTextFormField(
               //   hintText: '    وحدة القياس',

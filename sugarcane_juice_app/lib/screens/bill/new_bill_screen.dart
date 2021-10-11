@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/screens/bill/widget/bill_input_form.dart';
 
@@ -9,18 +10,14 @@ class NewBillScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // systemOverlayStyle:
-        //     SystemUiOverlayStyle(statusBarColor: Palette.primaryLightColor),
+        backgroundColor: Palette.primaryColor,
         title: Text(
           'إضافة فاتورة',
-          style: Theme.of(context)
-              .textTheme
-              .headline5!
-              .copyWith(color: Colors.white),
+          style: AppConstants.appBarTitle,
         ),
         centerTitle: true,
-        backgroundColor: Palette.primaryColor,
         // leading: MenuWidget(),
+        shape: AppConstants.appBarBorder,
       ),
       body: BillInputForm(),
     );

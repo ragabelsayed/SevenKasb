@@ -19,7 +19,7 @@ class BillItems {
 class Bill {
   int? id;
   //  Map<String, dynamic> user;
-  double price;
+  double total;
   double paid;
   String clientName;
   DateTime dateTime;
@@ -30,7 +30,7 @@ class Bill {
     this.id,
     required this.type,
     // required this.user,
-    required this.price,
+    required this.total,
     required this.paid,
     required this.clientName,
     required this.dateTime,
@@ -43,7 +43,7 @@ class Bill {
       id: json['id'],
       type: json['type'] ?? 0,
       // user: json['user'],
-      price: json['cost'] ?? 0.0,
+      total: json['cost'] ?? 0.0,
       paid: json['paid'] ?? 0.0,
       clientName: json['clientName'] ?? '',
       dateTime: DateTime.parse('${json['createdAt']}'),
