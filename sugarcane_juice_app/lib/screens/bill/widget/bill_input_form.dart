@@ -6,7 +6,9 @@ import 'package:sugarcane_juice_app/models/bill.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
 import 'package:sugarcane_juice_app/screens/bill/widget/dropdown_item_btn.dart';
+import 'package:sugarcane_juice_app/widget/dialog_btns.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
+import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
 
 class BillInputForm extends StatefulWidget {
   const BillInputForm({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class BillInputForm extends StatefulWidget {
 
 class _BillInputFormState extends State<BillInputForm> {
   final _formKey = GlobalKey<FormState>();
+  double cash = 0.0;
 
   late Bill _bill = Bill(
     type: 0,
@@ -32,7 +35,8 @@ class _BillInputFormState extends State<BillInputForm> {
     if (_isValid) {
       _formKey.currentState!.save();
       // context.read(itemProvider).addItem(_item);
-      Navigator.of(context).pop();
+
+      // Navigator.of(context).pop();
     }
   }
 
@@ -79,7 +83,8 @@ class _BillInputFormState extends State<BillInputForm> {
             right: 0.0,
             left: 0.0,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 20, bottom: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -98,7 +103,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     textDirection: TextDirection.rtl,
                     children: [
                       DialogTitle(name: 'الإجمالى: '),
-                      Text('${_bill.total}'),
+                      Text('${BillNotifier.sumTotal(_bill)}'),
                     ],
                   ),
                   Row(
@@ -114,13 +119,11 @@ class _BillInputFormState extends State<BillInputForm> {
                           error: AppConstants.priceError,
                           type: TextInputType.number,
                           action: TextInputAction.done,
-                          isUpdated: true,
                           onSave: (newValue) {
                             if (double.parse(newValue) > 0) {
-                              // setState(() {
-                              _bill.paid = double.parse(newValue);
-                              print(_bill.paid);
-                              // });
+                              setState(() {
+                                _bill.paid = double.parse(newValue);
+                              });
                             }
                           },
                         ),
@@ -129,18 +132,17 @@ class _BillInputFormState extends State<BillInputForm> {
                       Text('${_bill.paid}'),
                     ],
                   ),
-                  // const SizedBox(height: 5),
                   Divider(color: Colors.amber),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     textDirection: TextDirection.rtl,
                     children: [
                       DialogTitle(name: 'ألباقى: '),
-                      Text(
-                        '${BillNotifier.getRemaining(paid: _bill.paid, total: _bill.total)}',
-                      ),
+                      Text('${BillNotifier.getRemaining(_bill)}'),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  RoundedTextButton(text: 'حفظ', onPressed: () => _saveForm()),
                 ],
               ),
             ),
@@ -155,7 +157,6 @@ class _BillInputFormState extends State<BillInputForm> {
     required String error,
     required TextInputType type,
     required TextInputAction action,
-    bool isUpdated = false,
     required Function(String) onSave,
   }) {
     return TextFormField(
@@ -176,9 +177,6 @@ class _BillInputFormState extends State<BillInputForm> {
       onFieldSubmitted: (value) {
         if (value.isNotEmpty) {
           _formKey.currentState!.validate();
-        }
-        if (isUpdated) {
-          setState(() {});
         }
       },
       validator: (newValue) {
@@ -240,21 +238,17 @@ class _BillInputFormState extends State<BillInputForm> {
           required BuildContext context}) =>
       billItems.map(
         (billItem) {
+          billItem.item.total = BillNotifier.getItemsTotal(
+            price: billItem.item.price,
+            quentity: billItem.item.quentity,
+          );
           final cells = [
             billItem.item.name,
             billItem.item.price,
             billItem.item.quentity,
-            BillNotifier.getItemsTotal(
-              price: billItem.item.price,
-              quentity: billItem.item.quentity,
-            ),
+            billItem.item.total,
           ].reversed.toList();
-          _bill.total += _bill.total +
-              BillNotifier.getItemsTotal(
-                price: billItem.item.price,
-                quentity: billItem.item.quentity,
-              );
-          print(_bill.total);
+
           return DataRow(
             cells: _getCells(cells),
           );

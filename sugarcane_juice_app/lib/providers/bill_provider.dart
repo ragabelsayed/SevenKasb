@@ -60,11 +60,26 @@ class BillNotifier extends ChangeNotifier {
     return double.parse(price) * double.parse(quentity);
   }
 
-  static double getRemaining({required double paid, required double total}) {
-    if (total >= paid) {
-      return total - paid;
+  static double sumTotal(Bill bill) {
+    var sum = 0.0;
+    if (bill.billItems.isNotEmpty) {
+      bill.billItems.forEach((e) {
+        sum += e.item.total!;
+      });
+      bill.total = sum;
+      return bill.total;
     } else {
-      return 0.0;
+      return sum;
+    }
+  }
+
+  static double getRemaining(Bill bill) {
+    var sub = 0.0;
+    if (bill.total >= bill.paid && bill.paid > 0) {
+      sub = bill.total - bill.paid;
+      return sub;
+    } else {
+      return sub;
     }
   }
 }

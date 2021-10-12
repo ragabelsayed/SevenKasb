@@ -7,6 +7,7 @@ class Item {
   String quentity;
   Unit unit;
   int type;
+  double? total;
 
   Item({
     this.id,
@@ -15,6 +16,7 @@ class Item {
     this.quentity = '0.0',
     required this.unit,
     required this.type,
+    this.total,
   });
 
   factory Item.fromJson({required Map<String, dynamic> json}) {
