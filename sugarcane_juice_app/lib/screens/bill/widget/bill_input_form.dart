@@ -57,7 +57,7 @@ class _BillInputFormState extends State<BillInputForm> {
                   hintText: '   الاسم',
                   error: AppConstants.nameError,
                   type: TextInputType.name,
-                  action: TextInputAction.done,
+                  action: TextInputAction.next,
                   onSave: (value) {
                     _bill.clientName = value;
                   },
@@ -118,12 +118,11 @@ class _BillInputFormState extends State<BillInputForm> {
                           hintText: '    0.0',
                           error: AppConstants.priceError,
                           type: TextInputType.number,
+                          isUpdated: true,
                           action: TextInputAction.done,
                           onSave: (newValue) {
                             if (double.parse(newValue) > 0) {
-                              setState(() {
-                                _bill.paid = double.parse(newValue);
-                              });
+                              _bill.paid = double.parse(newValue);
                             }
                           },
                         ),
@@ -157,6 +156,7 @@ class _BillInputFormState extends State<BillInputForm> {
     required String error,
     required TextInputType type,
     required TextInputAction action,
+    bool isUpdated = false,
     required Function(String) onSave,
   }) {
     return TextFormField(
@@ -177,6 +177,11 @@ class _BillInputFormState extends State<BillInputForm> {
       onFieldSubmitted: (value) {
         if (value.isNotEmpty) {
           _formKey.currentState!.validate();
+        }
+        if (isUpdated) {
+          setState(() {
+            _bill.paid = double.parse(value);
+          });
         }
       },
       validator: (newValue) {
