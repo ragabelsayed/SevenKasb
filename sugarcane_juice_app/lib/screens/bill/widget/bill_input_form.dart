@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
@@ -34,9 +35,7 @@ class _BillInputFormState extends State<BillInputForm> {
     final _isValid = _formKey.currentState!.validate();
     if (_isValid) {
       _formKey.currentState!.save();
-      // context.read(itemProvider).addItem(_item);
-
-      // Navigator.of(context).pop();
+      context.read(billProvider).addBill(_bill);
     }
   }
 
@@ -122,7 +121,9 @@ class _BillInputFormState extends State<BillInputForm> {
                           action: TextInputAction.done,
                           onSave: (newValue) {
                             if (double.parse(newValue) > 0) {
-                              _bill.paid = double.parse(newValue);
+                              setState(() {
+                                _bill.paid = double.parse(newValue);
+                              });
                             }
                           },
                         ),

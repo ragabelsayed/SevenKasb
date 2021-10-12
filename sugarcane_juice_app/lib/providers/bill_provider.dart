@@ -55,6 +55,50 @@ class BillNotifier extends ChangeNotifier {
     }
   }
 
+  Future<void> addBill(Bill bill) async {
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
+        },
+        body: json.encode({
+          'userId': 1,
+          'billItems': List.from(
+            bill.billItems.map(
+              (e) => {
+                'quentity': 0.0,
+                'price': 0.0,
+                'itemId': e.item.id!,
+              },
+            ),
+          ),
+          'cost': sumTotal(bill),
+          'paid': bill.paid,
+          'clientName': bill.clientName,
+          'createdAt': bill.dateTime.toIso8601String(),
+          'type': bill.type,
+        }),
+      );
+      final newBill = Bill(
+        id: json.decode(response.body)['bill']['id'],
+        billItems: bill.billItems,
+        total: sumTotal(bill),
+        paid: bill.paid,
+        clientName: bill.clientName,
+        dateTime: bill.dateTime,
+        type: bill.type,
+      );
+      _items.add(newBill);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
   static double getItemsTotal(
       {required String price, required String quentity}) {
     return double.parse(price) * double.parse(quentity);
