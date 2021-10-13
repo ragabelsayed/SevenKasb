@@ -5,6 +5,7 @@ import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/unit_provider.dart';
 import 'package:sugarcane_juice_app/screens/unit/widget/input_unit.dart';
+import 'package:sugarcane_juice_app/widget/dialog_remove.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 
@@ -94,32 +95,12 @@ class _UnitScreenState extends State<UnitScreen> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
-                  content: Text(
-                    'هل انت متاكد من حذف هذة الوحدة؟',
-                    textAlign: TextAlign.center,
-                  ),
-                  actions: [
-                    Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Palette.primaryColor),
-                          child: Text('الغاء'),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        const SizedBox(width: 10),
-                        TextButton(
-                          child: Text('حذف'),
-                          onPressed: () {
-                            context.read(unitProvider).deleteUnit(unit: unit);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                builder: (context) => RemoveDialog(
+                  message: 'هل انت متاكد من حذف هذة الوحدة؟',
+                  onpress: () {
+                    context.read(unitProvider).deleteUnit(unit: unit);
+                    Navigator.of(context).pop();
+                  },
                 ),
               );
             },

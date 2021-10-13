@@ -8,6 +8,7 @@ import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
 import 'package:sugarcane_juice_app/screens/bill/widget/dropdown_item_btn.dart';
 import 'package:sugarcane_juice_app/widget/dialog_btns.dart';
+import 'package:sugarcane_juice_app/widget/dialog_remove.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
 
@@ -262,34 +263,12 @@ class _BillInputFormState extends State<BillInputForm> {
             onSelectChanged: (value) {
               showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
-                  content: Text(
-                    'هل انت متاكد من حذف هذةالصنف؟',
-                    textAlign: TextAlign.center,
-                  ),
-                  actions: [
-                    Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Palette.primaryColor),
-                          child: Text('الغاء'),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        const SizedBox(width: 10),
-                        TextButton(
-                          child: Text('حذف'),
-                          onPressed: () {
-                            setState(() {
-                              _bill.billItems.remove(billItem);
-                            });
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                builder: (context) => RemoveDialog(
+                  message: 'هل انت متاكد من حذف هذا الصنف؟',
+                  onpress: () {
+                    setState(() => _bill.billItems.remove(billItem));
+                    Navigator.of(context).pop();
+                  },
                 ),
               );
             },
