@@ -20,7 +20,7 @@ class BillInputForm extends StatefulWidget {
 
 class _BillInputFormState extends State<BillInputForm> {
   final _formKey = GlobalKey<FormState>();
-  double cash = 0.0;
+  bool isSelected = false;
 
   late Bill _bill = Bill(
     type: 0,
@@ -212,6 +212,8 @@ class _BillInputFormState extends State<BillInputForm> {
           .headline6,
       // columnSpacing: MediaQuery.of(context).size.width / 8,
       horizontalMargin: 0.0,
+      showCheckboxColumn: false,
+      // checkboxHorizontalMargin: 5,
       // showBottomBorder: true,
       decoration: BoxDecoration(
         border: Border(
@@ -257,6 +259,40 @@ class _BillInputFormState extends State<BillInputForm> {
 
           return DataRow(
             cells: _getCells(cells),
+            onSelectChanged: (value) {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  content: Text(
+                    'هل انت متاكد من حذف هذةالصنف؟',
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Palette.primaryColor),
+                          child: Text('الغاء'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        const SizedBox(width: 10),
+                        TextButton(
+                          child: Text('حذف'),
+                          onPressed: () {
+                            setState(() {
+                              _bill.billItems.remove(billItem);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
           );
         },
       ).toList();
