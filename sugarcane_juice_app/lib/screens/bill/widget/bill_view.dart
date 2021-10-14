@@ -1,8 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/widgets.dart';
+import 'dart:ui';
+import 'package:intl/intl.dart' as intl;
 import 'package:sugarcane_juice_app/models/bill.dart';
+import 'package:sugarcane_juice_app/providers/bill_provider.dart';
+import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
 
 class BillView extends StatelessWidget {
@@ -12,110 +14,67 @@ class BillView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 20,
-          ),
-          child: ListView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 20,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            textDirection: TextDirection.rtl,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Center(
-                child: Text(
-                  'Alasra',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ),
+              DialogTitle(name: 'فاتورة شراء'),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Code:',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  Text(
-                    '${bill.id}',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
+              _buildRowView(
+                context,
+                name: ' :رقم الفاتورة',
+                value: '${bill.id}',
+              ),
+              const SizedBox(height: 3),
+              _buildRowView(
+                context,
+                name: ' :إسم العميل/المُورد',
+                value: '${bill.clientName}',
               ),
               const SizedBox(height: 3),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                textDirection: TextDirection.rtl,
                 children: [
                   Text(
-                    'ClientName:',
+                    ' :التاريخ',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                   Text(
-                    '${bill.clientName}',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 3),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Date:',
-                    style: Theme.of(context).textTheme.subtitle1,
+                    '${intl.DateFormat.yMd().format(bill.dateTime)}',
+                    // style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(
-                    '${DateFormat.yMd().format(bill.dateTime)}',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    '${DateFormat.Hm().format(bill.dateTime)}',
-                    style: Theme.of(context).textTheme.subtitle2,
+                    '${intl.DateFormat.Hm().format(bill.dateTime)}',
+                    // style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ],
               ),
               Divider(thickness: 2),
               _buildDataTable(bill: bill, context: context),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'total:',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  Text(
-                    '${bill.paid}',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
+              _buildRowView(
+                context,
+                name: ' :الإجمالى',
+                value: '${BillNotifier.sumTotal(bill)}',
               ),
               const SizedBox(height: 3),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Cash:',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  Text(
-                    '${bill.paid}',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
+              _buildRowView(
+                context,
+                name: ' :المدفوع',
+                value: '${bill.paid}',
               ),
               const SizedBox(height: 3),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'The rest:',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  Text(
-                    '00.0',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
+              _buildRowView(
+                context,
+                name: ' :ألباقى',
+                value: '${BillNotifier.getRemaining(bill)}',
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -134,22 +93,29 @@ class BillView extends StatelessWidget {
     );
   }
 
-  double _getItemsTotal({required double price, required double quentity}) {
-    return price * quentity;
+  Row _buildRowView(BuildContext context,
+      {required String name, required String value}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      textDirection: TextDirection.rtl,
+      children: [
+        Text(
+          name,
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        Text(
+          value,
+          // style: Theme.of(context).textTheme.subtitle2,
+        ),
+      ],
+    );
   }
-  // double _getBillTotal({required double itemTotal) {
-
-  // }
 
   Widget _buildDataTable({required Bill bill, required BuildContext context}) {
-    final billColumns = ['Product', 'quentity', 'Price', 'Total'];
+    final billColumns = ['الإجمالى', 'الكمية', 'السعر', 'الصنف'];
     return DataTable(
       columns: _getColumns(billColumns),
       rows: _getRow(billItems: bill.billItems, context: context),
-      // dataRowColor:
-      //     MaterialStateProperty.resolveWith<Color>((states) => Colors.amber),
-      // dividerThickness: 5.0,
-      // checkboxHorizontalMargin: 100,
       columnSpacing: 30,
       horizontalMargin: 0.0,
       headingRowHeight: 40,
@@ -176,13 +142,13 @@ class BillView extends StatelessWidget {
           final cells = [
             billItem.item.name,
             // billItem.item.quentity,
-            '${billItem.item.quentity} ${billItem.item.unit.name}',
             billItem.item.price,
-            _getItemsTotal(
-              price: double.parse(billItem.item.price),
-              quentity: double.parse(billItem.item.quentity),
+            '${billItem.item.unit.name} ${billItem.item.quentity}',
+            BillNotifier.getItemsTotal(
+              price: billItem.item.price,
+              quentity: billItem.item.quentity,
             ),
-          ];
+          ].reversed.toList();
           return DataRow(
             cells: _getCells(cells),
           );
@@ -193,7 +159,7 @@ class BillView extends StatelessWidget {
       .map(
         (cell) => DataCell(
           Text('$cell'),
-          // placeholder: true,
+          placeholder: true,
         ),
       )
       .toList();

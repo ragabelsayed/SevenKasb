@@ -84,7 +84,11 @@ class _BillInputFormState extends State<BillInputForm> {
             left: 0.0,
             child: Container(
               padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 20, bottom: 10),
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: 10,
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -122,9 +126,8 @@ class _BillInputFormState extends State<BillInputForm> {
                           action: TextInputAction.done,
                           onSave: (newValue) {
                             if (double.parse(newValue) > 0) {
-                              setState(() {
-                                _bill.paid = double.parse(newValue);
-                              });
+                              setState(
+                                  () => _bill.paid = double.parse(newValue));
                             }
                           },
                         ),
