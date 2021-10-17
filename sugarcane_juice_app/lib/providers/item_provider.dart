@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:sugarcane_juice_app/models/http_exception.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
