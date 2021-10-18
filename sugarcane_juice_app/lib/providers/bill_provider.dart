@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:sugarcane_juice_app/models/bill.dart';
+import 'package:sugarcane_juice_app/models/http_exception.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
 
 const billUri = 'http://10.0.2.2:5000/api/bill';
@@ -49,9 +50,15 @@ class BillNotifier extends ChangeNotifier {
       );
       _items = _loadedProducts;
       // notifyListeners();
+    } on FormatException {
+      throw HttpException(
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      );
     } catch (error) {
       print(error);
-      // throw error;
+      throw HttpException(
+        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+      );
     }
   }
 

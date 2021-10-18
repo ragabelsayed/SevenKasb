@@ -7,16 +7,14 @@ import 'package:sugarcane_juice_app/models/bill.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
 import 'package:sugarcane_juice_app/screens/bill/new_bill_screen.dart';
 import 'package:sugarcane_juice_app/screens/bill/widget/bill_view.dart';
+import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 
-class BillScreen extends ConsumerWidget {
+class BillScreen extends StatelessWidget {
   static const routName = '/bill';
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final bill = watch(billProvider);
-    late List<Bill> billList;
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -29,12 +27,21 @@ class BillScreen extends ConsumerWidget {
         shape: AppConstants.appBarBorder,
       ),
       body: FutureBuilder(
-        future:
-            bill.fetchAndSetData().whenComplete(() => billList = bill.items),
-        builder: (ctx, authResultsnapshot) =>
-            authResultsnapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
-                : _buildDataTable(billList: billList, context: context),
+        future: context.read(billProvider).fetchAndSetData().catchError(
+              (e) => getBanner(context: context, errorMessage: e.toString()),
+            ),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Consumer(
+              builder: (context, watch, child) {
+                final billList = watch(billProvider).items;
+                return _buildDataTable(billList: billList, context: context);
+              },
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'إضافة فاتورة شراء جديدة',
