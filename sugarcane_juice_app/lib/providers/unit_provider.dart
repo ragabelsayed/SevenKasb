@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:sugarcane_juice_app/models/http_exception.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
 
@@ -36,7 +37,7 @@ class UnitNotifier extends ChangeNotifier {
       final response = await http.get(url, headers: {
         'Content-Type': 'application/json',
         'charset': 'utf-8',
-        'Authorization': 'Bearer $authToken',
+        // 'Authorization': 'Bearer $authToken',
       });
       final extractedData = json.decode(response.body) as List;
       final List<Unit> _loadedProducts = [];
@@ -50,10 +51,14 @@ class UnitNotifier extends ChangeNotifier {
         },
       );
       _items = _loadedProducts;
-      notifyListeners();
+    } on FormatException {
+      throw HttpException(
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      );
     } catch (error) {
-      print(error);
-      // throw error;
+      throw HttpException(
+        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+      );
     }
   }
 

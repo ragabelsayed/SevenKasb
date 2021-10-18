@@ -5,67 +5,70 @@ import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/unit_provider.dart';
 import 'package:sugarcane_juice_app/screens/unit/widget/input_unit.dart';
+import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import 'package:sugarcane_juice_app/widget/dialog_remove.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 
-class UnitScreen extends StatefulWidget {
+class UnitScreen extends StatelessWidget {
   static const routName = '/unit';
-  @override
-  _UnitScreenState createState() => _UnitScreenState();
-}
-
-class _UnitScreenState extends State<UnitScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read(unitProvider).fetchAndSetData();
-  }
 
   @override
   Widget build(BuildContext context) {
-    // final units = watch(unitProvider);
-    // units.fetchAndSetData();
-    return Consumer(
-      builder: (context, watch, child) {
-        final units = watch(unitProvider);
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Palette.primaryColor,
-            title: Text(
-              'وحدة القياس',
-              style: AppConstants.appBarTitle,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Palette.primaryColor,
+        title: Text(
+          'وحدة القياس',
+          style: AppConstants.appBarTitle,
+        ),
+        centerTitle: true,
+        leading: MenuWidget(),
+        shape: AppConstants.appBarBorder,
+      ),
+      body: FutureBuilder(
+        future: context.read(unitProvider).fetchAndSetData().catchError(
+              (e) => getBanner(context: context, errorMessage: e.toString()),
             ),
-            centerTitle: true,
-            leading: MenuWidget(),
-            shape: AppConstants.appBarBorder,
-          ),
-          body: units.items.isEmpty
-              ? Center(
-                  child: Text(
-                  '.⚖ اضف اول وحدة قياس',
-                  style: Theme.of(context).textTheme.subtitle1,
-                ))
-              : ListView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                  itemCount: units.items.length,
-                  itemBuilder: (context, index) => _buildUnitView(
-                      context: context, unit: units.items[index]),
-                ),
-          floatingActionButton: FloatingActionButton(
-            tooltip: 'اضافة وحدة قياس جديدة',
-            child: Icon(Icons.add),
-            backgroundColor: Colors.amber,
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => InputUnit(),
-              );
-            },
-          ),
-        );
-      },
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Consumer(
+              builder: (context, watch, child) {
+                final units = watch(unitProvider).items;
+                if (units.isEmpty) {
+                  return Center(
+                    child: Text(
+                      '.⚖ اضف اول وحدة قياس',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                    itemCount: units.length,
+                    itemBuilder: (context, index) => _buildUnitView(
+                      context: context,
+                      unit: units[index],
+                    ),
+                  );
+                }
+              },
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'اضافة وحدة قياس جديدة',
+        child: Icon(Icons.add),
+        backgroundColor: Colors.amber,
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => InputUnit(),
+        ),
+      ),
     );
   }
 
