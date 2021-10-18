@@ -5,6 +5,7 @@ import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/item_provider.dart';
 import 'package:sugarcane_juice_app/screens/item/widget/item_view.dart';
+import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import '../../widget/menu_widget.dart';
 import 'widget/item_input_form.dart';
 
@@ -15,11 +16,14 @@ class ItemScreen extends StatefulWidget {
 }
 
 class _ItemScreenState extends State<ItemScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read(itemProvider).fetchAndSetData();
-  }
+  String _errorMessage = '';
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   context.read(itemProvider).fetchAndSetData().catchError((e) {
+  //     print(e);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +40,21 @@ class _ItemScreenState extends State<ItemScreen> {
         leading: MenuWidget(),
         shape: AppConstants.appBarBorder,
       ),
-      body: Consumer(builder: (context, watch, child) {
-        final items = watch(itemProvider);
-        return _buildDataTable(itemList: items.items, context: context);
-      }),
+      body: FutureBuilder(
+        future: context.read(itemProvider).fetchAndSetData().catchError(
+              (e) => getBanner(context: context, errorMessage: e.toString()),
+            ),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Consumer(builder: (context, watch, child) {
+              final items = watch(itemProvider);
+              return _buildDataTable(itemList: items.items, context: context);
+            });
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'اضافة صنف',
         child: Icon(Icons.add),

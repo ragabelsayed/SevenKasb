@@ -53,10 +53,11 @@ class ItemNotifier extends ChangeNotifier {
       );
       _items = _loadedProducts;
       // notifyListeners();
-    } catch (error) {
-      print(error);
-      // throw error;
-    }
+    } on FormatException {
+      throw HttpException(
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاءاعد تسجيل الدخول',
+      );
+    } catch (error) {}
   }
 
   Future<void> addItem(Item item) async {
