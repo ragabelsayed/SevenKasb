@@ -9,26 +9,11 @@ import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import '../../widget/menu_widget.dart';
 import 'widget/item_input_form.dart';
 
-class ItemScreen extends StatefulWidget {
+class ItemScreen extends StatelessWidget {
   static const routName = '/main';
-  @override
-  _ItemScreenState createState() => _ItemScreenState();
-}
-
-class _ItemScreenState extends State<ItemScreen> {
-  String _errorMessage = '';
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   context.read(itemProvider).fetchAndSetData().catchError((e) {
-  //     print(e);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    // final items = watch(itemProvider);
-    // items.fetchAndSetData();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
@@ -48,10 +33,12 @@ class _ItemScreenState extends State<ItemScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return Consumer(builder: (context, watch, child) {
-              final items = watch(itemProvider);
-              return _buildDataTable(itemList: items.items, context: context);
-            });
+            return Consumer(
+              builder: (context, watch, child) {
+                final items = watch(itemProvider);
+                return _buildDataTable(itemList: items.items, context: context);
+              },
+            );
           }
         },
       ),
@@ -59,12 +46,10 @@ class _ItemScreenState extends State<ItemScreen> {
         tooltip: 'اضافة صنف',
         child: Icon(Icons.add),
         backgroundColor: Colors.amber,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => IputItemForm(),
-          );
-        },
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => IputItemForm(),
+        ),
       ),
     );
   }

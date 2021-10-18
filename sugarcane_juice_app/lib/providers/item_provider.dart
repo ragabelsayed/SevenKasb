@@ -55,9 +55,14 @@ class ItemNotifier extends ChangeNotifier {
       // notifyListeners();
     } on FormatException {
       throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاءاعد تسجيل الدخول',
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
       );
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+      throw HttpException(
+        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+      );
+    }
   }
 
   Future<void> addItem(Item item) async {
