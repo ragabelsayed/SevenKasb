@@ -68,7 +68,7 @@ class UnitScreen extends StatelessWidget {
         backgroundColor: Colors.amber,
         onPressed: () => showDialog(
           context: context,
-          builder: (context) => InputUnit(ctx: context, toast: ftoast),
+          builder: (context) => InputUnit(toast: ftoast),
         ),
       ),
     );

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/src/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/unit_provider.dart';
-import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
+import 'package:sugarcane_juice_app/widget/toast_view.dart';
 
 class InputUnit extends StatefulWidget {
-  final BuildContext ctx;
   final FToast toast;
-  InputUnit({required this.ctx, required this.toast});
+  InputUnit({required this.toast});
 
   @override
   State<InputUnit> createState() => _InputUnitState();
@@ -31,42 +30,15 @@ class _InputUnitState extends State<InputUnit> {
     } else {
       context.read(unitProvider).addUnit(Unit(name: _unitName)).catchError(
         (e) {
-          // _isPop = !_isPop;
-
-          return widget.toast.showToast(
-            child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25.0),
-                color: Colors.greenAccent,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.check),
-                  SizedBox(
-                    width: 12.0,
-                  ),
-                  Text(e.toString()),
-                ],
-              ),
-            ),
+          widget.toast.removeQueuedCustomToasts();
+          widget.toast.showToast(
+            child: ToastView(message: e.toString()),
             toastDuration: Duration(seconds: 3),
             gravity: ToastGravity.BOTTOM,
           );
-
-          // Navigator.of(context, rootNavigator: true).pop();
-          // return getBanner(context: widget.ctx, errorMessage: e.toString());
         },
       );
-      //  Navigator.pop();
-      // Navigator.of(context, rootNavigator: true).pop();
-      // if (_isPop) {
-      //   return;
-      // } else {
       Navigator.of(context).pop();
-      // }
     }
   }
 
