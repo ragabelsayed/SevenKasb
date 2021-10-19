@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/providers/unit_provider.dart';
@@ -18,10 +19,11 @@ class _DropdownUnitBtnState extends State<DropdownUnitBtn> {
   String? _dropdownValue;
   late String _initdropdownValue;
   bool isUpdated = false;
-
+  late FToast ftoast;
   @override
   void initState() {
     super.initState();
+    ftoast = FToast().init(context);
     if (widget.oldUnit != null) {
       _initdropdownValue = widget.oldUnit!.name;
       widget.unitId(widget.oldUnit!.id!);
@@ -71,7 +73,7 @@ class _DropdownUnitBtnState extends State<DropdownUnitBtn> {
                 ),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => InputUnit(),
+                  builder: (context) => InputUnit(ctx: context, toast: ftoast),
                 ),
               ),
             ),

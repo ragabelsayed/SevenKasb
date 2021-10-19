@@ -5,32 +5,35 @@ getBanner({
   required BuildContext context,
   required String errorMessage,
 }) {
-  ScaffoldMessenger.of(context).showMaterialBanner(
-    MaterialBanner(
-      content: Text(
-        errorMessage.toString(),
-        style: Theme.of(context).snackBarTheme.contentTextStyle,
-        textAlign: TextAlign.center,
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => ScaffoldMessenger.of(context).clearMaterialBanners(),
-          child: Text(
-            'إغلاق',
-            style: TextStyle(
-              color: Palette.primaryColor,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+  ScaffoldMessenger.of(context)
+    ..clearMaterialBanners()
+    ..showMaterialBanner(
+      MaterialBanner(
+        content: Text(
+          errorMessage.toString(),
+          style: Theme.of(context).snackBarTheme.contentTextStyle,
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+            child: Text(
+              'إغلاق',
+              style: TextStyle(
+                color: Palette.primaryColor,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
+        ],
+        leading: Icon(
+          Icons.error_outline,
+          color: Colors.red,
         ),
-      ],
-      leading: Icon(
-        Icons.error_outline,
-        color: Colors.red,
+        forceActionsBelow: true,
+        backgroundColor: Palette.primaryLightColor,
       ),
-      forceActionsBelow: true,
-      backgroundColor: Palette.primaryLightColor,
-    ),
-  );
+    );
 }

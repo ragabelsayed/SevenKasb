@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
@@ -15,6 +16,7 @@ class UnitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FToast ftoast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
@@ -66,7 +68,7 @@ class UnitScreen extends StatelessWidget {
         backgroundColor: Colors.amber,
         onPressed: () => showDialog(
           context: context,
-          builder: (context) => InputUnit(),
+          builder: (context) => InputUnit(ctx: context, toast: ftoast),
         ),
       ),
     );

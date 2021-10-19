@@ -37,7 +37,7 @@ class UnitNotifier extends ChangeNotifier {
       final response = await http.get(url, headers: {
         'Content-Type': 'application/json',
         'charset': 'utf-8',
-        // 'Authorization': 'Bearer $authToken',
+        'Authorization': 'Bearer $authToken',
       });
       final extractedData = json.decode(response.body) as List;
       final List<Unit> _loadedProducts = [];
@@ -78,11 +78,14 @@ class UnitNotifier extends ChangeNotifier {
         name: unit.name,
       );
       _items.add(newUnit);
-
-      // print(response.statusCode);
-      // notifyListeners();
+    } on FormatException {
+      throw HttpException(
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      );
     } catch (error) {
-      throw error;
+      throw HttpException(
+        'لم تتم إضافة هذة الوحدة',
+      );
     }
   }
 
