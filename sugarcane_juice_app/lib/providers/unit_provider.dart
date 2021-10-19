@@ -1,11 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:sugarcane_juice_app/models/http_exception.dart';
-import 'package:sugarcane_juice_app/models/unit.dart';
-import 'package:sugarcane_juice_app/providers/auth.dart';
+import '/models/http_exception.dart';
+import '/models/unit.dart';
+import '/providers/auth.dart';
 
 const unitUri = 'http://10.0.2.2:5000/api/unit';
 
@@ -92,28 +91,26 @@ class UnitNotifier extends ChangeNotifier {
   Future<void> deleteUnit({required Unit unit}) async {
     Uri url = Uri.parse('http://10.0.2.2:5000/api/unit/${unit.id}');
 
-    // final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
-    // var existingProduct = _items[existingProductIndex];
-    // _items.removeAt(existingProductIndex);
+    final existingUnitIndex = _items.indexWhere((u) => u.id == unit.id);
+    Unit? existingUnit = _items[existingUnitIndex];
+    _items.removeAt(existingUnitIndex);
 
     _items.remove(unit);
     notifyListeners();
-
-    final response = await http.delete(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'charset': 'utf-8',
-        'Authorization': 'Bearer $authToken',
-      },
-    );
-    print(response.statusCode);
-
-    // if (response.statusCode >= 400) {
-    //   _items.insert(existingProductIndex, existingProduct);
-    //   notifyListeners();
-    //   throw HttpException('Could not delete product.');
-    // }
-    // existingProduct = null;
+    try {
+      await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
+        },
+      );
+    } catch (e) {
+      _items.insert(existingUnitIndex, existingUnit);
+      notifyListeners();
+      existingUnit = null;
+      throw HttpException('خطأ لم يتم حذف الوحدة');
+    }
   }
 }

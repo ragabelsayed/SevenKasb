@@ -20,8 +20,7 @@ class _InputUnitState extends State<InputUnit> {
   TextEditingController _editingController = TextEditingController();
   String _unitName = '';
   bool _isError = false;
-  bool _isPop = false;
-
+  bool _hasError = false;
   void _saveText() {
     if (_editingController.text.isEmpty) {
       setState(() {
@@ -30,12 +29,26 @@ class _InputUnitState extends State<InputUnit> {
     } else {
       context.read(unitProvider).addUnit(Unit(name: _unitName)).catchError(
         (e) {
-          widget.toast.removeQueuedCustomToasts();
-          widget.toast.showToast(
-            child: ToastView(message: e.toString()),
-            toastDuration: Duration(seconds: 3),
-            gravity: ToastGravity.BOTTOM,
-          );
+          _hasError = !_hasError;
+          widget.toast
+            ..removeQueuedCustomToasts()
+            ..showToast(
+              child: ToastView(message: e.toString()),
+              toastDuration: Duration(seconds: 3),
+              gravity: ToastGravity.BOTTOM,
+            );
+        },
+      ).whenComplete(
+        () {
+          if (!_hasError) {
+            return widget.toast
+              ..removeQueuedCustomToasts()
+              ..showToast(
+                child: ToastView(message: 'تم الأضافة بنجاح'),
+                toastDuration: Duration(seconds: 3),
+                gravity: ToastGravity.BOTTOM,
+              );
+          }
         },
       );
       Navigator.of(context).pop();
