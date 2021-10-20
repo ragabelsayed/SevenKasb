@@ -24,6 +24,7 @@ class _BillInputFormState extends State<BillInputForm> {
   bool isSelected = false;
 
   late Bill _bill = Bill(
+    user: {},
     type: 0,
     total: 0.0,
     paid: 0.0,
@@ -36,7 +37,7 @@ class _BillInputFormState extends State<BillInputForm> {
     final _isValid = _formKey.currentState!.validate();
     if (_isValid) {
       _formKey.currentState!.save();
-      context.read(billProvider).addBill(_bill);
+      // context.read(billProvider).addBill(_bill);
     }
   }
 
@@ -68,7 +69,11 @@ class _BillInputFormState extends State<BillInputForm> {
                       _bill.billItems.isNotEmpty ? _bill.billItems.last : null,
                   billItem: (item) {
                     setState(() {
-                      _bill.billItems.add(BillItems(price: 0.0, item: item));
+                      _bill.billItems.add(BillItems(
+                        price: 0.0,
+                        quentity: 0.0,
+                        item: item,
+                      ));
                     });
                   },
                 ),

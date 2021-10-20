@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
@@ -9,12 +10,15 @@ import 'package:sugarcane_juice_app/screens/bill/new_bill_screen.dart';
 import 'package:sugarcane_juice_app/screens/bill/widget/bill_view.dart';
 import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
+import 'package:sugarcane_juice_app/widget/toast_view.dart';
 
-class BillScreen extends StatelessWidget {
+class BillScreen extends ConsumerWidget {
   static const routName = '/bill';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final bills = watch(billProvider);
+    FToast ftoast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -26,23 +30,29 @@ class BillScreen extends StatelessWidget {
         leading: MenuWidget(),
         shape: AppConstants.appBarBorder,
       ),
-      body: FutureBuilder(
-        future: context.read(billProvider).fetchAndSetData().catchError(
-              (e) => getBanner(context: context, errorMessage: e.toString()),
-            ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return Consumer(
-              builder: (context, watch, child) {
-                final billList = watch(billProvider).items;
-                return _buildDataTable(billList: billList, context: context);
-              },
-            );
-          }
-        },
+      body: bills.when(
+        loading: () => Center(child: const CircularProgressIndicator()),
+        error: (error, stackTrace) => ToastView(message: '${error.toString()}'),
+        data: (billList) =>
+            _buildDataTable(billList: billList, context: context),
       ),
+      //  FutureBuilder(
+      //   future: context.read(billProvider).fetchAndSetData().catchError(
+      //         (e) => getBanner(context: context, errorMessage: e.toString()),
+      //       ),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return Center(child: CircularProgressIndicator());
+      //     } else {
+      //       return Consumer(
+      //         builder: (context, watch, child) {
+      //           final billList = watch(billProvider).items;
+      //           return _buildDataTable(billList: billList, context: context);
+      //         },
+      //       );
+      //     }
+      //   },
+      // ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'إضافة فاتورة شراء جديدة',
         child: Icon(Icons.add),

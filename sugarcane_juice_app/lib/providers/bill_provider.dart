@@ -7,20 +7,60 @@ import 'package:sugarcane_juice_app/models/http_exception.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
 
 const billUri = 'http://10.0.2.2:5000/api/bill';
-// final billProvider = StateNotifierProvider<BillNotifier, Bill>((ref) {
-//   ref.
-//   return
-// });
+Uri url = Uri.parse(billUri);
 
-// class BillNotifier extends StateNotifier<Bill> {
-//   BillNotifier(): super();
-
+// abstract class ArticleRepository {
+//   Future<List<Bill>> fetchArticles();
 // }
+abstract class BillRepository {
+  Future<List<Bill>> fetchBills();
+}
 
-final billProvider = ChangeNotifierProvider<BillNotifier>((ref) {
+// final billProvider = ChangeNotifierProvider<BillNotifier>((ref) {
+//   String _token = ref.watch(authProvider).token;
+//   return BillNotifier(authToken: _token);
+// });
+final billProvider = FutureProvider<List<Bill>>((ref) async {
   String _token = ref.watch(authProvider).token;
-  return BillNotifier(authToken: _token);
+  return BillProvider(authToken: _token).fetchBills();
 });
+
+class BillProvider implements BillRepository {
+  BillProvider({required this.authToken});
+  late String authToken;
+  @override
+  Future<List<Bill>> fetchBills() async {
+    try {
+      final response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'charset': 'utf-8',
+        'Authorization': 'Bearer $authToken',
+      });
+
+      final extractedData = json.decode(response.body) as List;
+      final List<Bill> _loadedBill = [];
+      extractedData.forEach(
+        (bill) {
+          _loadedBill.add(
+            Bill.fromJson(
+              json: bill as Map<String, dynamic>,
+            ),
+          );
+        },
+      );
+      return _loadedBill;
+    } on FormatException {
+      throw HttpException(
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      );
+    } catch (error) {
+      print(error);
+      throw HttpException(
+        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+      );
+    }
+  }
+}
 
 class BillNotifier extends ChangeNotifier {
   BillNotifier({required this.authToken});
@@ -28,7 +68,6 @@ class BillNotifier extends ChangeNotifier {
   List<Bill> _items = [];
   List<Bill> get items => [..._items];
 
-  Uri url = Uri.parse(billUri);
   Future<void> fetchAndSetData() async {
     try {
       final response = await http.get(url, headers: {
@@ -36,6 +75,7 @@ class BillNotifier extends ChangeNotifier {
         'charset': 'utf-8',
         'Authorization': 'Bearer $authToken',
       });
+
       final extractedData = json.decode(response.body) as List;
       // print(extractedData.length);
       final List<Bill> _loadedProducts = [];
@@ -43,7 +83,7 @@ class BillNotifier extends ChangeNotifier {
         (bill) {
           _loadedProducts.add(
             Bill.fromJson(
-              json: bill,
+              json: bill as Map<String, dynamic>,
             ),
           );
         },
@@ -91,6 +131,7 @@ class BillNotifier extends ChangeNotifier {
       );
       final newBill = Bill(
         id: json.decode(response.body)['bill']['id'],
+        user: bill.user,
         billItems: bill.billItems,
         total: sumTotal(bill),
         paid: bill.paid,
