@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
@@ -9,6 +9,7 @@ import 'package:sugarcane_juice_app/providers/bill_provider.dart';
 import 'package:sugarcane_juice_app/screens/bill/new_bill_screen.dart';
 import 'package:sugarcane_juice_app/screens/bill/widget/bill_view.dart';
 import 'package:sugarcane_juice_app/widget/banner_message.dart';
+import 'package:sugarcane_juice_app/widget/error_view.dart';
 import 'package:sugarcane_juice_app/widget/menu_widget.dart';
 import 'package:sugarcane_juice_app/widget/toast_view.dart';
 
@@ -18,7 +19,6 @@ class BillScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final bills = watch(billProvider);
-    FToast ftoast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -32,7 +32,7 @@ class BillScreen extends ConsumerWidget {
       ),
       body: bills.when(
         loading: () => Center(child: const CircularProgressIndicator()),
-        error: (error, stackTrace) => ToastView(message: '${error.toString()}'),
+        error: (error, stackTrace) => ErrorView(error: error.toString()),
         data: (billList) =>
             _buildDataTable(billList: billList, context: context),
       ),
@@ -116,7 +116,7 @@ class BillScreen extends ConsumerWidget {
           final cells = [
             bill.id,
             bill.clientName,
-            DateFormat.Md().format(bill.dateTime)
+            intl.DateFormat.Md().format(bill.dateTime)
           ];
           return DataRow(
             cells: [
