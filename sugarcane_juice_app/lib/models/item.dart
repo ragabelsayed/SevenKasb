@@ -12,10 +12,10 @@ class Item {
   Item({
     this.id,
     required this.name,
-    required this.price,
+    this.price = '0.0',
     this.quentity = '0.0',
     required this.unit,
-    required this.type,
+    this.type = 0,
     this.total,
   });
 

@@ -51,13 +51,13 @@ class Bill {
               item: Item(
                 id: e['itemNavigation']['id'],
                 name: e['itemNavigation']['name'] ?? '',
-                price: '${e['itemNavigation']['price']}',
-                quentity: '${e['itemNavigation']['quentity']}',
+                // price: '${e['itemNavigation']['price']}',
+                // quentity: '${e['itemNavigation']['quentity']}',
                 unit: Unit(
                   id: e['itemNavigation']['unitNavigation']['id'],
                   name: e['itemNavigation']['unitNavigation']['name'] ?? '',
                 ),
-                type: e['itemNavigation']['type'] ?? 0,
+                // type: e['itemNavigation']['type'] ?? 0,
               ),
             ),
           )

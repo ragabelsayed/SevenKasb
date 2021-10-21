@@ -24,7 +24,9 @@ class BillView extends StatelessWidget {
             textDirection: TextDirection.rtl,
             mainAxisSize: MainAxisSize.min,
             children: [
-              DialogTitle(name: 'فاتورة شراء'),
+              if (bill.type == 0) DialogTitle(name: 'فاتورة شراء'),
+              if (bill.type == 1) DialogTitle(name: 'فاتورة بيع'),
+              if (bill.type == 2) DialogTitle(name: 'فاتورة'),
               const SizedBox(height: 10),
               _buildRowView(
                 context,
@@ -141,12 +143,12 @@ class BillView extends StatelessWidget {
         (billItem) {
           final cells = [
             billItem.item.name,
-            // billItem.item.quentity,
-            billItem.item.price,
-            '${billItem.item.unit.name} ${billItem.item.quentity}',
+            // billItem.quentity,
+            billItem.price,
+            '${billItem.item.unit.name} ${billItem.quentity}',
             BillNotifier.getItemsTotal(
-              price: billItem.item.price,
-              quentity: billItem.item.quentity,
+              price: billItem.price.toString(),
+              quentity: billItem.quentity.toString(),
             ),
           ].reversed.toList();
           return DataRow(

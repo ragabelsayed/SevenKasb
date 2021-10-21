@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sugarcane_juice_app/models/bill.dart';
+import '/models/bill.dart';
 import 'package:intl/intl.dart' as intl;
 import 'bill_view.dart';
 
@@ -84,15 +84,6 @@ class DataTableView extends StatelessWidget {
                     );
                   },
                 ),
-
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     primary: Colors.amberAccent,
-                //     // onPrimary: Colors.amber,
-                //   ),
-                //   onPressed: () {},
-                //   child: Icon(Icons.forward_rounded),
-                // ),
               ),
             ].reversed.toList(),
           );
