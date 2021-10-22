@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/constants.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/bill.dart';
-import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
-import 'package:sugarcane_juice_app/screens/bill/widget/dropdown_item_btn.dart';
-import 'package:sugarcane_juice_app/widget/dialog_btns.dart';
+import 'package:sugarcane_juice_app/screens/bill/widget/bill_item_input_form.dart';
+import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import 'package:sugarcane_juice_app/widget/dialog_remove.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
+import 'package:sugarcane_juice_app/widget/error_view.dart';
 import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
 
 class BillInputForm extends StatefulWidget {
@@ -21,7 +21,7 @@ class BillInputForm extends StatefulWidget {
 
 class _BillInputFormState extends State<BillInputForm> {
   final _formKey = GlobalKey<FormState>();
-  bool isSelected = false;
+  bool _isBillItemEmpty = false;
 
   late Bill _bill = Bill(
     user: {},
@@ -33,11 +33,17 @@ class _BillInputFormState extends State<BillInputForm> {
     billItems: [],
   );
 
-  void _saveForm() {
+  void _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
-    if (_isValid) {
+    if (_bill.billItems.isEmpty) {
+      setState(() => _isBillItemEmpty = true);
+    }
+    if (_isValid && _bill.billItems.isNotEmpty) {
       _formKey.currentState!.save();
-      // context.read(billProvider).addBill(_bill);
+      await context.read(addBillProvider).addBill(_bill).onError(
+            (error, stackTrace) =>
+                getBanner(context: context, errorMessage: error.toString()),
+          );
     }
   }
 
@@ -64,20 +70,78 @@ class _BillInputFormState extends State<BillInputForm> {
                   },
                 ),
                 const SizedBox(height: 10),
-                DropdownItemBtn(
-                  oldBillItem:
-                      _bill.billItems.isNotEmpty ? _bill.billItems.last : null,
-                  billItem: (item) {
-                    setState(() {
-                      _bill.billItems.add(BillItems(
-                        price: 0.0,
-                        quentity: 0.0,
-                        item: item,
-                      ));
-                    });
-                  },
+                Row(
+                  textDirection: TextDirection.rtl,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    DialogTitle(
+                      name: 'إضافة صنف: ',
+                    ),
+                    Container(
+                      // height: 35,
+                      // width: 35,
+                      height: 40,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, 6),
+                            blurRadius: 10,
+                            color: Color(0xFFB0B0B0).withOpacity(0.2),
+                          ),
+                        ],
+                      ),
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          backgroundColor: Palette.primaryLightColor,
+                          primary: Colors.amber,
+                          side: BorderSide.none,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          size: 27,
+                        ),
+                        onPressed: () => showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (ctx) => BillItemForm(
+                            hasError: (billItemError) {
+                              if (billItemError) {
+                                getBanner(
+                                  context: context,
+                                  errorMessage:
+                                      'لم تتم اضافة الصنف تاكد من الاتصال بالشبكة الصحيحه',
+                                );
+                              } else {
+                                return;
+                              }
+                            },
+                            billItem: (billItems) {
+                              setState(() {
+                                _bill.billItems.add(billItems);
+                                _isBillItemEmpty = false;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
+                if (_isBillItemEmpty)
+                  Text(
+                    'برجاء إضافة صنف او منتج اولا',
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                if (_isBillItemEmpty) const SizedBox(height: 10),
                 _buildDataTable(context: context),
                 const SizedBox(height: 150),
               ],
@@ -112,7 +176,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     textDirection: TextDirection.rtl,
                     children: [
                       DialogTitle(name: 'الإجمالى: '),
-                      Text('${BillNotifier.sumTotal(_bill)}'),
+                      Text('${BillProvider.sumTotal(_bill)}'),
                     ],
                   ),
                   Row(
@@ -147,7 +211,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     textDirection: TextDirection.rtl,
                     children: [
                       DialogTitle(name: 'ألباقى: '),
-                      Text('${BillNotifier.getRemaining(_bill)}'),
+                      Text('${BillProvider.getRemaining(_bill)}'),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -255,14 +319,14 @@ class _BillInputFormState extends State<BillInputForm> {
           required BuildContext context}) =>
       billItems.map(
         (billItem) {
-          billItem.item.total = BillNotifier.getItemsTotal(
-            price: billItem.item.price,
-            quentity: billItem.item.quentity,
+          billItem.item.total = BillProvider.getItemsTotal(
+            price: billItem.price,
+            quentity: billItem.quentity,
           );
           final cells = [
             billItem.item.name,
-            billItem.item.price,
-            billItem.item.quentity,
+            billItem.price,
+            billItem.quentity,
             billItem.item.total,
           ].reversed.toList();
 

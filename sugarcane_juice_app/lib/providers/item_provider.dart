@@ -65,7 +65,7 @@ class ItemNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> addItem(Item item) async {
+  Future<Item> addItem(Item item) async {
     try {
       final response = await http.post(
         url,
@@ -85,14 +85,21 @@ class ItemNotifier extends ChangeNotifier {
         id: json.decode(response.body)['item']['id'],
         name: item.name,
         price: item.price,
-        quentity: json.decode(response.body)['item']['quentity'].toString(),
+        quentity: item.quentity,
         unit: item.unit,
         type: item.type,
       );
-      _items.add(newItem);
-      notifyListeners();
+      // _items.add(newItem);
+      return newItem;
+    } on FormatException {
+      throw HttpException(
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      );
     } catch (error) {
-      throw error;
+      print(error);
+      throw HttpException(
+        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+      );
     }
   }
 

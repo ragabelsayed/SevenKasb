@@ -61,7 +61,7 @@ class UnitNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> addUnit(Unit unit) async {
+  Future<Unit> addUnit(Unit unit) async {
     try {
       final response = await http.post(
         url,
@@ -76,7 +76,8 @@ class UnitNotifier extends ChangeNotifier {
         id: json.decode(response.body)['unit']['id'],
         name: unit.name,
       );
-      _items.add(newUnit);
+      // _items.add(newUnit);
+      return newUnit;
     } on FormatException {
       throw HttpException(
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',

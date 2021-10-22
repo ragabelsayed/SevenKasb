@@ -25,9 +25,15 @@ final billProvider = FutureProvider<List<Bill>>((ref) async {
   return BillProvider(authToken: _token).fetchBills();
 });
 
+final addBillProvider = Provider<BillProvider>((ref) {
+  String _token = ref.watch(authProvider).token;
+  return BillProvider(authToken: _token);
+});
+
 class BillProvider implements BillRepository {
   BillProvider({required this.authToken});
   late String authToken;
+
   @override
   Future<List<Bill>> fetchBills() async {
     try {
@@ -60,35 +66,46 @@ class BillProvider implements BillRepository {
       );
     }
   }
-}
 
-class BillNotifier extends ChangeNotifier {
-  BillNotifier({required this.authToken});
-  late String authToken;
-  List<Bill> _items = [];
-  List<Bill> get items => [..._items];
-
-  Future<void> fetchAndSetData() async {
+  Future<void> addBill(Bill bill) async {
     try {
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'charset': 'utf-8',
-        'Authorization': 'Bearer $authToken',
-      });
-
-      final extractedData = json.decode(response.body) as List;
-      // print(extractedData.length);
-      final List<Bill> _loadedProducts = [];
-      extractedData.forEach(
-        (bill) {
-          _loadedProducts.add(
-            Bill.fromJson(
-              json: bill as Map<String, dynamic>,
-            ),
-          );
+      // final response =
+      await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
         },
+        body: json.encode({
+          'userId': 1,
+          'billItems': List.from(
+            bill.billItems.map(
+              (e) => {
+                'quentity': e.quentity,
+                'price': e.price,
+                'itemId': e.item.id!,
+              },
+            ),
+          ),
+          'cost': sumTotal(bill),
+          'paid': bill.paid,
+          'clientName': bill.clientName,
+          'createdAt': bill.dateTime.toIso8601String(),
+          'type': bill.type,
+        }),
       );
-      _items = _loadedProducts;
+      // final newBill = Bill(
+      //   id: json.decode(response.body)['bill']['id'],
+      //   user: bill.user,
+      //   billItems: bill.billItems,
+      //   total: sumTotal(bill),
+      //   paid: bill.paid,
+      //   clientName: bill.clientName,
+      //   dateTime: bill.dateTime,
+      //   type: bill.type,
+      // );
+      // _items.add(newBill);
       // notifyListeners();
     } on FormatException {
       throw HttpException(
@@ -102,55 +119,9 @@ class BillNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> addBill(Bill bill) async {
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'charset': 'utf-8',
-          'Authorization': 'Bearer $authToken',
-        },
-        body: json.encode({
-          'userId': 1,
-          'billItems': List.from(
-            bill.billItems.map(
-              (e) => {
-                'quentity': 0.0,
-                'price': 0.0,
-                'itemId': e.item.id!,
-              },
-            ),
-          ),
-          'cost': sumTotal(bill),
-          'paid': bill.paid,
-          'clientName': bill.clientName,
-          'createdAt': bill.dateTime.toIso8601String(),
-          'type': bill.type,
-        }),
-      );
-      final newBill = Bill(
-        id: json.decode(response.body)['bill']['id'],
-        user: bill.user,
-        billItems: bill.billItems,
-        total: sumTotal(bill),
-        paid: bill.paid,
-        clientName: bill.clientName,
-        dateTime: bill.dateTime,
-        type: bill.type,
-      );
-      _items.add(newBill);
-      notifyListeners();
-    } catch (error) {
-      print(error);
-      throw error;
-    }
-  }
-
   static double getItemsTotal(
-      {required String price, required String quentity}) {
-    return double.parse(price) * double.parse(quentity);
-  }
+          {required double price, required double quentity}) =>
+      price * quentity;
 
   static double sumTotal(Bill bill) {
     var sum = 0.0;
@@ -175,3 +146,116 @@ class BillNotifier extends ChangeNotifier {
     }
   }
 }
+// class BillNotifier extends ChangeNotifier {
+//   BillNotifier({required this.authToken});
+//   late String authToken;
+//   List<Bill> _items = [];
+//   List<Bill> get items => [..._items];
+
+//   Future<void> fetchAndSetData() async {
+//     try {
+//       final response = await http.get(url, headers: {
+//         'Content-Type': 'application/json',
+//         'charset': 'utf-8',
+//         'Authorization': 'Bearer $authToken',
+//       });
+
+//       final extractedData = json.decode(response.body) as List;
+//       // print(extractedData.length);
+//       final List<Bill> _loadedProducts = [];
+//       extractedData.forEach(
+//         (bill) {
+//           _loadedProducts.add(
+//             Bill.fromJson(
+//               json: bill as Map<String, dynamic>,
+//             ),
+//           );
+//         },
+//       );
+//       _items = _loadedProducts;
+//       // notifyListeners();
+//     } on FormatException {
+//       throw HttpException(
+//         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+//       );
+//     } catch (error) {
+//       print(error);
+//       throw HttpException(
+//         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+//       );
+//     }
+//   }
+
+//   Future<void> addBill(Bill bill) async {
+//     try {
+//       final response = await http.post(
+//         url,
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'charset': 'utf-8',
+//           'Authorization': 'Bearer $authToken',
+//         },
+//         body: json.encode({
+//           'userId': 1,
+//           'billItems': List.from(
+//             bill.billItems.map(
+//               (e) => {
+//                 'quentity': 0.0,
+//                 'price': 0.0,
+//                 'itemId': e.item.id!,
+//               },
+//             ),
+//           ),
+//           'cost': sumTotal(bill),
+//           'paid': bill.paid,
+//           'clientName': bill.clientName,
+//           'createdAt': bill.dateTime.toIso8601String(),
+//           'type': bill.type,
+//         }),
+//       );
+//       final newBill = Bill(
+//         id: json.decode(response.body)['bill']['id'],
+//         user: bill.user,
+//         billItems: bill.billItems,
+//         total: sumTotal(bill),
+//         paid: bill.paid,
+//         clientName: bill.clientName,
+//         dateTime: bill.dateTime,
+//         type: bill.type,
+//       );
+//       _items.add(newBill);
+//       notifyListeners();
+//     } catch (error) {
+//       print(error);
+//       throw error;
+//     }
+//   }
+
+//   static double getItemsTotal(
+//       {required double price, required double quentity}) {
+//     return price * quentity;
+//   }
+
+//   static double sumTotal(Bill bill) {
+//     var sum = 0.0;
+//     if (bill.billItems.isNotEmpty) {
+//       bill.billItems.forEach((e) {
+//         sum += e.item.total!;
+//       });
+//       bill.total = sum;
+//       return bill.total;
+//     } else {
+//       return sum;
+//     }
+//   }
+
+//   static double getRemaining(Bill bill) {
+//     var sub = 0.0;
+//     if (bill.total >= bill.paid && bill.paid > 0) {
+//       sub = bill.total - bill.paid;
+//       return sub;
+//     } else {
+//       return sub;
+//     }
+//   }
+// }

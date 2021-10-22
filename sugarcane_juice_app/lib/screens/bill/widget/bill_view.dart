@@ -64,7 +64,7 @@ class BillView extends StatelessWidget {
               _buildRowView(
                 context,
                 name: ' :الإجمالى',
-                value: '${BillNotifier.sumTotal(bill)}',
+                value: '${BillProvider.sumTotal(bill)}',
               ),
               const SizedBox(height: 3),
               _buildRowView(
@@ -76,7 +76,7 @@ class BillView extends StatelessWidget {
               _buildRowView(
                 context,
                 name: ' :ألباقى',
-                value: '${BillNotifier.getRemaining(bill)}',
+                value: '${BillProvider.getRemaining(bill)}',
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -146,9 +146,9 @@ class BillView extends StatelessWidget {
             // billItem.quentity,
             billItem.price,
             '${billItem.item.unit.name} ${billItem.quentity}',
-            BillNotifier.getItemsTotal(
-              price: billItem.price.toString(),
-              quentity: billItem.quentity.toString(),
+            BillProvider.getItemsTotal(
+              price: billItem.price,
+              quentity: billItem.quentity,
             ),
           ].reversed.toList();
           return DataRow(
