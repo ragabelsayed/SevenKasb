@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '/widget/save_cancel_btns.dart';
 import '/providers/item_provider.dart';
 import '/providers/unit_provider.dart';
 import '/config/constants.dart';
@@ -140,7 +141,7 @@ class _BillItemFormState extends State<BillItemForm> {
                       },
                     ),
                     const SizedBox(height: 30),
-                    _getBtn(context),
+                    SaveAndCancelBtns(onSave: () => setWaiting())
                   ],
                 ),
               ),
@@ -182,48 +183,6 @@ class _BillItemFormState extends State<BillItemForm> {
         }
       },
       onSaved: (newValue) => onSave(newValue!),
-    );
-  }
-
-  Row _getBtn(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width / 3,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Palette.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                  ),
-                )),
-            child: Text('إلغاء'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        const SizedBox(width: 5),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width / 3,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Palette.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(30),
-                  ),
-                )),
-            child: Text('حفظ'),
-            onPressed: () {
-              setWaiting();
-            },
-          ),
-        ),
-      ],
     );
   }
 }

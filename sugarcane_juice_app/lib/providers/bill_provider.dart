@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:sugarcane_juice_app/models/bill.dart';
@@ -112,7 +111,6 @@ class BillProvider implements BillRepository {
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
       );
     } catch (error) {
-      print(error);
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
       );
@@ -141,6 +139,8 @@ class BillProvider implements BillRepository {
     if (bill.total >= bill.paid && bill.paid > 0) {
       sub = bill.total - bill.paid;
       return sub;
+    } else if (bill.total == 0) {
+      return 0.0;
     } else {
       return sub;
     }

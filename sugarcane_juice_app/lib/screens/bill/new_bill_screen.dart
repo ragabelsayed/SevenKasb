@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:sugarcane_juice_app/config/constants.dart';
-import 'package:sugarcane_juice_app/config/palette.dart';
-import 'package:sugarcane_juice_app/screens/bill/widget/bill_input_form.dart';
+import '/config/constants.dart';
+import '/config/palette.dart';
+import 'widget/bill_input_form.dart';
 
 class NewBillScreen extends StatelessWidget {
   static const routName = '/new_bill';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Palette.primaryColor,
-        title: Text(
-          'إضافة فاتورة',
-          style: AppConstants.appBarTitle,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Palette.primaryColor,
+          title: Text(
+            'إضافة فاتورة',
+            style: AppConstants.appBarTitle,
+          ),
+          centerTitle: true,
+          // leading: MenuWidget(),
+          shape: AppConstants.appBarBorder,
         ),
-        centerTitle: true,
-        // leading: MenuWidget(),
-        shape: AppConstants.appBarBorder,
+        body: BillInputForm(),
       ),
-      body: BillInputForm(),
     );
   }
 }
