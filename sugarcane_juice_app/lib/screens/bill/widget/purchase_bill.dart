@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sugarcane_juice_app/config/palette.dart';
+import '/config/palette.dart';
 import '/providers/bill_provider.dart';
 import '/widget/error_view.dart';
 import '../new_bill_screen.dart';
@@ -12,9 +12,6 @@ class PurchaseBill extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final bills = watch(billProvider);
-    // final bills = watch(sProvider);
-    // final bills = watch(billListProvider);
-
     return RefreshIndicator(
       onRefresh: () => context.refresh(billProvider),
       color: Palette.primaryColor,

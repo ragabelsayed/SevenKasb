@@ -24,7 +24,9 @@ class BillInputForm extends StatefulWidget {
 class _BillInputFormState extends State<BillInputForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isBillItemEmpty = false;
+  // use it
   bool _isWaiting = false;
+  bool _saveItOnce = false;
 
   late Bill _bill = Bill(
     user: {},
@@ -43,19 +45,18 @@ class _BillInputFormState extends State<BillInputForm> {
     }
     if (_isValid && _bill.billItems.isNotEmpty) {
       _formKey.currentState!.save();
-      print('3333333');
       await context.read(addBillProvider).addBill(_bill).onError(
             (error, stackTrace) =>
                 getBanner(context: context, errorMessage: error.toString()),
           );
-      Navigator.of(context).pop();
+      setState(() => _saveItOnce = false);
     }
   }
 
   void setWaiting() {
     setState(() {
       _isWaiting = true;
-      print('22222');
+      _saveItOnce = true;
     });
   }
 
@@ -179,15 +180,15 @@ class _BillInputFormState extends State<BillInputForm> {
           ),
           _isWaiting
               ? FutureBuilder(
-                  future: _saveForm(),
+                  future: _saveItOnce
+                      ? _saveForm()
+                      : Future.delayed(const Duration(milliseconds: 3)),
                   builder: (context, snapshot) {
-                    print('444');
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: CircularProgressIndicator(color: Colors.green),
                       );
                     } else {
-                      setState(() {});
                       return Center(
                         // child: Icon(Icons.done, color: Colors.green),
                         child: FaIcon(
@@ -224,7 +225,6 @@ class _BillInputFormState extends State<BillInputForm> {
                   onPressed: !_isWaiting
                       ? () {
                           setWaiting();
-                          print('11111');
                         }
                       : () {}),
             ),
