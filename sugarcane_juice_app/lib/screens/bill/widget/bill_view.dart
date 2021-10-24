@@ -9,7 +9,7 @@ import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
 
 class BillView extends StatelessWidget {
   final Bill bill;
-  const BillView({Key? key, required this.bill}) : super(key: key);
+  const BillView({required this.bill});
 
   @override
   Widget build(BuildContext context) {
@@ -141,15 +141,17 @@ class BillView extends StatelessWidget {
           required BuildContext context}) =>
       billItems.map(
         (billItem) {
+          billItem.item.total = BillProvider.getItemsTotal(
+            price: billItem.price,
+            quentity: billItem.quentity,
+          );
+
           final cells = [
             billItem.item.name,
             // billItem.quentity,
             billItem.price,
-            '${billItem.item.unit.name} ${billItem.quentity}',
-            BillProvider.getItemsTotal(
-              price: billItem.price,
-              quentity: billItem.quentity,
-            ),
+            '${billItem.quentity}  ${billItem.item.unit.name}',
+            billItem.item.total
           ].reversed.toList();
           return DataRow(
             cells: _getCells(cells),

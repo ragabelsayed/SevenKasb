@@ -148,6 +148,49 @@ class BillProvider implements BillRepository {
   }
 }
 
+// final billListProvider = StateNotifierProvider<BillNotifier, List<Bill>>((ref) {
+//   String _token = ref.watch(authProvider).token;
+//   return BillNotifier(authToken: _token);
+// });
+
+// class BillNotifier extends StateNotifier<List<Bill>> {
+//   late String authToken;
+//   BillNotifier({required this.authToken}) : super([]);
+
+//   Future<List<Bill>> fetchBills() async {
+//     try {
+//       final response = await http.get(url, headers: {
+//         'Content-Type': 'application/json',
+//         'charset': 'utf-8',
+//         'Authorization': 'Bearer $authToken',
+//       });
+
+//       final extractedData = json.decode(response.body) as List;
+//       final List<Bill> _loadedBill = [];
+//       extractedData.forEach(
+//         (bill) {
+//           _loadedBill.add(
+//             Bill.fromJson(
+//               json: bill as Map<String, dynamic>,
+//             ),
+//           );
+//         },
+//       );
+//       state = _loadedBill;
+//       return state;
+//     } on FormatException {
+//       throw HttpException(
+//         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+//       );
+//     } catch (error) {
+//       print(error);
+//       throw HttpException(
+//         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+//       );
+//     }
+//   }
+// }
+
 // class BillNotifier extends ChangeNotifier {
 //   BillNotifier({required this.authToken});
 //   late String authToken;
