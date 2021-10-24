@@ -18,7 +18,6 @@ class NewBillScreen extends StatelessWidget {
             style: AppConstants.appBarTitle,
           ),
           centerTitle: true,
-          // leading: MenuWidget(),
           shape: AppConstants.appBarBorder,
         ),
         body: BillInputForm(),

@@ -43,16 +43,19 @@ class _BillInputFormState extends State<BillInputForm> {
     }
     if (_isValid && _bill.billItems.isNotEmpty) {
       _formKey.currentState!.save();
+      print('3333333');
       await context.read(addBillProvider).addBill(_bill).onError(
             (error, stackTrace) =>
                 getBanner(context: context, errorMessage: error.toString()),
           );
+      Navigator.of(context).pop();
     }
   }
 
   void setWaiting() {
     setState(() {
-      _isWaiting = !_isWaiting;
+      _isWaiting = true;
+      print('22222');
     });
   }
 
@@ -178,11 +181,13 @@ class _BillInputFormState extends State<BillInputForm> {
               ? FutureBuilder(
                   future: _saveForm(),
                   builder: (context, snapshot) {
+                    print('444');
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: CircularProgressIndicator(color: Colors.green),
                       );
                     } else {
+                      setState(() {});
                       return Center(
                         // child: Icon(Icons.done, color: Colors.green),
                         child: FaIcon(
@@ -216,9 +221,12 @@ class _BillInputFormState extends State<BillInputForm> {
               opacity: _isWaiting ? 0.5 : 1.0,
               child: RoundedTextButton(
                   text: 'حفظ',
-                  onPressed: () {
-                    if (!_isWaiting) setWaiting();
-                  }),
+                  onPressed: !_isWaiting
+                      ? () {
+                          setWaiting();
+                          print('11111');
+                        }
+                      : () {}),
             ),
           ),
         ],

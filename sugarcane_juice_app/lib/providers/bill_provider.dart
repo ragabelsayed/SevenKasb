@@ -19,6 +19,7 @@ abstract class BillRepository {
 //   String _token = ref.watch(authProvider).token;
 //   return BillNotifier(authToken: _token);
 // });
+
 final billProvider = FutureProvider<List<Bill>>((ref) async {
   String _token = ref.watch(authProvider).token;
   return BillProvider(authToken: _token).fetchBills();
@@ -146,6 +147,7 @@ class BillProvider implements BillRepository {
     }
   }
 }
+
 // class BillNotifier extends ChangeNotifier {
 //   BillNotifier({required this.authToken});
 //   late String authToken;
