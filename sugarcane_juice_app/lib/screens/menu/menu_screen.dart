@@ -8,7 +8,8 @@ import '/config/palette.dart';
 class MenuItems {
   static const item = MenuItem('الاصناف', FaIcon(FontAwesomeIcons.home));
   static const bills = MenuItem('الفواتير', FaIcon(FontAwesomeIcons.receipt));
-  static const stock = MenuItem('Stock', FaIcon(FontAwesomeIcons.warehouse));
+  static const extra =
+      MenuItem('مصروفات إضافية', FaIcon(FontAwesomeIcons.wallet));
   static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
   static const aboutUs =
       MenuItem('About Us', FaIcon(FontAwesomeIcons.infoCircle));
@@ -18,7 +19,7 @@ class MenuItems {
   static const all = [
     item,
     bills,
-    stock,
+    extra,
     help,
     aboutUs,
     unit,
