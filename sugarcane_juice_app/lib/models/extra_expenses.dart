@@ -1,7 +1,7 @@
 class Extra {
   int? id;
   String reason;
-  String cash;
+  double cash;
   DateTime dataTime;
 
   Extra({

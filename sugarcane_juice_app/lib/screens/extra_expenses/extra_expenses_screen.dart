@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sugarcane_juice_app/screens/extra_expenses/widget/input_extra_expenses_form.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';
@@ -18,6 +19,22 @@ class ExtraExpensesScreen extends StatelessWidget {
         backgroundColor: Palette.primaryColor,
         leading: MenuWidget(),
         shape: AppConstants.appBarBorder,
+      ),
+      body: SizedBox(),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'اضافة مصاريف إضافية',
+        child: Icon(Icons.add),
+        backgroundColor: Colors.amber,
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+          ),
+          isScrollControlled: true,
+          builder: (ctx) => InputExtraExpensesForm(
+            hasError: (extraExpensesError) {},
+          ),
+        ),
       ),
     );
   }
