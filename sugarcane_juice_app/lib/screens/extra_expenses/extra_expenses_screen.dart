@@ -23,14 +23,15 @@ class ExtraExpensesScreen extends StatelessWidget {
       body: SizedBox(),
       floatingActionButton: FloatingActionButton(
         tooltip: 'اضافة مصاريف إضافية',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Colors.amber,
         onPressed: () => showModalBottomSheet(
           context: context,
-          shape: RoundedRectangleBorder(
+          isDismissible: false,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
           ),
-          isScrollControlled: true,
           builder: (ctx) => InputExtraExpensesForm(
             hasError: (extraExpensesError) {},
           ),

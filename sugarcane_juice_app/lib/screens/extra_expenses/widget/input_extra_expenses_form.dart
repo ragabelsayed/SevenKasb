@@ -58,78 +58,94 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        right: 20,
-        left: 20,
-        top: 20,
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Text(
-              'إضافة مصروفات إضافية',
-              textDirection: TextDirection.rtl,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            const SizedBox(height: 10),
-            _buildTextFormField(
-              hintText: '    سبب المصروف الاضافي',
-              error: AppConstants.extraReasonError,
-              type: TextInputType.name,
-              action: TextInputAction.next,
-              onSave: (value) {
-                _extra.reason = value;
-              },
-            ),
-            const SizedBox(height: 10),
-            _buildTextFormField(
-              hintText: '    كمية المصروف',
-              error: AppConstants.extraCashError,
-              type: TextInputType.number,
-              action: TextInputAction.done,
-              onSave: (value) {
-                _extra.cash = double.parse(value);
-              },
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  getText(),
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                IconButton(
-                  icon: FaIcon(
-                    FontAwesomeIcons.calendarAlt,
+    return _iswaiting
+        ? FutureBuilder(
+            future: _saveForm(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(color: Colors.green),
+                );
+              } else {
+                return const Center(
+                  child: FaIcon(
+                    FontAwesomeIcons.checkCircle,
                     color: Colors.green,
+                    size: 50,
                   ),
-                  onPressed: () {
-                    _pickDate(context);
-                  },
-                )
-              ],
+                );
+              }
+            },
+          )
+        : Padding(
+            padding: EdgeInsets.only(
+              right: 20,
+              left: 20,
+              top: 20,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SaveAndCancelBtns(onSave: () {
-                  // setWaiting();
-                  _saveForm();
-                }),
-              ],
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Text(
+                    'إضافة مصروفات إضافية',
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(
+                    hintText: '    سبب المصروف الاضافي',
+                    error: AppConstants.extraReasonError,
+                    type: TextInputType.name,
+                    action: TextInputAction.next,
+                    onSave: (value) {
+                      _extra.reason = value;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(
+                    hintText: '    كمية المصروف',
+                    error: AppConstants.extraCashError,
+                    type: TextInputType.number,
+                    action: TextInputAction.done,
+                    onSave: (value) {
+                      _extra.cash = double.parse(value);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        getText(),
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.calendarAlt,
+                          color: Colors.green,
+                        ),
+                        onPressed: () {
+                          _pickDate(context);
+                        },
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SaveAndCancelBtns(onSave: () => setWaiting()),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                ],
+              ),
             ),
-            const SizedBox(height: 15),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Future<DateTime?> _pickDate(BuildContext context) async {
