@@ -18,6 +18,13 @@ final addExtraExpensesProvider = Provider<ExtraExpensesProvider>((ref) {
   return ExtraExpensesProvider(authToken: _token);
 });
 
+// final isErrorProvider = Provider<bool>((ref) {
+//   return ;
+// });
+final isErrorProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
 class ExtraExpensesProvider {
   ExtraExpensesProvider({required this.authToken});
   late String authToken;

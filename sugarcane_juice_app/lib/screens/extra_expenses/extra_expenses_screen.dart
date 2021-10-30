@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/providers/extra_provider.dart';
 import 'package:sugarcane_juice_app/screens/extra_expenses/widget/extra_data_table_view.dart';
+import 'package:sugarcane_juice_app/widget/banner_message.dart';
 import 'package:sugarcane_juice_app/widget/error_view.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
@@ -26,7 +27,7 @@ class ExtraExpensesScreen extends ConsumerWidget {
         shape: AppConstants.appBarBorder,
       ),
       body: extraExpenses.when(
-        loading: () => Center(
+        loading: () => const Center(
           child: const CircularProgressIndicator(color: Colors.green),
         ),
         error: (error, stackTrace) => ErrorView(error: error.toString()),
@@ -55,9 +56,29 @@ class ExtraExpensesScreen extends ConsumerWidget {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
           ),
-          builder: (ctx) => InputExtraExpensesForm(
-            hasError: (extraExpensesError) {},
-          ),
+          builder: (ctx) {
+            // if (watch(isErrorProvider).state) {
+            //   print('ssas');
+            //   getBanner(
+            //     context: context,
+            //     errorMessage:
+            //         'لم تتم اضافة المصروف تاكد من الاتصال بالشبكة الصحيحه',
+            //   );
+            // }
+            return InputExtraExpensesForm(
+              hasError: (extraExpensesError) {
+                // if (extraExpensesError) {
+                //   getBanner(
+                //     context: context,
+                //     errorMessage:
+                //         'لم تتم اضافة المصروف تاكد من الاتصال بالشبكة الصحيحه',
+                //   );
+                // } else {
+                //   return;
+                // }
+              },
+            );
+          },
         ),
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:sugarcane_juice_app/providers/extra_provider.dart';
 import '/config/palette.dart';
 import '/models/extra_expenses.dart';
 import '/config/constants.dart';
@@ -31,10 +33,13 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
       _formKey.currentState!.save();
 
       try {
+        context.read(addExtraExpensesProvider).addBill(_extra);
         widget.hasError(false);
         Navigator.of(context).pop();
       } catch (e) {
-        widget.hasError(true);
+        // print('222');
+        // context.read(isErrorProvider).state = true;
+        // widget.hasError(true);
         Navigator.of(context).pop();
       }
     }
@@ -97,22 +102,22 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
                   ),
                   const SizedBox(height: 10),
                   _buildTextFormField(
-                    hintText: '    سبب المصروف الاضافي',
-                    error: AppConstants.extraReasonError,
-                    type: TextInputType.name,
-                    action: TextInputAction.next,
-                    onSave: (value) {
-                      _extra.reason = value;
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  _buildTextFormField(
                     hintText: '    كمية المصروف',
                     error: AppConstants.extraCashError,
                     type: TextInputType.number,
                     action: TextInputAction.done,
                     onSave: (value) {
                       _extra.cash = double.parse(value);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  _buildTextFormField(
+                    hintText: '    سبب المصروف الاضافي',
+                    error: AppConstants.extraReasonError,
+                    type: TextInputType.name,
+                    action: TextInputAction.next,
+                    onSave: (value) {
+                      _extra.reason = value;
                     },
                   ),
                   const SizedBox(height: 10),
