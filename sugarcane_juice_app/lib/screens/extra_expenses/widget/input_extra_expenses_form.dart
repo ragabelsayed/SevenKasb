@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:sugarcane_juice_app/providers/extra_provider.dart';
+import '/widget/toast_view.dart';
+import '/providers/extra_provider.dart';
 import '/config/palette.dart';
 import '/models/extra_expenses.dart';
 import '/config/constants.dart';
 import '/widget/save_cancel_btns.dart';
 
 class InputExtraExpensesForm extends StatefulWidget {
-  final Function(bool extraExpensesError) hasError;
-  const InputExtraExpensesForm({required this.hasError});
-
+  final FToast ftoast;
+  const InputExtraExpensesForm({required this.ftoast});
   @override
   State<InputExtraExpensesForm> createState() => _InputExtraExpensesFormState();
 }
@@ -19,7 +20,6 @@ class InputExtraExpensesForm extends StatefulWidget {
 class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
   final _formKey = GlobalKey<FormState>();
   DateTime? date;
-
   bool _iswaiting = false;
   Extra _extra = Extra(
     reason: '',
@@ -31,15 +31,26 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
     final _isValid = _formKey.currentState!.validate();
     if (_isValid) {
       _formKey.currentState!.save();
-
       try {
-        context.read(addExtraExpensesProvider).addBill(_extra);
-        widget.hasError(false);
+        await context.read(addExtraExpensesProvider).addBill(_extra);
+        widget.ftoast.showToast(
+          child: ToastView(
+            message: ' تم اضافة المصروف',
+            success: true,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
         Navigator.of(context).pop();
       } catch (e) {
-        // print('222');
-        // context.read(isErrorProvider).state = true;
-        // widget.hasError(true);
+        widget.ftoast.showToast(
+          child: ToastView(
+            message: 'لم تتم اضافة المصروف',
+            success: false,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
         Navigator.of(context).pop();
       }
     }
@@ -64,23 +75,17 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
   @override
   Widget build(BuildContext context) {
     return _iswaiting
-        ? FutureBuilder(
-            future: _saveForm(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+        ? Container(
+            height: 100,
+            width: double.infinity,
+            child: FutureBuilder(
+              future: _saveForm(),
+              builder: (context, snapshot) {
                 return const Center(
                   child: CircularProgressIndicator(color: Colors.green),
                 );
-              } else {
-                return const Center(
-                  child: FaIcon(
-                    FontAwesomeIcons.checkCircle,
-                    color: Colors.green,
-                    size: 50,
-                  ),
-                );
-              }
-            },
+              },
+            ),
           )
         : Padding(
             padding: EdgeInsets.only(

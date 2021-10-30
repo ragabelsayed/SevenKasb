@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sugarcane_juice_app/providers/extra_provider.dart';
-import 'package:sugarcane_juice_app/screens/extra_expenses/widget/extra_data_table_view.dart';
-import 'package:sugarcane_juice_app/widget/banner_message.dart';
-import 'package:sugarcane_juice_app/widget/error_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '/providers/extra_provider.dart';
+import 'widget/extra_data_table_view.dart';
+import '/widget/error_view.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';
@@ -15,6 +15,7 @@ class ExtraExpensesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final extraExpenses = watch(extraExpensesProvider);
+    FToast fToast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,32 +53,13 @@ class ExtraExpensesScreen extends ConsumerWidget {
         onPressed: () => showModalBottomSheet(
           context: context,
           isDismissible: false,
+          enableDrag: false,
           isScrollControlled: true,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
           ),
           builder: (ctx) {
-            // if (watch(isErrorProvider).state) {
-            //   print('ssas');
-            //   getBanner(
-            //     context: context,
-            //     errorMessage:
-            //         'لم تتم اضافة المصروف تاكد من الاتصال بالشبكة الصحيحه',
-            //   );
-            // }
-            return InputExtraExpensesForm(
-              hasError: (extraExpensesError) {
-                // if (extraExpensesError) {
-                //   getBanner(
-                //     context: context,
-                //     errorMessage:
-                //         'لم تتم اضافة المصروف تاكد من الاتصال بالشبكة الصحيحه',
-                //   );
-                // } else {
-                //   return;
-                // }
-              },
-            );
+            return InputExtraExpensesForm(ftoast: fToast);
           },
         ),
       ),
