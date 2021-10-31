@@ -27,24 +27,28 @@ class ExtraExpensesScreen extends ConsumerWidget {
         leading: MenuWidget(),
         shape: AppConstants.appBarBorder,
       ),
-      body: extraExpenses.when(
-        loading: () => const Center(
-          child: const CircularProgressIndicator(color: Colors.green),
+      body: RefreshIndicator(
+        onRefresh: () => context.refresh(extraExpensesProvider),
+        color: Palette.primaryColor,
+        child: extraExpenses.when(
+          loading: () => const Center(
+            child: const CircularProgressIndicator(color: Colors.green),
+          ),
+          error: (error, stackTrace) => ErrorView(error: error.toString()),
+          data: (extraList) {
+            var date = DateTime.now();
+            var thirtyDaysAgo = date.subtract(const Duration(days: 30));
+            var extras = extraList
+                .where((extra) => extra.dataTime.isAfter(thirtyDaysAgo))
+                .toList();
+            return extras.isNotEmpty
+                // return extraList.isNotEmpty
+                ? ExtraDataTableView(extraList: extras)
+                : const Center(
+                    child: ErrorView(error: 'لا يوجد مصروفات إضافية'),
+                  );
+          },
         ),
-        error: (error, stackTrace) => ErrorView(error: error.toString()),
-        data: (extraList) {
-          var date = DateTime.now();
-          var thirtyDaysAgo = date.subtract(const Duration(days: 30));
-          var extras = extraList
-              .where((extra) => extra.dataTime.isAfter(thirtyDaysAgo))
-              .toList();
-          // return extras.isNotEmpty
-          return extraList.isNotEmpty
-              ? ExtraDataTableView(extraList: extraList)
-              : const Center(
-                  child: ErrorView(error: 'لا يوجد مصروفات إضافية'),
-                );
-        },
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'اضافة مصاريف إضافية',

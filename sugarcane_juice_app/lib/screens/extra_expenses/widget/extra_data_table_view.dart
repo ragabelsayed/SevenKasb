@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
-
-import 'package:sugarcane_juice_app/models/extra_expenses.dart';
-import 'package:sugarcane_juice_app/screens/extra_expenses/widget/extra_view.dart';
+import '/models/extra_expenses.dart';
+import 'extra_view.dart';
 
 class ExtraDataTableView extends StatelessWidget {
   final List<Extra> extraList;
@@ -18,6 +17,7 @@ class ExtraDataTableView extends StatelessWidget {
     ];
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 10),
+      physics: AlwaysScrollableScrollPhysics(),
       child: DataTable(
         columns: _getColumns(columns),
         rows: _getRow(extras: extraList, context: context),
