@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'package:sugarcane_juice_app/models/extra_expenses.dart';
+import 'package:sugarcane_juice_app/screens/extra_expenses/widget/extra_view.dart';
 
 class ExtraDataTableView extends StatelessWidget {
   final List<Extra> extraList;
@@ -71,7 +72,7 @@ class ExtraDataTableView extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return SizedBox();
+                        return ExtraView(extra: extra);
                       },
                     );
                   },
