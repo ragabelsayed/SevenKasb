@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sugarcane_juice_app/models/user.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/models/bill.dart';
@@ -29,7 +30,7 @@ class _BillInputFormState extends State<BillInputForm> {
   bool _saveItOnce = false;
 
   late Bill _bill = Bill(
-    user: {},
+    user: User(),
     type: 0,
     total: 0.0,
     paid: 0.0,

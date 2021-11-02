@@ -1,5 +1,6 @@
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
+import 'package:sugarcane_juice_app/models/user.dart';
 
 class BillItems {
   double price;
@@ -14,7 +15,7 @@ class BillItems {
 
 class Bill {
   int? id;
-  Map<String, dynamic> user;
+  User user;
   double total;
   double paid;
   String clientName;
@@ -38,7 +39,10 @@ class Bill {
     return Bill(
       id: json['id'],
       type: json['type'] ?? 0,
-      user: json['userNavigation'],
+      user: User(
+        id: json['userNavigation']['id'],
+        knownAs: json['userNavigation']['knownAs'],
+      ),
       total: json['cost'] ?? 0.0,
       paid: json['paid'] ?? 0.0,
       clientName: json['clientName'] ?? '',
