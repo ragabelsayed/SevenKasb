@@ -5,6 +5,7 @@ import 'package:sugarcane_juice_app/screens/extra_expenses/extra_expenses_screen
 import 'package:sugarcane_juice_app/screens/item/item_screen.dart';
 import 'package:sugarcane_juice_app/screens/menu/menu_screen.dart';
 import 'package:sugarcane_juice_app/screens/unit/unit_screen.dart';
+import 'package:sugarcane_juice_app/screens/user/user_screen.dart';
 
 import 'item/item_screen.dart';
 
@@ -48,6 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return UnitScreen();
       case MenuItems.extra:
         return ExtraExpensesScreen();
+      case MenuItems.edit:
+        return UserScreen();
       default:
         return ItemScreen();
     }

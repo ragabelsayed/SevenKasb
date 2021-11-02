@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
-import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import '/config/palette.dart';
 
 class MenuItems {
@@ -11,18 +10,17 @@ class MenuItems {
   static const extra =
       MenuItem('مصروفات إضافية', FaIcon(FontAwesomeIcons.wallet));
   static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
-  static const aboutUs =
-      MenuItem('About Us', FaIcon(FontAwesomeIcons.infoCircle));
   static const unit =
       MenuItem('وحدة القياس', FaIcon(FontAwesomeIcons.balanceScale));
+  static const edit = MenuItem('الأعدادات', FaIcon(FontAwesomeIcons.userEdit));
 
   static const all = [
     item,
     bills,
     extra,
     help,
-    aboutUs,
     unit,
+    edit,
   ];
 }
 
