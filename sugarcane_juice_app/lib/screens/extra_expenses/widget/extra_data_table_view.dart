@@ -50,7 +50,7 @@ class ExtraDataTableView extends StatelessWidget {
       extras.map(
         (extra) {
           final cells = [
-            extra.id,
+            extra.user.knownAs,
             extra.cash,
             intl.DateFormat.Md().format(extra.dataTime),
           ];
@@ -62,7 +62,7 @@ class ExtraDataTableView extends StatelessWidget {
                   child: Transform.rotate(
                     angle: 600,
                     origin: Offset(0.0, 0.0),
-                    child: Icon(
+                    child: const Icon(
                       Icons.forward_rounded,
                       size: 30,
                       color: Colors.amber,

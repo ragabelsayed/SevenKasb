@@ -21,16 +21,10 @@ class ExtraView extends StatelessWidget {
             children: [
               const DialogTitle(name: 'المصروف الإضافى'),
               const SizedBox(height: 10),
-              // _buildRowView(
-              //   context,
-              //   name: ' :رقم المصروف',
-              //   value: '${extra.id}',
-              // ),
-              // const SizedBox(height: 5),
               _buildRowView(
                 context,
                 name: ' :الصارف',
-                value: '${extra.cash}',
+                value: '${extra.user.knownAs}',
               ),
               const SizedBox(height: 5),
               _buildRowView(

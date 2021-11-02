@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:sugarcane_juice_app/models/user.dart';
 import '/widget/toast_view.dart';
 import '/providers/extra_provider.dart';
 import '/config/palette.dart';
@@ -22,6 +23,7 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
   DateTime? date;
   bool _iswaiting = false;
   Extra _extra = Extra(
+    user: User(),
     reason: '',
     cash: 0.0,
     dataTime: DateTime.now(),
