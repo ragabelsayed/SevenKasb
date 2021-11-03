@@ -18,9 +18,10 @@ class User {
   factory User.fromJson({required Map<String, dynamic> json}) {
     return User(
       id: json['id'],
-      userName: json['username'],
-      knownAs: json['knownAs'],
-      dateOfBirth: json['dateOfBirth'],
+      userName: json['username'] ?? '',
+      knownAs: json['knownAs'] ?? '',
+      dateOfBirth:
+          DateTime.parse('${json['dateOfBirth'] ?? '${DateTime.now()}'}'),
       city: json['city'],
       telephone: json['telephone'],
     );
