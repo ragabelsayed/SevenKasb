@@ -8,16 +8,16 @@ import '/providers/auth.dart';
 const userUri = 'http://10.0.2.2:5000/api/users/1';
 Uri url = Uri.parse(userUri);
 
-final userProvider = StateNotifierProvider<UserNotifier, User>((ref) {
+final userProvider = FutureProvider<User>((ref) async {
   String _token = ref.watch(authProvider).token;
-  return UserNotifier(authToken: _token);
+  return UserProvider(authToken: _token).fetchUserDate();
 });
 
-class UserNotifier extends StateNotifier<User> {
-  UserNotifier({required this.authToken}) : super(User());
+class UserProvider {
   late String authToken;
+  UserProvider({required this.authToken});
 
-  Future<void> fetchUserDate() async {
+  Future<User> fetchUserDate() async {
     try {
       final response = await http.get(url, headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ class UserNotifier extends StateNotifier<User> {
       final extractedData =
           await json.decode(response.body) as Map<String, dynamic>;
       final _loadedUser = User.fromJson(json: extractedData);
-      state = _loadedUser;
+      return _loadedUser;
     } on FormatException {
       throw HttpException(
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
