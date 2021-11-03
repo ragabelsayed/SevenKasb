@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '/providers/user_provider.dart';
 import '/widget/error_view.dart';
 import '/config/constants.dart';
@@ -14,6 +15,7 @@ class UserScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final user = watch(userProvider);
+    FToast fToast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,10 +29,13 @@ class UserScreen extends ConsumerWidget {
       ),
       body: user.when(
         loading: () => Center(
-          child: const CircularProgressIndicator(color: Colors.green),
+          child: const CircularProgressIndicator(
+            backgroundColor: Palette.primaryLightColor,
+            color: Palette.primaryColor,
+          ),
         ),
         error: (error, stackTrace) => ErrorView(error: error.toString()),
-        data: (_user) => UserForm(user: _user),
+        data: (_user) => UserForm(user: _user, fToast: fToast),
       ),
     );
   }
