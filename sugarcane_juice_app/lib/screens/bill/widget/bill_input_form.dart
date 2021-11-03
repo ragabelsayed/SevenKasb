@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sugarcane_juice_app/models/user.dart';
+import '/models/user.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/models/bill.dart';
@@ -11,7 +11,7 @@ import './bill_item_input_form.dart';
 import './custom_bottom_sheet.dart';
 import './data_table_form.dart';
 import '/widget/banner_message.dart';
-import '../../../widget/dialog_alart.dart';
+import '/widget/alert_view.dart';
 import '/widget/dialog_title.dart';
 import '/widget/rounded_text_btn.dart';
 
@@ -162,7 +162,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     billItems: _bill.billItems,
                     deleteBillItem: (_billItem) => showDialog(
                       context: context,
-                      builder: (context) => Alart(
+                      builder: (context) => AlertView(
                         message: 'هل انت متاكد من حذف هذا الصنف؟',
                         onpress: () {
                           setState(() {

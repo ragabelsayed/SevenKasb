@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sugarcane_juice_app/config/palette.dart';
+import '/config/palette.dart';
 
-class Alart extends StatelessWidget {
+class AlertView extends StatelessWidget {
   final bool isSave;
   final String message;
   final Function onpress;
-  const Alart({
+  const AlertView({
     this.isSave = false,
     required this.message,
     required this.onpress,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/models/user.dart';
-import '../../../widget/dialog_alart.dart';
+import '../../../widget/alert_view.dart';
 import '/widget/dialog_title.dart';
 import '/widget/rounded_text_btn.dart';
 
@@ -98,7 +98,7 @@ class _UserFormState extends State<UserForm> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => Alart(
+                  builder: (context) => AlertView(
                     isSave: true,
                     message: 'هل انت متأكد من حفظ هذا التعديل؟',
                     onpress: () {

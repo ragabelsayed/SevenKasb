@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/item_provider.dart';
-import 'package:sugarcane_juice_app/providers/unit_provider.dart';
-import 'package:sugarcane_juice_app/widget/dialog_alart.dart';
+import 'package:sugarcane_juice_app/widget/alert_view.dart';
 
 class DialogButtons extends StatelessWidget {
   final String name;
@@ -53,7 +51,7 @@ class DialogButtons extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => Alart(
+                builder: (context) => AlertView(
                   message: 'هل انت متاكد من حذف هذا الصنف؟',
                   onpress: () {
                     context.read(itemProvider).deleteItem(item: deleteItem!);

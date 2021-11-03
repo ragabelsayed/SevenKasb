@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '/config/palette.dart';
 import '/models/unit.dart';
 import '/providers/unit_provider.dart';
-import '../../../widget/dialog_alart.dart';
+import '/widget/alert_view.dart';
 import '/widget/dialog_title.dart';
 import '/widget/toast_view.dart';
 
@@ -41,7 +41,7 @@ class UnitView extends StatelessWidget {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => Alart(
+              builder: (context) => AlertView(
                 message: 'هل انت متاكد من حذف هذة الوحدة؟',
                 onpress: () {
                   context.read(unitProvider).deleteUnit(unit: unit).catchError(
