@@ -5,7 +5,7 @@ import 'package:sugarcane_juice_app/config/palette.dart';
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/providers/item_provider.dart';
 import 'package:sugarcane_juice_app/providers/unit_provider.dart';
-import 'package:sugarcane_juice_app/widget/dialog_remove.dart';
+import 'package:sugarcane_juice_app/widget/dialog_alart.dart';
 
 class DialogButtons extends StatelessWidget {
   final String name;

@@ -5,6 +5,7 @@ import '/widget/error_view.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';
+import 'widget/user_form.dart';
 
 class UserScreen extends ConsumerWidget {
   static const routName = '/user';
@@ -29,7 +30,7 @@ class UserScreen extends ConsumerWidget {
           child: const CircularProgressIndicator(color: Colors.green),
         ),
         error: (error, stackTrace) => ErrorView(error: error.toString()),
-        data: (_user) => SizedBox(),
+        data: (_user) => UserForm(user: _user),
       ),
     );
   }

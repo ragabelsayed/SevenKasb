@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/models/bill.dart';
 import '/providers/bill_provider.dart';
-import '/widget/dialog_remove.dart';
+import '../../../widget/dialog_alart.dart';
 
 class DataTableForm extends StatelessWidget {
   final List<BillItems> billItems;

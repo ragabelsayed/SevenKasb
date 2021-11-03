@@ -11,7 +11,7 @@ import './bill_item_input_form.dart';
 import './custom_bottom_sheet.dart';
 import './data_table_form.dart';
 import '/widget/banner_message.dart';
-import '/widget/dialog_remove.dart';
+import '../../../widget/dialog_alart.dart';
 import '/widget/dialog_title.dart';
 import '/widget/rounded_text_btn.dart';
 

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 
 class RemoveDialog extends StatelessWidget {
+  final bool isSave;
   final String message;
   final Function onpress;
   const RemoveDialog({
+    this.isSave = false,
     required this.message,
     required this.onpress,
   });
@@ -15,6 +17,7 @@ class RemoveDialog extends StatelessWidget {
       content: Text(
         message,
         textAlign: TextAlign.center,
+        textDirection: TextDirection.rtl,
       ),
       actions: [
         Row(
@@ -27,7 +30,10 @@ class RemoveDialog extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             TextButton(
-              child: Text('حذف'),
+              child: Text(
+                !isSave ? 'حذف' : 'حفظ',
+                textDirection: TextDirection.rtl,
+              ),
               onPressed: () => onpress(),
             ),
           ],

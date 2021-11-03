@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '/config/palette.dart';
 import '/models/unit.dart';
 import '/providers/unit_provider.dart';
-import '/widget/dialog_remove.dart';
+import '../../../widget/dialog_alart.dart';
 import '/widget/dialog_title.dart';
 import '/widget/toast_view.dart';
 
