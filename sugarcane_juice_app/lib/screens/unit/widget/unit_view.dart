@@ -41,7 +41,7 @@ class UnitView extends StatelessWidget {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => RemoveDialog(
+              builder: (context) => Alart(
                 message: 'هل انت متاكد من حذف هذة الوحدة؟',
                 onpress: () {
                   context.read(unitProvider).deleteUnit(unit: unit).catchError(

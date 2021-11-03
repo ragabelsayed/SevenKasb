@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sugarcane_juice_app/config/palette.dart';
 
-class RemoveDialog extends StatelessWidget {
+class Alart extends StatelessWidget {
   final bool isSave;
   final String message;
   final Function onpress;
-  const RemoveDialog({
+  const Alart({
     this.isSave = false,
     required this.message,
     required this.onpress,

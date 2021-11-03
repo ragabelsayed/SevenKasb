@@ -98,7 +98,7 @@ class _UserFormState extends State<UserForm> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => RemoveDialog(
+                  builder: (context) => Alart(
                     isSave: true,
                     message: 'هل انت متأكد من حفظ هذا التعديل؟',
                     onpress: () {

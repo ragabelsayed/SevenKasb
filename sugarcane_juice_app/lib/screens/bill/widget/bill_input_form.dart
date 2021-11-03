@@ -162,7 +162,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     billItems: _bill.billItems,
                     deleteBillItem: (_billItem) => showDialog(
                       context: context,
-                      builder: (context) => RemoveDialog(
+                      builder: (context) => Alart(
                         message: 'هل انت متاكد من حذف هذا الصنف؟',
                         onpress: () {
                           setState(() {
