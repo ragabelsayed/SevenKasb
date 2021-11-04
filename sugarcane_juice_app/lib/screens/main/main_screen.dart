@@ -34,7 +34,13 @@ class CardList extends StatefulWidget {
 class _CardListState extends State<CardList> {
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> cardList = [];
+    List<Map<String, String>> cardList = [
+      {'name': 'الفواتير', 'image': 'assets/images/invoice-bill.svg'},
+      {'name': 'الجرد', 'image': 'assets/images/stock.svg'},
+      {'name': 'مصاريف إضافية', 'image': 'assets/images/money.svg'},
+      {'name': 'الإعدادات', 'image': 'assets/images/user-settings.svg'},
+      {'name': 'اوف لاين', 'image': 'assets/images/wifi-off.svg'},
+    ];
     return GridView.builder(
       itemCount: cardList.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -54,6 +60,8 @@ class CardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Card(
+      child: Column(),
+    );
   }
 }
