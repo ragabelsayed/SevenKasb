@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sugarcane_juice_app/config/palette.dart';
+
 import 'package:sugarcane_juice_app/config/routes.dart';
-import 'package:sugarcane_juice_app/screens/home_screen.dart';
+
 import 'package:sugarcane_juice_app/screens/splash_screen.dart';
 import '/screens/login_screen.dart';
 import 'providers/auth.dart';
+import 'screens/main/main_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           // theme: ThemeData(primaryColor: Colors.green),
           home: auth.isAuth
-              ? HomeScreen()
+              ? MainScreen()
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, authResultsnapshot) =>
