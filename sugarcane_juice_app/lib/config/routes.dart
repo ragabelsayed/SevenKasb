@@ -6,6 +6,7 @@ import 'package:sugarcane_juice_app/screens/extra_expenses/extra_expenses_screen
 import 'package:sugarcane_juice_app/screens/home_screen.dart';
 import 'package:sugarcane_juice_app/screens/login_screen.dart';
 import 'package:sugarcane_juice_app/screens/menu/menu_screen.dart';
+import 'package:sugarcane_juice_app/screens/offline/offline_screen.dart';
 import 'package:sugarcane_juice_app/screens/unit/unit_screen.dart';
 import 'package:sugarcane_juice_app/screens/user/user_screen.dart';
 
@@ -27,7 +28,24 @@ final menuItemProvider = StateNotifierProvider<ItemNotifier, MenuItem>((ref) {
 });
 
 class ItemNotifier extends StateNotifier<MenuItem> {
-  ItemNotifier() : super(MenuItem('', SizedBox()));
+  ItemNotifier() : super(MenuItems.bills);
 
   void setItem(MenuItem menuItem) => state = menuItem;
+
+  Widget getScreen() {
+    switch (state) {
+      case MenuItems.bills:
+        return BillScreen();
+      case MenuItems.unit:
+        return UnitScreen();
+      case MenuItems.extra:
+        return ExtraExpensesScreen();
+      case MenuItems.offline:
+        return OfflineScreen();
+      case MenuItems.edit:
+        return UserScreen();
+      default:
+        return BillScreen();
+    }
+  }
 }
