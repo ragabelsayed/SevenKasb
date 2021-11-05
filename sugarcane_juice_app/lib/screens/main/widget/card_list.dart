@@ -26,7 +26,11 @@ class CardList extends StatelessWidget {
         'image': 'assets/images/user-settings.svg',
         'route': MenuItems.edit,
       },
-      {'name': 'اوف لاين', 'image': 'assets/images/wifi-off.svg'},
+      {
+        'name': 'أوف لاين',
+        'image': 'assets/images/wifi-off.svg',
+        'route': MenuItems.offline,
+      },
     ];
     return GridView.builder(
       itemCount: _cardList.length,

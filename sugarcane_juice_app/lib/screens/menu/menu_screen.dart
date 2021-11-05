@@ -9,7 +9,7 @@ class MenuItems {
   static const bills = MenuItem('الفواتير', FaIcon(FontAwesomeIcons.receipt));
   static const extra =
       MenuItem('مصروفات إضافية', FaIcon(FontAwesomeIcons.wallet));
-  static const help = MenuItem('Help', FaIcon(FontAwesomeIcons.handsHelping));
+  static const offline = MenuItem('أوف لاين', Icon(Icons.wifi_off, size: 30));
   static const unit =
       MenuItem('وحدة القياس', FaIcon(FontAwesomeIcons.balanceScale));
   static const edit = MenuItem('الأعدادات', FaIcon(FontAwesomeIcons.userEdit));
@@ -18,7 +18,7 @@ class MenuItems {
     item,
     bills,
     extra,
-    help,
+    offline,
     unit,
     edit,
   ];
