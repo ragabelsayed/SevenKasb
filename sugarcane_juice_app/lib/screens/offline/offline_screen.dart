@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';
@@ -9,6 +10,7 @@ class OfflineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FToast fToast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -20,7 +22,7 @@ class OfflineScreen extends StatelessWidget {
         leading: MenuWidget(),
         shape: AppConstants.appBarBorder,
       ),
-      floatingActionButton: LinearFlowWidget(),
+      floatingActionButton: LinearFlowWidget(fToast: fToast),
     );
   }
 }

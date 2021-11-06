@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '/screens/bill/new_bill_screen.dart';
+import '/screens/extra_expenses/widget/input_extra_expenses_form.dart';
+import '/providers/bill_provider.dart';
 
-const double btnSize = 70.0;
+const double btnSize = 60.0;
 
 class LinearFlowWidget extends StatefulWidget {
-  const LinearFlowWidget({Key? key}) : super(key: key);
+  final FToast fToast;
+  const LinearFlowWidget({required this.fToast});
 
   @override
   State<LinearFlowWidget> createState() => _LinearFlowWidgetState();
@@ -47,21 +53,39 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
         height: btnSize,
         child: FloatingActionButton(
           heroTag: icon.toString(),
+          tooltip: icon == FontAwesomeIcons.receipt
+              ? 'إضافة فاتورة جديدة'
+              : icon == FontAwesomeIcons.wallet
+                  ? 'إضافة مصروف إضافى'
+                  : null,
           splashColor: Colors.green,
           backgroundColor: Colors.amber,
-          child: FaIcon(icon),
+          child: FaIcon(icon, size: 20),
           onPressed: () {
             if (controller.status == AnimationStatus.completed) {
               controller.reverse();
             } else {
               controller.forward();
             }
-
             if (icon == FontAwesomeIcons.receipt) {
-              print('bbbbbbb');
+              context.read(isOffLineProvider).state = true;
+              Navigator.pushNamed(context, NewBillScreen.routName);
             }
             if (icon == FontAwesomeIcons.wallet) {
-              print('mmmmm');
+              showModalBottomSheet(
+                context: context,
+                isDismissible: false,
+                enableDrag: false,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20.0)),
+                ),
+                builder: (ctx) => InputExtraExpensesForm(
+                  ftoast: widget.fToast,
+                  isOffLine: true,
+                ),
+              );
             }
           },
         ),

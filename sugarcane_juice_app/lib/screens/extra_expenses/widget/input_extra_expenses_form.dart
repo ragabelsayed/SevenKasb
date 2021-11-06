@@ -13,7 +13,8 @@ import '/widget/save_cancel_btns.dart';
 
 class InputExtraExpensesForm extends StatefulWidget {
   final FToast ftoast;
-  const InputExtraExpensesForm({required this.ftoast});
+  final bool isOffLine;
+  const InputExtraExpensesForm({required this.ftoast, this.isOffLine = false});
   @override
   State<InputExtraExpensesForm> createState() => _InputExtraExpensesFormState();
 }

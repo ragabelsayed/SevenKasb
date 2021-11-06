@@ -25,7 +25,6 @@ class BillInputForm extends StatefulWidget {
 class _BillInputFormState extends State<BillInputForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isBillItemEmpty = false;
-  // use it
   bool _isWaiting = false;
   bool _saveItOnce = false;
 
@@ -63,6 +62,8 @@ class _BillInputFormState extends State<BillInputForm> {
 
   @override
   Widget build(BuildContext context) {
+    bool isOffline = context.read(isOffLineProvider).state;
+    print(isOffline);
     return Form(
       key: _formKey,
       child: Stack(

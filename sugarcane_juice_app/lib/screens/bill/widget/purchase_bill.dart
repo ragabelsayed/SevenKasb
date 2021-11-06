@@ -36,6 +36,7 @@ class PurchaseBill extends ConsumerWidget {
           child: Icon(Icons.add),
           backgroundColor: Colors.amber,
           onPressed: () {
+            context.read(isOffLineProvider).state = false;
             Navigator.pushNamed(context, NewBillScreen.routName);
           },
         ),

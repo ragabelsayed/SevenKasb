@@ -30,6 +30,10 @@ final addBillProvider = Provider<BillProvider>((ref) {
   return BillProvider(authToken: _token);
 });
 
+final isOffLineProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
 class BillProvider implements BillRepository {
   BillProvider({required this.authToken});
   late String authToken;
