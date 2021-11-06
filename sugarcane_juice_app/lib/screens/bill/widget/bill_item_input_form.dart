@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sugarcane_juice_app/models/bill_item.dart';
 import '/widget/save_cancel_btns.dart';
 import '/providers/item_provider.dart';
 import '/providers/unit_provider.dart';

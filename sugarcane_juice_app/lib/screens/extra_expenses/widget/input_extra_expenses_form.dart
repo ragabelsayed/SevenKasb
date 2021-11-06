@@ -59,6 +59,35 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
     }
   }
 
+  Future<void> _saveFormOffline() async {
+    final _isValid = _formKey.currentState!.validate();
+    if (_isValid) {
+      _formKey.currentState!.save();
+      try {
+        // await context.read(addExtraExpensesProvider).addBill(_extra);
+        // widget.ftoast.showToast(
+        //   child: ToastView(
+        //     message: ' تم اضافة المصروف',
+        //     success: true,
+        //   ),
+        //   gravity: ToastGravity.BOTTOM,
+        //   toastDuration: const Duration(seconds: 2),
+        // );
+        // Navigator.of(context).pop();
+      } catch (e) {
+        // widget.ftoast.showToast(
+        //   child: ToastView(
+        //     message: 'لم تتم اضافة المصروف',
+        //     success: false,
+        //   ),
+        //   gravity: ToastGravity.BOTTOM,
+        //   toastDuration: const Duration(seconds: 2),
+        // );
+        // Navigator.of(context).pop();
+      }
+    }
+  }
+
   void setWaiting() {
     setState(() {
       _iswaiting = !_iswaiting;
@@ -82,7 +111,7 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
             height: 100,
             width: double.infinity,
             child: FutureBuilder(
-              future: _saveForm(),
+              future: widget.isOffLine ? _saveFormOffline() : _saveForm(),
               builder: (context, snapshot) {
                 return const Center(
                   child: CircularProgressIndicator(color: Colors.green),

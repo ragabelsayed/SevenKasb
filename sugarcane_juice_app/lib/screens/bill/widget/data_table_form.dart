@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sugarcane_juice_app/models/bill_item.dart';
 import '/models/bill.dart';
 import '/providers/bill_provider.dart';
 

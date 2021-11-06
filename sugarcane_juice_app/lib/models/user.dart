@@ -1,9 +1,25 @@
+import 'package:hive/hive.dart';
+
+part '../helper/user.g.dart';
+
+@HiveType(typeId: 3)
 class User {
+  @HiveType(typeId: 0)
   int? id;
+
+  @HiveType(typeId: 1)
   String? userName;
+
+  @HiveType(typeId: 2)
   String? knownAs;
+
+  @HiveType(typeId: 3)
   String? dateOfBirth;
+
+  @HiveType(typeId: 4)
   String? city;
+
+  @HiveType(typeId: 0)
   String? telephone;
 
   User({

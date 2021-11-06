@@ -1,12 +1,29 @@
 import 'package:sugarcane_juice_app/models/unit.dart';
 
+import 'package:hive/hive.dart';
+
+part '../helper/item.g.dart';
+
+@HiveType(typeId: 2)
 class Item {
+  @HiveField(0)
   int? id;
+
+  @HiveField(1)
   String name;
+
+  @HiveField(2)
   String price;
+
+  @HiveField(3)
   String quentity;
+
+  @HiveField(4)
   Unit unit;
+
+  @HiveField(5)
   int type;
+
   double? total;
 
   Item({

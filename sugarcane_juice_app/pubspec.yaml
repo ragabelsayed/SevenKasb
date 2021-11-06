@@ -24,9 +24,19 @@ dependencies:
   flutter:
     sdk: flutter
   
+  # hive D.B
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+
+  # handle SVG images
   flutter_svg: ^0.23.0+1
+
+  # format dates
   intl: ^0.17.0
+
+  # show notes
   fluttertoast: ^8.0.8
+
   syncfusion_flutter_datagrid: ^19.2.62-beta
   font_awesome_flutter: ^9.1.0
   flutter_zoom_drawer: ^2.1.1
@@ -40,6 +50,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # hive D.B generators
+  hive_generator: ^1.1.1
+  build_runner: ^2.1.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,26 +1,36 @@
 import 'package:sugarcane_juice_app/models/item.dart';
 import 'package:sugarcane_juice_app/models/unit.dart';
 import 'package:sugarcane_juice_app/models/user.dart';
+import 'bill_item.dart';
 
-class BillItems {
-  double price;
-  double quentity;
-  Item item;
-  BillItems({
-    required this.price,
-    required this.quentity,
-    required this.item,
-  });
-}
+import 'package:hive/hive.dart';
 
-class Bill {
+part '../helper/bill.g.dart';
+
+@HiveType(typeId: 0)
+class Bill extends HiveObject {
+  @HiveField(0)
   int? id;
+
+  @HiveField(1)
   User user;
+
+  @HiveField(2)
   double total;
+
+  @HiveField(3)
   double paid;
+
+  @HiveField(4)
   String clientName;
+
+  @HiveField(5)
   DateTime dateTime;
+
+  @HiveField(6)
   List<BillItems> billItems;
+
+  @HiveField(7)
   int type;
 
   Bill({

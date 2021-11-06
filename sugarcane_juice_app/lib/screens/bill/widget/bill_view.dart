@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'dart:ui';
 import 'package:intl/intl.dart' as intl;
 import 'package:sugarcane_juice_app/models/bill.dart';
+import 'package:sugarcane_juice_app/models/bill_item.dart';
 import 'package:sugarcane_juice_app/providers/bill_provider.dart';
 import 'package:sugarcane_juice_app/widget/dialog_title.dart';
 import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
