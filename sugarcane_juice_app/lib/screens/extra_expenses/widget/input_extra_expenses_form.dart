@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:sugarcane_juice_app/models/user.dart';
+import 'package:sugarcane_juice_app/providers/offLine_provider.dart';
 import '/widget/toast_view.dart';
 import '/providers/extra_provider.dart';
 import '/config/palette.dart';
@@ -64,26 +65,26 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
     if (_isValid) {
       _formKey.currentState!.save();
       try {
-        // await context.read(addExtraExpensesProvider).addBill(_extra);
-        // widget.ftoast.showToast(
-        //   child: ToastView(
-        //     message: ' تم اضافة المصروف',
-        //     success: true,
-        //   ),
-        //   gravity: ToastGravity.BOTTOM,
-        //   toastDuration: const Duration(seconds: 2),
-        // );
-        // Navigator.of(context).pop();
+        await context.read(extraOfflineProvider.notifier).addExtra(_extra);
+        widget.ftoast.showToast(
+          child: ToastView(
+            message: ' تم اضافة المصروف',
+            success: true,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+        Navigator.of(context).pop();
       } catch (e) {
-        // widget.ftoast.showToast(
-        //   child: ToastView(
-        //     message: 'لم تتم اضافة المصروف',
-        //     success: false,
-        //   ),
-        //   gravity: ToastGravity.BOTTOM,
-        //   toastDuration: const Duration(seconds: 2),
-        // );
-        // Navigator.of(context).pop();
+        widget.ftoast.showToast(
+          child: ToastView(
+            message: 'لم تتم اضافة المصروف',
+            success: false,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+        Navigator.of(context).pop();
       }
     }
   }
@@ -112,11 +113,9 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
             width: double.infinity,
             child: FutureBuilder(
               future: widget.isOffLine ? _saveFormOffline() : _saveForm(),
-              builder: (context, snapshot) {
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.green),
-                );
-              },
+              builder: (context, snapshot) => const Center(
+                child: CircularProgressIndicator(color: Colors.green),
+              ),
             ),
           )
         : Padding(

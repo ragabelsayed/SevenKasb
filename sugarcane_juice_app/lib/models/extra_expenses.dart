@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 part '../helper/extra_expenses.g.dart';
 
 @HiveType(typeId: 5)
-class Extra {
+class Extra extends HiveObject {
   @HiveField(0)
   int? id;
 
