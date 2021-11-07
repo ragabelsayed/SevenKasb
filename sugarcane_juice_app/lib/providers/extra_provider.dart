@@ -53,7 +53,7 @@ class ExtraExpensesProvider {
     }
   }
 
-  Future<void> addBill(Extra extra) async {
+  Future<void> addExtra(Extra extra) async {
     try {
       await http.post(
         url,

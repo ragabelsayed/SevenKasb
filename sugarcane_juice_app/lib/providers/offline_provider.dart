@@ -25,6 +25,10 @@ class OfflineExtraNotifier extends StateNotifier<List<Extra>> {
   Future<void> addExtra(Extra extra) async {
     state.add(extra);
     await _extraBox.add(extra);
-    print(_extraBox.values.length);
+  }
+
+  Future<void> removeExtra() async {
+    state.clear();
+    await _extraBox.clear();
   }
 }

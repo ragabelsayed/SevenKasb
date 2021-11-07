@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';
+import 'widget/expansion_list_view.dart';
 import 'widget/linear_flow.dart';
 
 class OfflineScreen extends StatelessWidget {
@@ -22,6 +24,7 @@ class OfflineScreen extends StatelessWidget {
         leading: MenuWidget(),
         shape: AppConstants.appBarBorder,
       ),
+      body: ExpansionListView(ftoast: fToast),
       floatingActionButton: LinearFlowWidget(fToast: fToast),
     );
   }
