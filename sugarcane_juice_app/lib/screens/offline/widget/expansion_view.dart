@@ -9,11 +9,15 @@ class ExpansionView extends StatelessWidget {
   final List getList;
   final String title;
   final String subTitle;
+  final bool isSending;
+  final Function sendToServer;
   const ExpansionView({
     required this.title,
     required this.subTitle,
     required this.onpress,
     required this.getList,
+    required this.isSending,
+    required this.sendToServer,
   });
 
   @override
@@ -46,19 +50,30 @@ class ExpansionView extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
-        RoundedTextButton(
-          text: 'إرسال لسيرفر',
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertView(
-                isSave: true,
-                message: 'هل أنت متأكد من الحفظ فى السيرفر',
-                onpress: () => onpress(),
-              ),
-            );
-          },
-        ),
+        if (!isSending)
+          RoundedTextButton(
+            text: 'إرسال لسيرفر',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertView(
+                  isSave: true,
+                  message: 'هل أنت متأكد من الحفظ فى السيرفر',
+                  onpress: () => onpress(),
+                ),
+              );
+            },
+          ),
+        if (isSending)
+          FutureBuilder(
+            future: sendToServer(),
+            builder: (context, snapshot) {
+              return const CircularProgressIndicator(
+                backgroundColor: Palette.primaryLightColor,
+                color: Palette.primaryColor,
+              );
+            },
+          ),
       ],
     );
   }

@@ -6,7 +6,7 @@ import 'package:sugarcane_juice_app/models/extra_expenses.dart';
 final _extraBox = Boxes.getExtraExpensessBox();
 
 final extraOfflineProvider =
-    StateNotifierProvider<OfflineExtraNotifier, List<Extra>>(
+    StateNotifierProvider.autoDispose<OfflineExtraNotifier, List<Extra>>(
   (ref) => OfflineExtraNotifier(_extraBox.values.toList()),
 );
 
