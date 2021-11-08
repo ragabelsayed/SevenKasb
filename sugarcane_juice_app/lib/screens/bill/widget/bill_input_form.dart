@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sugarcane_juice_app/widget/toast_view.dart';
+import '/providers/offLine_provider.dart';
 import '/models/user.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
@@ -16,7 +19,8 @@ import '/widget/dialog_title.dart';
 import '/widget/rounded_text_btn.dart';
 
 class BillInputForm extends StatefulWidget {
-  const BillInputForm({Key? key}) : super(key: key);
+  final FToast fToast;
+  const BillInputForm({Key? key, required this.fToast}) : super(key: key);
 
   @override
   _BillInputFormState createState() => _BillInputFormState();
@@ -28,15 +32,23 @@ class _BillInputFormState extends State<BillInputForm> {
   bool _isWaiting = false;
   bool _saveItOnce = false;
 
-  late Bill _bill = Bill(
-    user: User(),
-    type: 0,
-    total: 0.0,
-    paid: 0.0,
-    clientName: '',
-    dateTime: DateTime.now(),
-    billItems: [],
-  );
+  late bool _isOffline;
+  late Bill _bill;
+
+  @override
+  void initState() {
+    super.initState();
+    _isOffline = context.read(isOffLineProvider).state;
+    _bill = Bill(
+      user: User(),
+      type: 0,
+      total: 0.0,
+      paid: 0.0,
+      clientName: '',
+      dateTime: DateTime.now(),
+      billItems: [],
+    );
+  }
 
   Future<void> _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
@@ -49,7 +61,29 @@ class _BillInputFormState extends State<BillInputForm> {
             (error, stackTrace) =>
                 getBanner(context: context, errorMessage: error.toString()),
           );
+
       setState(() => _saveItOnce = false);
+    }
+  }
+
+  Future<void> _saveFormOffLine() async {
+    final _isValid = _formKey.currentState!.validate();
+    if (_bill.billItems.isEmpty) {
+      setState(() => _isBillItemEmpty = true);
+    }
+    if (_isValid && _bill.billItems.isNotEmpty) {
+      _formKey.currentState!.save();
+      await context.read(billOfflineProvider.notifier).addBill(_bill);
+      setState(() => _saveItOnce = false);
+      widget.fToast.showToast(
+        child: ToastView(
+          message: 'تم إضافة فاتورة',
+          success: true,
+        ),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: const Duration(seconds: 2),
+      );
+      Navigator.pop(context);
     }
   }
 
@@ -62,8 +96,6 @@ class _BillInputFormState extends State<BillInputForm> {
 
   @override
   Widget build(BuildContext context) {
-    bool isOffline = context.read(isOffLineProvider).state;
-    print(isOffline);
     return Form(
       key: _formKey,
       child: Stack(
@@ -91,9 +123,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     textDirection: TextDirection.rtl,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DialogTitle(
-                        name: 'إضافة صنف: ',
-                      ),
+                      DialogTitle(name: 'إضافة صنف: '),
                       Container(
                         // height: 35,
                         // width: 35,
@@ -183,7 +213,9 @@ class _BillInputFormState extends State<BillInputForm> {
           _isWaiting
               ? FutureBuilder(
                   future: _saveItOnce
-                      ? _saveForm()
+                      ? _isOffline
+                          ? _saveFormOffLine()
+                          : _saveForm()
                       : Future.delayed(const Duration(milliseconds: 3)),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -192,7 +224,6 @@ class _BillInputFormState extends State<BillInputForm> {
                       );
                     } else {
                       return Center(
-                        // child: Icon(Icons.done, color: Colors.green),
                         child: FaIcon(
                           FontAwesomeIcons.checkCircle,
                           color: Colors.green,

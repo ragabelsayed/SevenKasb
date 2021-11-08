@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sugarcane_juice_app/helper/box.dart';
-import 'package:sugarcane_juice_app/models/bill.dart';
-import 'package:sugarcane_juice_app/models/extra_expenses.dart';
+import '/helper/box.dart';
+import '/models/bill.dart';
+import '/models/extra_expenses.dart';
 
 final _extraBox = Boxes.getExtraExpensessBox();
+final _billBox = Boxes.getBillsBox();
 
 final extraOfflineProvider =
     StateNotifierProvider.autoDispose<OfflineExtraNotifier, List<Extra>>(
@@ -11,12 +12,22 @@ final extraOfflineProvider =
 );
 
 final billOfflineProvider =
-    StateNotifierProvider<OfflineBillNotifier, List<Bill>>(
-  (ref) => OfflineBillNotifier([]),
+    StateNotifierProvider.autoDispose<OfflineBillNotifier, List<Bill>>(
+  (ref) => OfflineBillNotifier(_billBox.values.toList()),
 );
 
 class OfflineBillNotifier extends StateNotifier<List<Bill>> {
   OfflineBillNotifier(List<Bill>? initialBills) : super(initialBills ?? []);
+
+  Future<void> addBill(Bill bill) async {
+    state.add(bill);
+    await _billBox.add(bill);
+  }
+
+  Future<void> removeBill() async {
+    state.clear();
+    await _billBox.clear();
+  }
 }
 
 class OfflineExtraNotifier extends StateNotifier<List<Extra>> {

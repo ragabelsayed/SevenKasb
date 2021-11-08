@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import 'widget/bill_input_form.dart';
@@ -8,6 +9,7 @@ class NewBillScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FToast fToast = FToast().init(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -20,7 +22,7 @@ class NewBillScreen extends StatelessWidget {
           centerTitle: true,
           shape: AppConstants.appBarBorder,
         ),
-        body: BillInputForm(),
+        body: BillInputForm(fToast: fToast),
       ),
     );
   }

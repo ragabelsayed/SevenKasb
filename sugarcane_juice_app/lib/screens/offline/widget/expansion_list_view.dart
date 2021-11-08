@@ -19,7 +19,7 @@ class ExpansionListView extends StatefulWidget {
 }
 
 class _ExpansionListViewState extends State<ExpansionListView> {
-  bool _isSending = false;
+  bool _isSending1 = false;
 
   Future<void> sendExtraToServer() async {
     final extra = context.read(extraOfflineProvider);
@@ -31,10 +31,10 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         _toast(' تم ارسال المصروفات', true);
         _toast(' سيتم المسح من الجهاز', true);
         await context.read(extraOfflineProvider.notifier).removeExtra();
-        setState(() => _isSending = false);
+        setState(() => _isSending1 = false);
         _toast(' تم المسح من الجهاز', true);
       } catch (e) {
-        setState(() => _isSending = false);
+        setState(() => _isSending1 = false);
         _toast('لم يتم ارسال المصروفات', false);
       }
     }
@@ -51,7 +51,7 @@ class _ExpansionListViewState extends State<ExpansionListView> {
     );
   }
 
-  void setSending() => setState(() => _isSending = true);
+  void setSending1() => setState(() => _isSending1 = true);
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +66,10 @@ class _ExpansionListViewState extends State<ExpansionListView> {
                 title: 'مصاريف إضافية',
                 subTitle: ':عدد المصاريف المحفوظة',
                 getList: extra,
-                isSending: _isSending,
+                isSending: _isSending1,
                 sendToServer: () => sendExtraToServer(),
                 onpress: () {
-                  setSending();
+                  setSending1();
                   Navigator.pop(context);
                 },
               ),
