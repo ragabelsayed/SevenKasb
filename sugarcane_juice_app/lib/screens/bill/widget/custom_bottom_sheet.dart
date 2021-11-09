@@ -4,10 +4,12 @@ import '/models/bill.dart';
 import '/widget/dialog_title.dart';
 
 class CustomBottomSheet extends StatelessWidget {
+  final bool isOffline;
   final Bill bill;
   final Widget textField;
   final Widget saveBtn;
   const CustomBottomSheet({
+    this.isOffline = false,
     required this.bill,
     required this.textField,
     required this.saveBtn,
@@ -44,7 +46,7 @@ class CustomBottomSheet extends StatelessWidget {
               textDirection: TextDirection.rtl,
               children: [
                 DialogTitle(name: 'الإجمالى: '),
-                Text('${BillProvider.sumTotal(bill)}'),
+                Text('${BillProvider.sumTotal(bill, isOffline)}'),
               ],
             ),
             Row(

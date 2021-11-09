@@ -126,16 +126,28 @@ class BillProvider implements BillRepository {
           {required double price, required double quentity}) =>
       price * quentity;
 
-  static double sumTotal(Bill bill) {
+  static double sumTotal(Bill bill, [bool isOffline = false]) {
     var sum = 0.0;
-    if (bill.billItems.isNotEmpty) {
-      bill.billItems.forEach((e) {
-        sum += e.item.total!;
-      });
-      bill.total = sum;
-      return bill.total;
+    if (isOffline) {
+      if (bill.offlineBillItems!.isNotEmpty) {
+        bill.offlineBillItems!.forEach((e) {
+          sum += e.item.total!;
+        });
+        bill.total = sum;
+        return bill.total;
+      } else {
+        return sum;
+      }
     } else {
-      return sum;
+      if (bill.billItems.isNotEmpty) {
+        bill.billItems.forEach((e) {
+          sum += e.item.total!;
+        });
+        bill.total = sum;
+        return bill.total;
+      } else {
+        return sum;
+      }
     }
   }
 

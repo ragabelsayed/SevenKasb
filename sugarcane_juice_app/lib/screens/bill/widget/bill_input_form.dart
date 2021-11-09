@@ -3,7 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sugarcane_juice_app/widget/toast_view.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '/helper/box.dart';
+import '/widget/toast_view.dart';
 import '/providers/offLine_provider.dart';
 import '/models/user.dart';
 import '/config/constants.dart';
@@ -28,6 +30,7 @@ class BillInputForm extends StatefulWidget {
 
 class _BillInputFormState extends State<BillInputForm> {
   final _formKey = GlobalKey<FormState>();
+  var billItemsBox = Boxes.getBillItemsBox();
   bool _isBillItemEmpty = false;
   bool _isWaiting = false;
   bool _saveItOnce = false;
@@ -39,15 +42,29 @@ class _BillInputFormState extends State<BillInputForm> {
   void initState() {
     super.initState();
     _isOffline = context.read(isOffLineProvider).state;
-    _bill = Bill(
-      user: User(),
-      type: 0,
-      total: 0.0,
-      paid: 0.0,
-      clientName: '',
-      dateTime: DateTime.now(),
-      billItems: [],
-    );
+    if (_isOffline) {
+      _bill = Bill(
+        user: User(),
+        type: 0,
+        total: 0.0,
+        paid: 0.0,
+        clientName: '',
+        dateTime: DateTime.now(),
+        billItems: [],
+        offlineBillItems: HiveList(billItemsBox, objects: []),
+      );
+      context.read(billOfflineProvider.notifier).addBill(_bill);
+    } else {
+      _bill = Bill(
+        user: User(),
+        type: 0,
+        total: 0.0,
+        paid: 0.0,
+        clientName: '',
+        dateTime: DateTime.now(),
+        billItems: [],
+      );
+    }
   }
 
   Future<void> _saveForm() async {
@@ -68,13 +85,14 @@ class _BillInputFormState extends State<BillInputForm> {
 
   Future<void> _saveFormOffLine() async {
     final _isValid = _formKey.currentState!.validate();
-    if (_bill.billItems.isEmpty) {
+    if (_bill.offlineBillItems!.isEmpty) {
       setState(() => _isBillItemEmpty = true);
     }
-    if (_isValid && _bill.billItems.isNotEmpty) {
+    if (_isValid && _bill.offlineBillItems!.isNotEmpty) {
       _formKey.currentState!.save();
-      await context.read(billOfflineProvider.notifier).addBill(_bill);
+      await context.read(billOfflineProvider.notifier).upadteCurrentBill(_bill);
       setState(() => _saveItOnce = false);
+      Navigator.pop(context);
       widget.fToast.showToast(
         child: ToastView(
           message: 'تم إضافة فاتورة',
@@ -83,7 +101,6 @@ class _BillInputFormState extends State<BillInputForm> {
         gravity: ToastGravity.BOTTOM,
         toastDuration: const Duration(seconds: 2),
       );
-      Navigator.pop(context);
     }
   }
 
@@ -157,6 +174,7 @@ class _BillInputFormState extends State<BillInputForm> {
                             context: context,
                             barrierDismissible: false,
                             builder: (ctx) => BillItemForm(
+                              isOffline: _isOffline,
                               hasError: (billItemError) {
                                 if (billItemError) {
                                   getBanner(
@@ -169,10 +187,20 @@ class _BillInputFormState extends State<BillInputForm> {
                                 }
                               },
                               billItem: (billItems) {
-                                setState(() {
-                                  _bill.billItems.add(billItems);
-                                  _isBillItemEmpty = false;
-                                });
+                                if (!_isOffline) {
+                                  setState(() {
+                                    _bill.billItems.add(billItems);
+                                    _isBillItemEmpty = false;
+                                  });
+                                } else {
+                                  setState(() async {
+                                    await billItemsBox.add(billItems);
+                                    setState(() =>
+                                        _bill.offlineBillItems!.add(billItems));
+                                    await _bill.save();
+                                    _isBillItemEmpty = false;
+                                  });
+                                }
                               },
                             ),
                           ),
@@ -190,16 +218,26 @@ class _BillInputFormState extends State<BillInputForm> {
                     ),
                   if (_isBillItemEmpty) const SizedBox(height: 10),
                   DataTableForm(
-                    billItems: _bill.billItems,
+                    billItems: _isOffline
+                        ? _bill.offlineBillItems!.toList()
+                        : _bill.billItems,
                     deleteBillItem: (_billItem) => showDialog(
                       context: context,
                       builder: (context) => AlertView(
                         message: 'هل انت متاكد من حذف هذا الصنف؟',
                         onpress: () {
-                          setState(() {
-                            _bill.total -= _billItem.item.total!;
-                            _bill.billItems.remove(_billItem);
-                          });
+                          if (!_isOffline) {
+                            setState(() {
+                              _bill.total -= _billItem.item.total!;
+                              _bill.billItems.remove(_billItem);
+                            });
+                          } else {
+                            setState(() {
+                              _bill.total -= _billItem.item.total!;
+                              _bill.offlineBillItems!.remove(_billItem);
+                              _billItem.delete();
+                            });
+                          }
                           Navigator.of(context).pop();
                         },
                       ),
@@ -210,31 +248,44 @@ class _BillInputFormState extends State<BillInputForm> {
               ),
             ),
           ),
-          _isWaiting
-              ? FutureBuilder(
-                  future: _saveItOnce
-                      ? _isOffline
-                          ? _saveFormOffLine()
-                          : _saveForm()
-                      : Future.delayed(const Duration(milliseconds: 3)),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(color: Colors.green),
-                      );
-                    } else {
-                      return Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.checkCircle,
-                          color: Colors.green,
-                          size: 50,
-                        ),
-                      );
-                    }
-                  },
-                )
-              : SizedBox(),
+          if (_isWaiting && !_isOffline)
+            FutureBuilder(
+              future: _saveItOnce
+                  ? _saveForm()
+                  : Future.delayed(const Duration(milliseconds: 3)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.green,
+                      backgroundColor: Palette.primaryLightColor,
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.checkCircle,
+                      color: Colors.green,
+                      size: 50,
+                    ),
+                  );
+                }
+              },
+            ),
+          if (_isWaiting && _isOffline)
+            FutureBuilder(
+              future: _saveItOnce
+                  ? _saveFormOffLine()
+                  : Future.delayed(const Duration(milliseconds: 3)),
+              builder: (context, snapshot) => const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.green,
+                  backgroundColor: Palette.primaryLightColor,
+                ),
+              ),
+            ),
           CustomBottomSheet(
+            isOffline: _isOffline,
             bill: _bill,
             textField: Opacity(
               opacity: _isWaiting ? 0.5 : 1.0,
@@ -254,12 +305,9 @@ class _BillInputFormState extends State<BillInputForm> {
             saveBtn: Opacity(
               opacity: _isWaiting ? 0.5 : 1.0,
               child: RoundedTextButton(
-                  text: 'حفظ',
-                  onPressed: !_isWaiting
-                      ? () {
-                          setWaiting();
-                        }
-                      : () {}),
+                text: 'حفظ',
+                onPressed: !_isWaiting ? () => setWaiting() : () {},
+              ),
             ),
           ),
         ],

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sugarcane_juice_app/helper/box.dart';
 import '/models/extra_expenses.dart';
 import '/providers/extra_provider.dart';
 import '/providers/offLine_provider.dart';
@@ -20,6 +21,7 @@ class ExpansionListView extends StatefulWidget {
 
 class _ExpansionListViewState extends State<ExpansionListView> {
   bool _isSending1 = false;
+  bool _isSending2 = false;
 
   Future<void> sendExtraToServer() async {
     final extra = context.read(extraOfflineProvider);
@@ -40,6 +42,25 @@ class _ExpansionListViewState extends State<ExpansionListView> {
     }
   }
 
+  Future<void> sendBillToServer() async {
+    // final extra = context.read(extraOfflineProvider);
+    // if (extra.isNotEmpty) {
+    //   try {
+    //     await Future.forEach(extra, (Extra e) async {
+    //       await context.read(addExtraExpensesProvider).addExtra(e);
+    //     });
+    //     _toast(' تم ارسال المصروفات', true);
+    //     _toast(' سيتم المسح من الجهاز', true);
+    //     await context.read(extraOfflineProvider.notifier).removeExtra();
+    //     setState(() => _isSending1 = false);
+    //     _toast(' تم المسح من الجهاز', true);
+    //   } catch (e) {
+    //     setState(() => _isSending1 = false);
+    //     _toast('لم يتم ارسال المصروفات', false);
+    // }
+    // }
+  }
+
   void _toast(String masseg, bool succes) {
     widget.ftoast.showToast(
       child: ToastView(
@@ -52,12 +73,16 @@ class _ExpansionListViewState extends State<ExpansionListView> {
   }
 
   void setSending1() => setState(() => _isSending1 = true);
+  void setSending2() => setState(() => _isSending2 = true);
 
   @override
   Widget build(BuildContext context) {
+    // Boxes.getBillsBox().clear();
+    // Boxes.getBillItemsBox().clear();
     return Consumer(
       builder: (context, watch, child) {
         var extra = watch(extraOfflineProvider);
+        var bills = watch(billOfflineProvider);
         return Column(
           children: [
             SizedBox(height: 5),
@@ -70,6 +95,19 @@ class _ExpansionListViewState extends State<ExpansionListView> {
                 sendToServer: () => sendExtraToServer(),
                 onpress: () {
                   setSending1();
+                  Navigator.pop(context);
+                },
+              ),
+            SizedBox(height: 5),
+            if (bills.isNotEmpty)
+              ExpansionView(
+                title: 'فواتير شراء',
+                subTitle: ':عدد الفواتير المحفوظة',
+                getList: bills,
+                isSending: _isSending2,
+                sendToServer: () => sendBillToServer(),
+                onpress: () {
+                  setSending2();
                   Navigator.pop(context);
                 },
               ),

@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part '../helper/unit.g.dart';
 
 @HiveType(typeId: 4)
-class Unit {
+class Unit extends HiveObject {
   @HiveType(typeId: 0)
   int? id;
 

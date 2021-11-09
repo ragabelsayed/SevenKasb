@@ -37,7 +37,9 @@ void main() async {
     ..registerAdapter(ItemAdapter())
     ..registerAdapter(UnitAdapter())
     ..registerAdapter(ExtraAdapter());
+
   await Hive.openBox<Bill>('bills');
+  await Hive.openBox<BillItems>('billItems');
   await Hive.openBox<Extra>('extraExpenses');
   runApp(ProviderScope(child: MyApp()));
 }

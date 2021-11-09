@@ -7,14 +7,18 @@ import '/providers/item_provider.dart';
 import '/providers/unit_provider.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
-import '/models/bill.dart';
 import '/models/item.dart';
 import '/models/unit.dart';
 
 class BillItemForm extends StatefulWidget {
+  final bool isOffline;
   final Function(BillItems billItems) billItem;
   final Function(bool billItemError) hasError;
-  const BillItemForm({required this.billItem, required this.hasError});
+  const BillItemForm({
+    this.isOffline = false,
+    required this.billItem,
+    required this.hasError,
+  });
 
   @override
   State<BillItemForm> createState() => _BillItemFormState();
@@ -23,16 +27,22 @@ class BillItemForm extends StatefulWidget {
 class _BillItemFormState extends State<BillItemForm> {
   final _formKey = GlobalKey<FormState>();
   bool _iswaiting = false;
-  BillItems _billItems = BillItems(
-    price: 0.0,
-    quentity: 0.0,
-    item: Item(
-      name: '',
-      unit: Unit(
+  late BillItems _billItems;
+
+  @override
+  void initState() {
+    super.initState();
+    _billItems = BillItems(
+      price: 0.0,
+      quentity: 0.0,
+      item: Item(
         name: '',
+        unit: Unit(
+          name: '',
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   Future<void> _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
@@ -57,11 +67,18 @@ class _BillItemFormState extends State<BillItemForm> {
     }
   }
 
-  void setWaiting() {
-    setState(() {
-      _iswaiting = !_iswaiting;
-    });
+  Future<void> _saveFormOffLine() async {
+    final _isValid = _formKey.currentState!.validate();
+    if (_isValid) {
+      _formKey.currentState!.save();
+      await Future.delayed(const Duration(seconds: 1));
+      widget.billItem(_billItems);
+      widget.hasError(false);
+      Navigator.of(context).pop();
+    }
   }
+
+  void setWaiting() => setState(() => _iswaiting = !_iswaiting);
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +87,20 @@ class _BillItemFormState extends State<BillItemForm> {
       elevation: _iswaiting ? 0.0 : null,
       child: _iswaiting
           ? FutureBuilder(
-              future: _saveForm(),
+              future: widget.isOffline ? _saveFormOffLine() : _saveForm(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: CircularProgressIndicator(color: Colors.green),
+                  );
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  if (widget.isOffline) Navigator.of(context).pop();
+                  return Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.checkCircle,
+                      color: Colors.green,
+                      size: 50,
+                    ),
                   );
                 } else {
                   return Center(

@@ -5,6 +5,7 @@ import '/models/extra_expenses.dart';
 
 final _extraBox = Boxes.getExtraExpensessBox();
 final _billBox = Boxes.getBillsBox();
+final _billItemsBox = Boxes.getBillItemsBox();
 
 final extraOfflineProvider =
     StateNotifierProvider.autoDispose<OfflineExtraNotifier, List<Extra>>(
@@ -18,14 +19,28 @@ final billOfflineProvider =
 
 class OfflineBillNotifier extends StateNotifier<List<Bill>> {
   OfflineBillNotifier(List<Bill>? initialBills) : super(initialBills ?? []);
+  late Bill _currentBill;
 
   Future<void> addBill(Bill bill) async {
     state.add(bill);
     await _billBox.add(bill);
+    _currentBill = bill;
   }
 
-  Future<void> removeBill() async {
+  Future<void> upadteCurrentBill(Bill bill) async {
+    _currentBill = bill;
+    _currentBill.save();
+  }
+
+  Future<void> removeCurrentBill() async {
+    state.removeWhere((_bill) => _bill == _currentBill);
+    _currentBill.offlineBillItems!.deleteAllFromHive();
+    _currentBill.delete();
+  }
+
+  Future<void> removeBills() async {
     state.clear();
+    await _billItemsBox.clear();
     await _billBox.clear();
   }
 }

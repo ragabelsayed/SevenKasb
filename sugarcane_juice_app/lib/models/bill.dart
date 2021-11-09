@@ -33,6 +33,8 @@ class Bill extends HiveObject {
   @HiveField(7)
   int type;
 
+  @HiveField(8)
+  HiveList<BillItems>? offlineBillItems;
   Bill({
     this.id,
     required this.type,
@@ -42,6 +44,7 @@ class Bill extends HiveObject {
     required this.clientName,
     required this.dateTime,
     required this.billItems,
+    this.offlineBillItems,
   });
 
   factory Bill.fromJson({required Map<String, dynamic> json}) {

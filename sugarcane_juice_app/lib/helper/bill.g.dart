@@ -25,13 +25,14 @@ class BillAdapter extends TypeAdapter<Bill> {
       clientName: fields[4] as String,
       dateTime: fields[5] as DateTime,
       billItems: (fields[6] as List).cast<BillItems>(),
+      offlineBillItems: (fields[8] as HiveList?)?.castHiveList(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Bill obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class BillAdapter extends TypeAdapter<Bill> {
       ..writeByte(6)
       ..write(obj.billItems)
       ..writeByte(7)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(8)
+      ..write(obj.offlineBillItems);
   }
 
   @override

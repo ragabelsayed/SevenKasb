@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 part '../helper/item.g.dart';
 
 @HiveType(typeId: 2)
-class Item {
+class Item extends HiveObject {
   @HiveField(0)
   int? id;
 
