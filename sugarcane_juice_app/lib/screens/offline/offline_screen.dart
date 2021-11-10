@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';

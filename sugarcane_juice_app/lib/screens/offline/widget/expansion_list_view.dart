@@ -1,17 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sugarcane_juice_app/models/bill.dart';
-import 'package:sugarcane_juice_app/models/bill_item.dart';
-import 'package:sugarcane_juice_app/providers/bill_provider.dart';
-import 'package:sugarcane_juice_app/providers/item_provider.dart';
-import 'package:sugarcane_juice_app/providers/unit_provider.dart';
+import '/helper/box.dart';
+import '/models/bill.dart';
+import '/models/bill_item.dart';
+import '/providers/bill_provider.dart';
+import '/providers/item_provider.dart';
+import '/providers/unit_provider.dart';
 import '/models/extra_expenses.dart';
 import '/providers/extra_provider.dart';
 import '/providers/offLine_provider.dart';
-import '/screens/offline/widget/expansion_view.dart';
 import '/widget/toast_view.dart';
+import 'expansion_view.dart';
 
 class ExpansionListView extends StatefulWidget {
   final FToast ftoast;
@@ -38,6 +40,7 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         _toast(' سيتم المسح من الجهاز', true);
         await context.read(extraOfflineProvider.notifier).removeExtra();
         setState(() => _isSending1 = false);
+        await Boxes.getExtraExpensessBox().close();
         _toast(' تم المسح من الجهاز', true);
       } catch (e) {
         setState(() => _isSending1 = false);
@@ -62,7 +65,6 @@ class _ExpansionListViewState extends State<ExpansionListView> {
             billItem.item = newItem;
             await billItem.save();
           });
-          print(2222);
           await bill.save();
           await context.read(addBillProvider).addBill(bill, true);
         });
@@ -71,6 +73,8 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         _toast(' سيتم الحذف من الجهاز', true);
         await context.read(billOfflineProvider.notifier).removeBills();
         setState(() => _isSending2 = false);
+        await Boxes.getBillItemsBox().close();
+        await Boxes.getBillsBox().close();
         _toast(' تم الحذف من الجهاز', true);
       } catch (e) {
         setState(() => _isSending2 = false);
@@ -99,7 +103,8 @@ class _ExpansionListViewState extends State<ExpansionListView> {
       builder: (context, watch, child) {
         var extra = watch(extraOfflineProvider);
         var bills = watch(billOfflineProvider);
-        return Column(
+        return ListView(
+          shrinkWrap: true,
           children: [
             SizedBox(height: 5),
             if (extra.isNotEmpty)
@@ -126,6 +131,27 @@ class _ExpansionListViewState extends State<ExpansionListView> {
                   setSending2();
                   Navigator.pop(context);
                 },
+              ),
+            if (extra.isEmpty && bills.isEmpty)
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 2,
+                child: Center(
+                  child: Column(
+                    textDirection: TextDirection.rtl,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/empty-box.svg',
+                        color: Colors.green.shade100,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'لايوجد بيانات محفوظة 🧐',
+                        textDirection: TextDirection.rtl,
+                      )
+                    ],
+                  ),
+                ),
               ),
           ],
         );
