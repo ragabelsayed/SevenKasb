@@ -218,9 +218,8 @@ class _BillInputFormState extends State<BillInputForm> {
                     ),
                   if (_isBillItemEmpty) const SizedBox(height: 10),
                   DataTableForm(
-                    billItems: _isOffline
-                        ? _bill.offlineBillItems!.toList()
-                        : _bill.billItems,
+                    billItems:
+                        _isOffline ? _bill.offlineBillItems! : _bill.billItems,
                     deleteBillItem: (_billItem) => showDialog(
                       context: context,
                       builder: (context) => AlertView(
@@ -228,12 +227,12 @@ class _BillInputFormState extends State<BillInputForm> {
                         onpress: () {
                           if (!_isOffline) {
                             setState(() {
-                              _bill.total -= _billItem.item.total!;
+                              _bill.total -= _billItem.item.total;
                               _bill.billItems.remove(_billItem);
                             });
                           } else {
                             setState(() {
-                              _bill.total -= _billItem.item.total!;
+                              _bill.total -= _billItem.item.total;
                               _bill.offlineBillItems!.remove(_billItem);
                               _billItem.delete();
                             });

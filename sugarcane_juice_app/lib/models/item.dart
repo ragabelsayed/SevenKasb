@@ -24,7 +24,8 @@ class Item extends HiveObject {
   @HiveField(5)
   int type;
 
-  double? total;
+  @HiveField(6)
+  double total;
 
   Item({
     this.id,
@@ -33,7 +34,7 @@ class Item extends HiveObject {
     this.quentity = '0.0',
     required this.unit,
     this.type = 0,
-    this.total,
+    this.total = 0.0,
   });
 
   factory Item.fromJson({required Map<String, dynamic> json}) {

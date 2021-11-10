@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:sugarcane_juice_app/models/bill.dart';
+import 'package:sugarcane_juice_app/models/bill_item.dart';
 import 'package:sugarcane_juice_app/models/http_exception.dart';
 import 'package:sugarcane_juice_app/providers/auth.dart';
 
@@ -71,9 +72,8 @@ class BillProvider implements BillRepository {
     }
   }
 
-  Future<void> addBill(Bill bill) async {
+  Future<void> addBill(Bill bill, [bool isOffline = false]) async {
     try {
-      // final response =
       await http.post(
         url,
         headers: {
@@ -84,21 +84,30 @@ class BillProvider implements BillRepository {
         body: json.encode({
           'userId': 1,
           'billItems': List.from(
-            bill.billItems.map(
-              (e) => {
-                'quentity': e.quentity,
-                'price': e.price,
-                'itemId': e.item.id!,
-              },
-            ),
+            isOffline
+                ? bill.offlineBillItems!.map(
+                    (e) => {
+                      'quentity': e.quentity,
+                      'price': e.price,
+                      'itemId': e.item.id!,
+                    },
+                  )
+                : bill.billItems.map(
+                    (e) => {
+                      'quentity': e.quentity,
+                      'price': e.price,
+                      'itemId': e.item.id!,
+                    },
+                  ),
           ),
-          'cost': sumTotal(bill),
+          'cost': isOffline ? sumTotal(bill, true) : sumTotal(bill),
           'paid': bill.paid,
           'clientName': bill.clientName,
           'createdAt': bill.dateTime.toIso8601String(),
           'type': bill.type,
         }),
       );
+
       // final newBill = Bill(
       //   id: json.decode(response.body)['bill']['id'],
       //   user: bill.user,
@@ -116,6 +125,7 @@ class BillProvider implements BillRepository {
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
       );
     } catch (error) {
+      print(error);
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
       );
@@ -131,7 +141,7 @@ class BillProvider implements BillRepository {
     if (isOffline) {
       if (bill.offlineBillItems!.isNotEmpty) {
         bill.offlineBillItems!.forEach((e) {
-          sum += e.item.total!;
+          sum += getItemsTotal(price: e.price, quentity: e.quentity);
         });
         bill.total = sum;
         return bill.total;
@@ -141,7 +151,7 @@ class BillProvider implements BillRepository {
     } else {
       if (bill.billItems.isNotEmpty) {
         bill.billItems.forEach((e) {
-          sum += e.item.total!;
+          sum += e.item.total;
         });
         bill.total = sum;
         return bill.total;

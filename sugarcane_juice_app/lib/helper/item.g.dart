@@ -23,13 +23,14 @@ class ItemAdapter extends TypeAdapter<Item> {
       quentity: fields[3] as String,
       unit: fields[4] as Unit,
       type: fields[5] as int,
+      total: fields[6] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Item obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class ItemAdapter extends TypeAdapter<Item> {
       ..writeByte(4)
       ..write(obj.unit)
       ..writeByte(5)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(6)
+      ..write(obj.total);
   }
 
   @override
