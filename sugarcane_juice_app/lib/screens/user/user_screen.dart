@@ -1,41 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '/providers/user_provider.dart';
-import '/widget/error_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';
-import 'widget/user_form.dart';
+import 'widget/password_form_screen.dart';
+import 'widget/user_settings.dart';
 
-class UserScreen extends ConsumerWidget {
+class UserScreen extends StatelessWidget {
   static const routName = '/user';
   const UserScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final user = watch(userProvider);
+  Widget build(BuildContext context) {
     FToast fToast = FToast().init(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'إعدادات المستخدم',
-          style: AppConstants.appBarTitle,
-        ),
-        centerTitle: true,
-        backgroundColor: Palette.primaryColor,
-        leading: MenuWidget(),
-        shape: AppConstants.appBarBorder,
-      ),
-      body: user.when(
-        loading: () => Center(
-          child: const CircularProgressIndicator(
-            backgroundColor: Palette.primaryLightColor,
-            color: Palette.primaryColor,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'إعدادات المستخدم',
+            style: AppConstants.appBarTitle,
+          ),
+          centerTitle: true,
+          backgroundColor: Palette.primaryColor,
+          leading: MenuWidget(),
+          shape: AppConstants.appBarBorder,
+          bottom: TabBar(
+            indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
+            indicatorColor: Colors.amber,
+            // labelColor: Colors.amber,
+            tabs: [
+              Tab(
+                text: 'الأدمن',
+                icon: FaIcon(FontAwesomeIcons.userEdit),
+              ),
+              Tab(
+                text: 'الباسورد',
+                icon: FaIcon(FontAwesomeIcons.lock),
+              ),
+            ],
           ),
         ),
-        error: (error, stackTrace) => ErrorView(error: error.toString()),
-        data: (_user) => UserForm(user: _user, fToast: fToast),
+        body: TabBarView(
+          children: [
+            UserSettings(fToast: fToast),
+            PasswordFormScreen(),
+          ],
+        ),
       ),
     );
   }
