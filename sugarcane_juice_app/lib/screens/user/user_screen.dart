@@ -45,7 +45,7 @@ class UserScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             UserSettings(fToast: fToast),
-            PasswordFormScreen(),
+            PasswordFormScreen(fToast: fToast),
           ],
         ),
       ),
