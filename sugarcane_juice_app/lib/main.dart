@@ -16,6 +16,7 @@ import 'models/user.dart';
 import 'providers/auth.dart';
 import 'screens/main/main_screen.dart';
 
+final container = ProviderContainer();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
@@ -41,10 +42,24 @@ void main() async {
   await Hive.openBox<Bill>('bills');
   await Hive.openBox<BillItems>('billItems');
   await Hive.openBox<Extra>('extraExpenses');
-  runApp(ProviderScope(child: MyApp()));
+  final _isAuth = await container.read(authProvider).tryAutoLogin();
+  runApp(ProviderScope(child: MyApp(_isAuth)));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  final bool isAuth;
+  const MyApp(this.isAuth);
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    super.dispose();
+    container.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -54,16 +69,38 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           // theme: ThemeData(primaryColor: Colors.green),
-          home: auth.isAuth
+          home: widget.isAuth
+              // auth.isAuth
               ? MainScreen()
-              : FutureBuilder(
-                  future: auth.tryAutoLogin(),
-                  builder: (ctx, authResultsnapshot) =>
-                      authResultsnapshot.connectionState ==
-                              ConnectionState.waiting
-                          ? SplashScreen()
-                          : LoginScreen(),
-                ),
+              : LoginScreen(),
+          // : FutureBuilder(
+          //     future: auth.tryAutoLogin(),
+          //     builder: (ctx, authResultsnapshot) {
+          //       if (!authResultsnapshot.hasData) {
+          // Navigator.pushNamedAndRemoveUntil(
+          //   context,
+          //   LoginScreen.routName,
+          //   (route) => false,
+          // );
+          // Navigator.removeRoute(context, MaterialRo);
+          // return LoginScreen();
+          // }
+          // if (authResultsnapshot.hasData) {
+          //    MainScreen();
+          // }
+          // return authResultsnapshot.connectionState ==
+          //           ConnectionState.waiting
+          //       ?
+          //       SplashScreen()
+          //       : LoginScreen();
+          // return SplashScreen();
+          // },
+
+          //  :                  await Navigator.pushNamedAndRemoveUntil(
+          //   context,
+          //   LoginScreen.routName,
+          //   (route) => false,
+          // }),
           // initialRoute: LoginScreen.routName,
           routes: AppRoutes.routes,
         );

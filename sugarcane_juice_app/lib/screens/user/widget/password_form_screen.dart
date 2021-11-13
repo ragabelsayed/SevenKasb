@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../login_screen.dart';
+import '/providers/auth.dart';
+import '/providers/user_provider.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/alert_view.dart';
@@ -20,6 +24,8 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
   late TextEditingController _controller2;
   late TextEditingController _controller3;
   bool _isNotConfirm = false;
+  bool _iswaiting = false;
+  bool _saveItOnce = false;
 
   @override
   void initState() {
@@ -40,37 +46,56 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
   Future<void> _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
     if (_isValid) {
-      if (_controller2.text == _controller3.text) {
-        setState(() => _isNotConfirm = false);
-        _formKey.currentState!.save();
-        try {
-          // setState(() => _saveItOnce = false);
-          // await context.read(updateUserProvider).updateUser(widget.user);
-          // setState(() => _iswaiting = false);
-          widget.fToast.showToast(
-            child: ToastView(
-              message: 'تم التحديث بنجاح',
-              success: true,
-            ),
-            gravity: ToastGravity.TOP,
-            toastDuration: const Duration(seconds: 2),
-          );
-        } catch (e) {
-          widget.fToast.showToast(
-            child: ToastView(
-              message: 'خطأ! لم يتم التحديث',
-              success: false,
-            ),
-            gravity: ToastGravity.TOP,
-            toastDuration: const Duration(seconds: 2),
-          );
-          // setState(() => _iswaiting = false);
-        }
-      } else {
-        setState(() => _isNotConfirm = true);
+      _formKey.currentState!.save();
+      try {
+        print(111111111);
+        setState(() => _saveItOnce = false);
+        await context.read(updateUserProvider).updatePassword(
+              oldPass: _controller1.text,
+              newPass: _controller2.text,
+              confirmPass: _controller3.text,
+            );
+        setState(() => _iswaiting = false);
+        toast('تم التحديث بنجاح', true);
+        toast('سيتم إعادة تسجيل الدخول', true);
+        await Future.delayed(const Duration(seconds: 4));
+        await context.read(authProvider).logOut();
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          LoginScreen.routName,
+          (route) => false,
+        );
+      } catch (e) {
+        toast('خطأ! لم يتم التحديث', false);
+        setState(() => _iswaiting = false);
       }
     }
   }
+
+  void toast(String message, bool isSccuss) {
+    widget.fToast.showToast(
+      child: ToastView(
+        message: message,
+        success: isSccuss,
+      ),
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
+
+  void checkEquility() {
+    if (_controller2.text == _controller3.text) {
+      setState(() => _isNotConfirm = false);
+      if (!_iswaiting) setWaiting();
+    } else {
+      setState(() => _isNotConfirm = true);
+    }
+  }
+
+  void setWaiting() => setState(() {
+        _iswaiting = true;
+        _saveItOnce = true;
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -114,21 +139,33 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
                   style: TextStyle(color: Colors.red),
                 ),
               const SizedBox(height: 50),
-              RoundedTextButton(
-                text: 'تعديل',
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) => AlertView(
-                    isSave: true,
-                    message: 'هل انت متأكد من حفظ هذا التعديل؟',
-                    onpress: () {
-                      _saveForm();
-                      // if (!_iswaiting) setWaiting();
-                      Navigator.of(context).pop();
-                    },
+              if (!_iswaiting)
+                RoundedTextButton(
+                  text: 'تعديل',
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertView(
+                      isSave: true,
+                      message: 'هل انت متأكد من حفظ هذا التعديل؟',
+                      onpress: () {
+                        checkEquility();
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ),
                 ),
-              ),
+              if (_iswaiting)
+                FutureBuilder(
+                  future: _saveItOnce
+                      ? _saveForm()
+                      : Future.delayed(const Duration(seconds: 2)),
+                  builder: (context, snapshot) => Center(
+                    child: const CircularProgressIndicator(
+                      backgroundColor: Palette.primaryLightColor,
+                      color: Palette.primaryColor,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

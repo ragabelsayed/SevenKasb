@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '/providers/auth.dart';
+import '../../login_screen.dart';
 import '/providers/user_provider.dart';
 import '/widget/toast_view.dart';
 import '/config/constants.dart';
@@ -31,31 +33,30 @@ class _UserFormState extends State<UserForm> {
         setState(() => _saveItOnce = false);
         await context.read(updateUserProvider).updateUser(widget.user);
         setState(() => _iswaiting = false);
-        widget.fToast
-          ..removeQueuedCustomToasts()
-          ..showToast(
-            child: ToastView(
-              message: 'تم التحديث بنجاح',
-              success: true,
-            ),
-            gravity: ToastGravity.TOP,
-            toastDuration: const Duration(seconds: 2),
-          );
+        toast('تم التحديث بنجاح', true);
+        toast('سيتم إعادة تسجيل الدخول', true);
+        await Future.delayed(const Duration(seconds: 4));
+        await context.read(authProvider).logOut();
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          LoginScreen.routName,
+          (route) => false,
+        );
       } catch (e) {
-        widget.fToast
-          ..removeQueuedCustomToasts()
-          ..showToast(
-            child: ToastView(
-              message: 'خطأ! لم يتم التحديث',
-              success: false,
-            ),
-            gravity: ToastGravity.TOP,
-            toastDuration: const Duration(seconds: 2),
-          );
+        toast('خطأ! لم يتم التحديث', false);
         setState(() => _iswaiting = false);
       }
     }
   }
+
+  void toast(String message, bool isSccuss) => widget.fToast.showToast(
+        child: ToastView(
+          message: message,
+          success: isSccuss,
+        ),
+        gravity: ToastGravity.TOP,
+        toastDuration: const Duration(seconds: 2),
+      );
 
   void setWaiting() => setState(() {
         _iswaiting = true;

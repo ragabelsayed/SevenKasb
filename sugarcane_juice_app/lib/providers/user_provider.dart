@@ -7,6 +7,8 @@ import '/providers/auth.dart';
 
 const userUri = 'http://10.0.2.2:5000/api/users/1';
 Uri url = Uri.parse(userUri);
+const passUri = 'http://10.0.2.2:5000/api/auth/1/changepassword';
+Uri passurl = Uri.parse(passUri);
 
 final userProvider = FutureProvider.autoDispose<User>((ref) async {
   String _token = ref.watch(authProvider).token;
@@ -46,7 +48,7 @@ class UserProvider {
 
   Future<void> updateUser(User user) async {
     try {
-      final response = await http.put(
+      await http.put(
         url,
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +63,30 @@ class UserProvider {
           'telephone': user.telephone,
         }),
       );
-      print(response.statusCode);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<void> updatePassword({
+    required String oldPass,
+    required String newPass,
+    required String confirmPass,
+  }) async {
+    try {
+      await http.put(
+        passurl,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
+        },
+        body: json.encode({
+          'password': oldPass,
+          'newPassword': newPass,
+          'passwordConfirm': confirmPass
+        }),
+      );
     } catch (error) {
       throw error;
     }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sugarcane_juice_app/config/palette.dart';
-import 'package:sugarcane_juice_app/providers/user_provider.dart';
-import 'package:sugarcane_juice_app/widget/error_view.dart';
+import '/config/palette.dart';
+import '/providers/user_provider.dart';
+import '/widget/error_view.dart';
 
 import 'user_form.dart';
 

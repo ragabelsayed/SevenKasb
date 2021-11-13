@@ -52,6 +52,7 @@ class Auth with ChangeNotifier {
 
       final responseDate = json.decode(response.body) as Map<String, dynamic>;
       _token = responseDate['token'];
+      print(response.body);
 
       notifyListeners();
       _saveDataOnDevice(token: _token);
@@ -60,23 +61,34 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> login(
-      {String name = 'khaled', String password = 'password'}) async {
-    return _authenticate(name: name, passowrd: password, url: url);
+  Future<void> login({required String name, required String password}) async {
+    _authenticate(name: name, passowrd: password, url: url);
   }
 
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData')) {
       return false;
-    }
-    final extractedUserData =
-        json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
+    } else {
+      final extractedUserData =
+          json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
 
-    _token = extractedUserData['token'];
-    notifyListeners();
-    return true;
+      _token = extractedUserData['token'];
+      return true;
+    }
   }
+  // Future<bool> tryAutoLogin() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   if (!prefs.containsKey('userData')) {
+  //     return false;
+  //   }
+  //   final extractedUserData =
+  //       json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
+
+  //   _token = extractedUserData['token'];
+  //   notifyListeners();
+  //   return true;
+  // }
 
   Future<void> logOut() async {
     _token = '';
