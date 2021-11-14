@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sugarcane_juice_app/models/http_exception.dart';
 
 const uri = 'http://10.0.2.2:5000/api/auth/login';
 // const uri = 'http://localhost:5000/api/auth/login';
@@ -52,17 +53,32 @@ class Auth with ChangeNotifier {
 
       final responseDate = json.decode(response.body) as Map<String, dynamic>;
       _token = responseDate['token'];
-      print(response.body);
-
-      notifyListeners();
+      // notifyListeners();
       _saveDataOnDevice(token: _token);
-    } catch (e) {
-      throw e;
+    } on FormatException {
+      throw HttpException(
+        ' الأسم او الباسورد غير صحيح',
+      );
+    } catch (error) {
+      print(error.toString());
+      throw HttpException(
+        'تعذر الاتصال بالسيرفر',
+      );
     }
   }
 
   Future<void> login({required String name, required String password}) async {
-    _authenticate(name: name, passowrd: password, url: url);
+    // try {
+    await _authenticate(name: name, passowrd: password, url: url);
+    // } on FormatException {
+    //   throw HttpException(
+    //     ' الأسم او الباسورد غير صحيح',
+    //   );
+    // } catch (error) {
+    //   throw HttpException(
+    //     'تعذر الاتصال بالسيرفر',
+    //   );
+    // }
   }
 
   Future<bool> tryAutoLogin() async {

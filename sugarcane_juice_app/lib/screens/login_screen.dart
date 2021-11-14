@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/screens/main/main_screen.dart';
 import '/providers/auth.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
@@ -16,8 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailcontroller = TextEditingController();
   bool _isPassowrdVisible = true;
-  bool _errorMessage = false;
-  Map<String, String> userData = {'name': 'khaled', 'password': 'khaled'};
+  bool _isError = false;
+  String _errorMessage = '';
+  Map<String, String> userData = {'name': '', 'password': ''};
+  bool _isWaiting = false;
 
   @override
   void initState() {
@@ -25,22 +28,23 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailcontroller.addListener(onListen);
   }
 
-  void _saveForm() async {
+  Future<void> _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
-
     if (_isValid) {
       _formKey.currentState!.save();
-
-      context
-          .read(authProvider)
-          .login(name: userData['name']!, password: userData['password']!)
-          .onError(
-        (error, stackTrace) {
-          return setState(() {
-            _errorMessage = !_errorMessage;
-          });
-        },
-      );
+      try {
+        await context
+            .read(authProvider)
+            .login(name: userData['name']!, password: userData['password']!);
+        setState(() => _isWaiting = false);
+        await Navigator.pushNamed(context, MainScreen.routName);
+      } catch (e) {
+        setState(() {
+          _isWaiting = false;
+          _isError = !_isError;
+          _errorMessage = e.toString();
+        });
+      }
     }
   }
 
@@ -52,19 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onListen() => setState(() {});
+  void setWaiting() => setState(() => _isWaiting = !_isWaiting);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
-      // appBar: AppBar(
-      //   systemOverlayStyle: SystemUiOverlayStyle(
-      //     statusBarColor: Palette.primaryLightColor,
-      //   ),
-      //   toolbarHeight: 0.0,
-      //   elevation: 0.0,
-      // ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -90,8 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       suffixIcon: _emailcontroller.text.isNotEmpty
                           ? IconButton(
                               splashRadius: 1.0,
-                              tooltip: 'Clear',
-                              icon: Icon(
+                              tooltip: 'مسح',
+                              icon: const Icon(
                                 Icons.close,
                                 color: Palette.primaryColor,
                               ),
@@ -105,12 +102,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     validator: (newValue) {
                       if (newValue!.isEmpty) {
-                        return 'Please enter your name or email';
+                        return 'قُمْ بإدخال الإسم رجاءً';
                       }
                     },
-                    onSaved: (newValue) {
-                      userData['name'] = newValue!;
-                    },
+                    onSaved: (newValue) => userData['name'] = newValue!,
                   ),
                 ),
                 SizedBox(height: size.height * 0.02),
@@ -130,11 +125,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: 'passoword',
                       suffixIcon: IconButton(
                         icon: _isPassowrdVisible
-                            ? Icon(
+                            ? const Icon(
                                 Icons.visibility_off,
                                 color: Palette.primaryColor,
                               )
-                            : Icon(
+                            : const Icon(
                                 Icons.visibility,
                                 color: Palette.primaryColor,
                               ),
@@ -150,40 +145,42 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     validator: (newValue) {
                       if (newValue!.isEmpty) {
-                        return 'Please enter your password';
+                        return 'قُمْ بإدخال الباسورد رجاءً';
                       }
-                      // if (newValue.length < 7) {
-                      //   return 'Passoword is wrong';
-                      // }
                     },
-                    onSaved: (newValue) {
-                      userData['password'] = newValue!;
-                    },
+                    onSaved: (newValue) => userData['password'] = newValue!,
                   ),
                 ),
-                if (!_errorMessage) SizedBox(height: size.height * 0.03),
-                if (_errorMessage)
+                if (!_isError) SizedBox(height: size.height * 0.03),
+                if (_isError)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
+                      textDirection: TextDirection.rtl,
                       children: [
-                        Icon(
-                          Icons.error,
-                          color: Colors.red,
-                        ),
+                        const Icon(Icons.error, color: Colors.red),
                         const SizedBox(width: 5),
                         Text(
-                          'The name or password not correct',
-                          style: TextStyle(color: Colors.red),
+                          _errorMessage,
+                          style: const TextStyle(color: Colors.red),
                         ),
                       ],
                     ),
                   ),
-                RoundedTextButton(
-                  text: 'LOGIN',
-                  onPressed: _saveForm,
-                ),
+                if (!_isWaiting)
+                  RoundedTextButton(
+                    text: 'تسجيل الدخول',
+                    onPressed: () => setWaiting(),
+                  ),
+                if (_isWaiting)
+                  FutureBuilder(
+                    future: _saveForm(),
+                    builder: (context, snapshot) => CircularProgressIndicator(
+                      backgroundColor: Palette.primaryLightColor,
+                      color: Palette.primaryColor,
+                    ),
+                  ),
               ],
             ),
           ),

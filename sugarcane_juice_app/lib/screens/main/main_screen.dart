@@ -5,6 +5,7 @@ import '/config/palette.dart';
 import 'widget/card_list.dart';
 
 class MainScreen extends StatefulWidget {
+  static const routName = '/main_screen';
   const MainScreen({Key? key}) : super(key: key);
   @override
   State<MainScreen> createState() => _MainScreenState();

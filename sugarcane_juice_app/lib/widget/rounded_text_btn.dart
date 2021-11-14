@@ -22,6 +22,7 @@ class RoundedTextButton extends StatelessWidget {
         backgroundColor: backgroundColor,
         primary: primaryColor,
         shape: const StadiumBorder(),
+        textStyle: const TextStyle(fontSize: 18),
         fixedSize: Size(size.width * 0.8, size.height * 0.07),
       ),
       onPressed: () => onPressed(),
