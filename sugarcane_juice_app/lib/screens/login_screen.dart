@@ -45,6 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
           _errorMessage = e.toString();
         });
       }
+    } else {
+      setState(() => _isWaiting = false);
     }
   }
 
@@ -61,127 +63,145 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: size.width * 0.8,
-                  child: TextFormField(
-                    controller: _emailcontroller,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
-                      fillColor: Palette.primaryLightColor,
-                      filled: true,
-                      prefixIcon: const Icon(
-                        Icons.person,
-                        color: Palette.primaryColor,
-                      ),
-                      hintText: 'Username',
-                      suffixIcon: _emailcontroller.text.isNotEmpty
-                          ? IconButton(
-                              splashRadius: 1.0,
-                              tooltip: 'مسح',
-                              icon: const Icon(
-                                Icons.close,
-                                color: Palette.primaryColor,
-                              ),
-                              onPressed: () => _emailcontroller.clear(),
-                            )
-                          : null,
-                      border: AppConstants.border,
-                      errorBorder: AppConstants.errorBorder,
-                      focusedBorder: AppConstants.focusedBorder,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: double.infinity,
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: size.height * 0.08),
+                    CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      foregroundImage:
+                          const AssetImage('assets/images/logo_1.jpg'),
+                      radius: size.width * 0.3,
                     ),
-                    onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                    validator: (newValue) {
-                      if (newValue!.isEmpty) {
-                        return 'قُمْ بإدخال الإسم رجاءً';
-                      }
-                    },
-                    onSaved: (newValue) => userData['name'] = newValue!,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.02),
-                SizedBox(
-                  width: size.width * 0.8,
-                  child: TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
-                    textInputAction: TextInputAction.done,
-                    obscureText: _isPassowrdVisible,
-                    decoration: InputDecoration(
-                      fillColor: Palette.primaryLightColor,
-                      filled: true,
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Palette.primaryColor,
-                      ),
-                      hintText: 'passoword',
-                      suffixIcon: IconButton(
-                        icon: _isPassowrdVisible
-                            ? const Icon(
-                                Icons.visibility_off,
-                                color: Palette.primaryColor,
-                              )
-                            : const Icon(
-                                Icons.visibility,
-                                color: Palette.primaryColor,
-                              ),
-                        onPressed: () {
-                          setState(
-                            () => _isPassowrdVisible = !_isPassowrdVisible,
-                          );
-                        },
-                      ),
-                      border: AppConstants.border,
-                      errorBorder: AppConstants.errorBorder,
-                      focusedBorder: AppConstants.focusedBorder,
-                    ),
-                    validator: (newValue) {
-                      if (newValue!.isEmpty) {
-                        return 'قُمْ بإدخال الباسورد رجاءً';
-                      }
-                    },
-                    onSaved: (newValue) => userData['password'] = newValue!,
-                  ),
-                ),
-                if (!_isError) SizedBox(height: size.height * 0.03),
-                if (_isError)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        const Icon(Icons.error, color: Colors.red),
-                        const SizedBox(width: 5),
-                        Text(
-                          _errorMessage,
-                          style: const TextStyle(color: Colors.red),
+                    SizedBox(height: size.height * 0.04),
+                    SizedBox(
+                      width: size.width * 0.8,
+                      child: TextFormField(
+                        controller: _emailcontroller,
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          fillColor: Palette.primaryLightColor,
+                          filled: true,
+                          prefixIcon: const Icon(
+                            Icons.person,
+                            color: Palette.primaryColor,
+                          ),
+                          hintText: 'Username',
+                          suffixIcon: _emailcontroller.text.isNotEmpty
+                              ? IconButton(
+                                  splashRadius: 1.0,
+                                  tooltip: 'مسح',
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Palette.primaryColor,
+                                  ),
+                                  onPressed: () => _emailcontroller.clear(),
+                                )
+                              : null,
+                          border: AppConstants.border,
+                          errorBorder: AppConstants.errorBorder,
+                          focusedBorder: AppConstants.focusedBorder,
                         ),
-                      ],
+                        onFieldSubmitted: (_) =>
+                            FocusScope.of(context).nextFocus(),
+                        validator: (newValue) {
+                          if (newValue!.isEmpty) {
+                            return 'قُمْ بإدخال الإسم رجاءً';
+                          }
+                        },
+                        onSaved: (newValue) => userData['name'] = newValue!,
+                      ),
                     ),
-                  ),
-                if (!_isWaiting)
-                  RoundedTextButton(
-                    text: 'تسجيل الدخول',
-                    onPressed: () => setWaiting(),
-                  ),
-                if (_isWaiting)
-                  FutureBuilder(
-                    future: _saveForm(),
-                    builder: (context, snapshot) => CircularProgressIndicator(
-                      backgroundColor: Palette.primaryLightColor,
-                      color: Palette.primaryColor,
+                    SizedBox(height: size.height * 0.02),
+                    SizedBox(
+                      width: size.width * 0.8,
+                      child: TextFormField(
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        obscureText: _isPassowrdVisible,
+                        decoration: InputDecoration(
+                          fillColor: Palette.primaryLightColor,
+                          filled: true,
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Palette.primaryColor,
+                          ),
+                          hintText: 'passoword',
+                          suffixIcon: IconButton(
+                            icon: _isPassowrdVisible
+                                ? const Icon(
+                                    Icons.visibility_off,
+                                    color: Palette.primaryColor,
+                                  )
+                                : const Icon(
+                                    Icons.visibility,
+                                    color: Palette.primaryColor,
+                                  ),
+                            onPressed: () {
+                              setState(
+                                () => _isPassowrdVisible = !_isPassowrdVisible,
+                              );
+                            },
+                          ),
+                          border: AppConstants.border,
+                          errorBorder: AppConstants.errorBorder,
+                          focusedBorder: AppConstants.focusedBorder,
+                        ),
+                        validator: (newValue) {
+                          if (newValue!.isEmpty) {
+                            return 'قُمْ بإدخال الباسورد رجاءً';
+                          }
+                          if (newValue.length <= 4) {
+                            return 'الباسورد أقل من 4 حروف';
+                          }
+                        },
+                        onSaved: (newValue) => userData['password'] = newValue!,
+                      ),
                     ),
-                  ),
-              ],
+                    if (!_isError) SizedBox(height: size.height * 0.03),
+                    if (_isError)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          textDirection: TextDirection.rtl,
+                          children: [
+                            const Icon(Icons.error, color: Colors.red),
+                            const SizedBox(width: 5),
+                            Text(
+                              _errorMessage,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
+                    if (!_isWaiting)
+                      RoundedTextButton(
+                        text: 'تسجيل الدخول',
+                        onPressed: () => setWaiting(),
+                      ),
+                    if (_isWaiting)
+                      FutureBuilder(
+                        future: _saveForm(),
+                        builder: (context, snapshot) =>
+                            CircularProgressIndicator(
+                          backgroundColor: Palette.primaryLightColor,
+                          color: Palette.primaryColor,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
