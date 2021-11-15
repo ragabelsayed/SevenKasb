@@ -38,8 +38,6 @@ class ItemNotifier extends StateNotifier<MenuItem> {
     switch (state) {
       case MenuItems.bills:
         return BillScreen();
-      case MenuItems.unit:
-        return UnitScreen();
       case MenuItems.extra:
         return ExtraExpensesScreen();
       case MenuItems.offline:

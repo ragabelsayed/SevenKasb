@@ -17,7 +17,6 @@ final authProvider = ChangeNotifierProvider<Auth>((ref) {
 class Auth with ChangeNotifier {
   late String _token = '';
   Uri url = Uri.parse(uri);
-  // static Uri url = Uri.http('10.0.2.2:5000', '/api/auth/login');
 
   bool get isAuth {
     if (_token.isNotEmpty) {
@@ -36,31 +35,28 @@ class Auth with ChangeNotifier {
     required String passowrd,
     required Uri url,
   }) async {
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'charset': 'utf-8',
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'charset': 'utf-8',
+      },
+      body: json.encode(
+        {
+          'username': name,
+          'password': passowrd,
         },
-        body: json.encode(
-          {
-            'username': name,
-            'password': passowrd,
-          },
-        ),
-      );
-
+      ),
+    );
+    if (response.statusCode >= 200 && response.statusCode < 400) {
       final responseDate = json.decode(response.body) as Map<String, dynamic>;
       _token = responseDate['token'];
-      // notifyListeners();
       _saveDataOnDevice(token: _token);
-    } on FormatException {
+    } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw HttpException(
         ' الأسم او الباسورد غير صحيح',
       );
-    } catch (error) {
-      print(error.toString());
+    } else {
       throw HttpException(
         'تعذر الاتصال بالسيرفر',
       );
@@ -68,17 +64,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login({required String name, required String password}) async {
-    // try {
     await _authenticate(name: name, passowrd: password, url: url);
-    // } on FormatException {
-    //   throw HttpException(
-    //     ' الأسم او الباسورد غير صحيح',
-    //   );
-    // } catch (error) {
-    //   throw HttpException(
-    //     'تعذر الاتصال بالسيرفر',
-    //   );
-    // }
   }
 
   Future<bool> tryAutoLogin() async {
