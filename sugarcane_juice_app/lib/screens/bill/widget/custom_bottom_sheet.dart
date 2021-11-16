@@ -30,7 +30,7 @@ class CustomBottomSheet extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           boxShadow: [
             BoxShadow(
               color: Colors.amber.withOpacity(0.18),
@@ -45,30 +45,30 @@ class CustomBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               textDirection: TextDirection.rtl,
               children: [
-                DialogTitle(name: 'الإجمالى: '),
+                const DialogTitle(name: 'الإجمالى: '),
                 Text('${BillProvider.sumTotal(bill, isOffline)}'),
               ],
             ),
             Row(
               textDirection: TextDirection.rtl,
               children: [
-                DialogTitle(name: 'المدفوع: '),
+                const DialogTitle(name: 'المدفوع: '),
                 const SizedBox(width: 5),
                 SizedBox(
                   width: 80,
                   height: 50,
                   child: textField,
                 ),
-                Expanded(child: SizedBox()),
+                Expanded(child: const SizedBox()),
                 Text('${bill.paid}'),
               ],
             ),
-            Divider(color: Colors.amber),
+            const Divider(color: Colors.amber),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               textDirection: TextDirection.rtl,
               children: [
-                DialogTitle(name: 'ألباقى: '),
+                const DialogTitle(name: 'ألباقى: '),
                 Text('${BillProvider.getRemaining(bill)}'),
               ],
             ),

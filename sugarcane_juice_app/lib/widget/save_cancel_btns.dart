@@ -32,12 +32,13 @@ class SaveAndCancelBtns extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: Palette.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(30),
-                  ),
-                )),
+              primary: Palette.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(30),
+                ),
+              ),
+            ),
             child: Text('حفظ'),
             onPressed: () => onSave(),
           ),

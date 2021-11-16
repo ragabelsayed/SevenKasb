@@ -22,16 +22,7 @@ class DataTableView extends StatelessWidget {
         rows: _getRow(bills: bills, context: context),
         headingTextStyle: Theme.of(context).textTheme.headline6,
         columnSpacing: MediaQuery.of(context).size.width / 8,
-
-        // dataRowColor:
-        //     MaterialStateProperty.resolveWith<Color>((states) => Colors.amber),
-        // dividerThickness: 5.0,
-        // checkboxHorizontalMargin: 100,
-        // horizontalMargin: 10.0,
         horizontalMargin: 0.0,
-        // decoration: BoxDecoration(
-        //   border: Border(bottom: BorderSide()),
-        // ),
         showBottomBorder: true,
       ),
     );
@@ -68,8 +59,8 @@ class DataTableView extends StatelessWidget {
                 TextButton(
                   child: Transform.rotate(
                     angle: 600,
-                    origin: Offset(0.0, 0.0),
-                    child: Icon(
+                    origin: const Offset(0.0, 0.0),
+                    child: const Icon(
                       Icons.forward_rounded,
                       size: 30,
                       color: Colors.amber,

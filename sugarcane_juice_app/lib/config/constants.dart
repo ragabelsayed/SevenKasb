@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sugarcane_juice_app/config/palette.dart';
 
 class AppConstants {
   // static const kAnimationDuration = Duration(milliseconds: 200);
-
   static final appBarTitle = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w400,

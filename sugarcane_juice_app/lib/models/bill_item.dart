@@ -1,6 +1,5 @@
 import 'item.dart';
 import 'package:hive/hive.dart';
-
 part '../helper/bill_item.g.dart';
 
 @HiveType(typeId: 1)

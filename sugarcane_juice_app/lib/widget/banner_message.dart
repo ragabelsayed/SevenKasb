@@ -20,7 +20,7 @@ getBanner({
                 ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
             child: Text(
               'إغلاق',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Palette.primaryColor,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -28,7 +28,7 @@ getBanner({
             ),
           ),
         ],
-        leading: Icon(
+        leading: const Icon(
           Icons.error_outline,
           color: Colors.red,
         ),

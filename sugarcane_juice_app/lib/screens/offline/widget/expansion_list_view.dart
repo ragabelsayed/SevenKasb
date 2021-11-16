@@ -106,7 +106,7 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         return ListView(
           shrinkWrap: true,
           children: [
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             if (extra.isNotEmpty)
               ExpansionView(
                 title: 'مصاريف إضافية',
@@ -119,7 +119,7 @@ class _ExpansionListViewState extends State<ExpansionListView> {
                   Navigator.pop(context);
                 },
               ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             if (bills.isNotEmpty)
               ExpansionView(
                 title: 'فواتير شراء',

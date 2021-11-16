@@ -17,7 +17,7 @@ class ExtraDataTableView extends StatelessWidget {
     ];
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      physics: AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       child: DataTable(
         columns: _getColumns(columns),
         rows: _getRow(extras: extraList, context: context),
@@ -61,7 +61,7 @@ class ExtraDataTableView extends StatelessWidget {
                 TextButton(
                   child: Transform.rotate(
                     angle: 600,
-                    origin: Offset(0.0, 0.0),
+                    origin: const Offset(0.0, 0.0),
                     child: const Icon(
                       Icons.forward_rounded,
                       size: 30,

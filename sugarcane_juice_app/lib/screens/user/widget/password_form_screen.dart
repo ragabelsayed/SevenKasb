@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../login_screen.dart';
 import '/providers/auth.dart';
 import '/providers/user_provider.dart';
 import '/config/constants.dart';
@@ -48,7 +47,6 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
     if (_isValid) {
       _formKey.currentState!.save();
       try {
-        print(111111111);
         setState(() => _saveItOnce = false);
         await context.read(updateUserProvider).updatePassword(
               oldPass: _controller1.text,
@@ -59,12 +57,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
         toast('تم التحديث بنجاح', true);
         toast('سيتم إعادة تسجيل الدخول', true);
         await Future.delayed(const Duration(seconds: 4));
-        await context.read(authProvider).logOut();
-        await Navigator.pushNamedAndRemoveUntil(
-          context,
-          LoginScreen.routName,
-          (route) => false,
-        );
+        await context.read(authProvider.notifier).logOut(context);
       } catch (e) {
         toast('خطأ! لم يتم التحديث', false);
         setState(() => _iswaiting = false);
@@ -159,7 +152,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
                   future: _saveItOnce
                       ? _saveForm()
                       : Future.delayed(const Duration(seconds: 2)),
-                  builder: (context, snapshot) => Center(
+                  builder: (context, snapshot) => const Center(
                     child: const CircularProgressIndicator(
                       backgroundColor: Palette.primaryLightColor,
                       color: Palette.primaryColor,

@@ -11,12 +11,12 @@ const passUri = 'http://10.0.2.2:5000/api/auth/1/changepassword';
 Uri passurl = Uri.parse(passUri);
 
 final userProvider = FutureProvider.autoDispose<User>((ref) async {
-  String _token = ref.watch(authProvider).token;
+  String _token = ref.watch(authProvider);
   return UserProvider(authToken: _token).fetchUserDate();
 });
 
 final updateUserProvider = Provider.autoDispose<UserProvider>((ref) {
-  String _token = ref.watch(authProvider).token;
+  String _token = ref.watch(authProvider);
   return UserProvider(authToken: _token);
 });
 

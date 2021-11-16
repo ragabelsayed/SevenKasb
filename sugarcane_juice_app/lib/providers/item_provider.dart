@@ -2,15 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:sugarcane_juice_app/models/http_exception.dart';
-import 'package:sugarcane_juice_app/models/item.dart';
-import 'package:sugarcane_juice_app/models/unit.dart';
-import 'package:sugarcane_juice_app/providers/auth.dart';
+import '/models/http_exception.dart';
+import '/models/item.dart';
+import '/providers/auth.dart';
 
 const itemUri = 'http://10.0.2.2:5000/api/item';
 
 final itemProvider = ChangeNotifierProvider<ItemNotifier>((ref) {
-  String _token = ref.watch(authProvider).token;
+  String _token = ref.watch(authProvider);
   return ItemNotifier(authToken: _token);
 });
 
@@ -154,24 +153,6 @@ class ItemNotifier extends ChangeNotifier {
     if (response.statusCode >= 400) {
       _items.insert(existingItemIndex, existingItem);
       notifyListeners();
-      // throw HttpException('Could not delete product.');
     }
-    // existingItem = null;
   }
-  // Future<void> deleteProduct(String id) async {
-
-  //   final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
-  //   var existingProduct = _items[existingProductIndex];
-  //   _items.removeAt(existingProductIndex);
-  //   notifyListeners();
-  //   final response = await http.delete(url);
-  //   if (response.statusCode >= 400) {
-  //     _items.insert(existingProductIndex, existingProduct);
-  //     notifyListeners();
-  //     throw HttpException('Could not delete product.');
-  //   }
-  //   existingProduct = null;
-
-  //   // _items.removeWhere((prod) => prod.id == id);
-  // }
 }

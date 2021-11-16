@@ -17,8 +17,11 @@ class PurchaseBill extends ConsumerWidget {
       color: Palette.primaryColor,
       child: Scaffold(
         body: bills.when(
-          loading: () => Center(
-            child: const CircularProgressIndicator(color: Colors.green),
+          loading: () => const Center(
+            child: CircularProgressIndicator(
+              color: Palette.primaryColor,
+              backgroundColor: Palette.primaryLightColor,
+            ),
           ),
           error: (error, stackTrace) => ErrorView(error: error.toString()),
           data: (billList) {
@@ -33,7 +36,7 @@ class PurchaseBill extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton(
           tooltip: 'إضافة فاتورة شراء جديدة',
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           backgroundColor: Colors.amber,
           onPressed: () {
             context.read(isOffLineProvider).state = false;

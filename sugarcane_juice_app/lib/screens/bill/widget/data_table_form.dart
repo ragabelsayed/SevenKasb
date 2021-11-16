@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sugarcane_juice_app/models/bill_item.dart';
-import '/models/bill.dart';
+import '/models/bill_item.dart';
 import '/providers/bill_provider.dart';
 
 class DataTableForm extends StatelessWidget {
@@ -18,19 +17,16 @@ class DataTableForm extends StatelessWidget {
           .textTheme
           .merge(
             TextTheme(
-              headline6: TextStyle(
+              headline6: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
           )
           .headline6,
-      // columnSpacing: MediaQuery.of(context).size.width / 8,
       horizontalMargin: 0.0,
       showCheckboxColumn: false,
-      // checkboxHorizontalMargin: 5,
-      // showBottomBorder: true,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             width: 0.5,

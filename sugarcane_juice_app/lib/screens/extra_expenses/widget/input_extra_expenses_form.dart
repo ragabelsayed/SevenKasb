@@ -37,24 +37,11 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
       _formKey.currentState!.save();
       try {
         await context.read(addExtraExpensesProvider).addExtra(_extra);
-        widget.ftoast.showToast(
-          child: ToastView(
-            message: ' تم اضافة المصروف',
-            success: true,
-          ),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: const Duration(seconds: 2),
-        );
+        _toast(' تم اضافة المصروف', true);
         Navigator.of(context).pop();
+        _toast(' إسحب لأسفل لتحديث', true);
       } catch (e) {
-        widget.ftoast.showToast(
-          child: ToastView(
-            message: 'لم تتم اضافة المصروف',
-            success: false,
-          ),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: const Duration(seconds: 2),
-        );
+        _toast('لم تتم اضافة المصروف', false);
         Navigator.of(context).pop();
       }
     }
@@ -66,27 +53,24 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
       _formKey.currentState!.save();
       try {
         await context.read(extraOfflineProvider.notifier).addExtra(_extra);
-        widget.ftoast.showToast(
-          child: ToastView(
-            message: ' تم اضافة المصروف',
-            success: true,
-          ),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: const Duration(seconds: 2),
-        );
+        _toast(' تم اضافة المصروف', true);
         Navigator.of(context).pop();
       } catch (e) {
-        widget.ftoast.showToast(
-          child: ToastView(
-            message: 'لم تتم اضافة المصروف',
-            success: false,
-          ),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: const Duration(seconds: 2),
-        );
+        _toast('لم تتم اضافة المصروف', false);
         Navigator.of(context).pop();
       }
     }
+  }
+
+  void _toast(String message, bool success) {
+    widget.ftoast.showToast(
+      child: ToastView(
+        message: message,
+        success: success,
+      ),
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
   }
 
   void setWaiting() {
@@ -114,7 +98,10 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
             child: FutureBuilder(
               future: widget.isOffLine ? _saveFormOffline() : _saveForm(),
               builder: (context, snapshot) => const Center(
-                child: CircularProgressIndicator(color: Colors.green),
+                child: CircularProgressIndicator(
+                  color: Palette.primaryColor,
+                  backgroundColor: Palette.primaryLightColor,
+                ),
               ),
             ),
           )

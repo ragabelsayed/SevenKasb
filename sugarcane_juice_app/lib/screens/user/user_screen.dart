@@ -16,37 +16,39 @@ class UserScreen extends StatelessWidget {
     FToast fToast = FToast().init(context);
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'إعدادات المستخدم',
-            style: AppConstants.appBarTitle,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'إعدادات المستخدم',
+              style: AppConstants.appBarTitle,
+            ),
+            centerTitle: true,
+            backgroundColor: Palette.primaryColor,
+            leading: MenuWidget(),
+            shape: AppConstants.appBarBorder,
+            bottom: TabBar(
+              indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
+              indicatorColor: Colors.amber,
+              tabs: [
+                const Tab(
+                  text: 'الأدمن',
+                  icon: const FaIcon(FontAwesomeIcons.userEdit),
+                ),
+                const Tab(
+                  text: 'الباسورد',
+                  icon: const FaIcon(FontAwesomeIcons.lock),
+                ),
+              ],
+            ),
           ),
-          centerTitle: true,
-          backgroundColor: Palette.primaryColor,
-          leading: MenuWidget(),
-          shape: AppConstants.appBarBorder,
-          bottom: TabBar(
-            indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
-            indicatorColor: Colors.amber,
-            // labelColor: Colors.amber,
-            tabs: [
-              Tab(
-                text: 'الأدمن',
-                icon: FaIcon(FontAwesomeIcons.userEdit),
-              ),
-              Tab(
-                text: 'الباسورد',
-                icon: FaIcon(FontAwesomeIcons.lock),
-              ),
+          body: TabBarView(
+            children: [
+              UserSettings(fToast: fToast),
+              PasswordFormScreen(fToast: fToast),
             ],
           ),
-        ),
-        body: TabBarView(
-          children: [
-            UserSettings(fToast: fToast),
-            PasswordFormScreen(fToast: fToast),
-          ],
         ),
       ),
     );

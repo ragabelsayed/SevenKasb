@@ -44,15 +44,14 @@ class _MainScreenState extends State<MainScreen>
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
         title: Text(
-          // 'سڤن قصب',
-          '7 قصب',
+          'سڤن قصب',
           textDirection: TextDirection.rtl,
           style: AppConstants.appBarTitle,
         ),
         centerTitle: true,
+        leading: const SizedBox(),
         actions: [
           IconButton(
-            // color: Colors.amber,
             icon:
                 FaIcon(_isList ? FontAwesomeIcons.listUl : FontAwesomeIcons.th),
             onPressed: () {

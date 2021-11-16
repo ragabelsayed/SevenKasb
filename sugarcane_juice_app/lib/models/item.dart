@@ -1,7 +1,5 @@
-import 'package:sugarcane_juice_app/models/unit.dart';
-
+import '/models/unit.dart';
 import 'package:hive/hive.dart';
-
 part '../helper/item.g.dart';
 
 @HiveType(typeId: 2)

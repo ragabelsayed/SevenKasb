@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '/config/palette.dart';
 import '/providers/user_provider.dart';
 import '/widget/error_view.dart';
-
 import 'user_form.dart';
 
 class UserSettings extends ConsumerWidget {
@@ -16,7 +15,7 @@ class UserSettings extends ConsumerWidget {
     final user = watch(userProvider);
     return Scaffold(
       body: user.when(
-        loading: () => Center(
+        loading: () => const Center(
           child: const CircularProgressIndicator(
             backgroundColor: Palette.primaryLightColor,
             color: Palette.primaryColor,

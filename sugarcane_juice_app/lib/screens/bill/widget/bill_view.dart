@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:ui';
 import 'package:intl/intl.dart' as intl;
-import 'package:sugarcane_juice_app/models/bill.dart';
-import 'package:sugarcane_juice_app/models/bill_item.dart';
-import 'package:sugarcane_juice_app/providers/bill_provider.dart';
-import 'package:sugarcane_juice_app/widget/dialog_title.dart';
-import 'package:sugarcane_juice_app/widget/rounded_text_btn.dart';
+import '/models/bill.dart';
+import '/models/bill_item.dart';
+import '/providers/bill_provider.dart';
+import '/widget/dialog_title.dart';
+import '/widget/rounded_text_btn.dart';
 
 class BillView extends StatelessWidget {
   final Bill bill;
@@ -25,9 +25,9 @@ class BillView extends StatelessWidget {
             textDirection: TextDirection.rtl,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (bill.type == 0) DialogTitle(name: 'فاتورة شراء'),
-              if (bill.type == 1) DialogTitle(name: 'فاتورة بيع'),
-              if (bill.type == 2) DialogTitle(name: 'فاتورة'),
+              if (bill.type == 0) const DialogTitle(name: 'فاتورة شراء'),
+              if (bill.type == 1) const DialogTitle(name: 'فاتورة بيع'),
+              if (bill.type == 2) const DialogTitle(name: 'فاتورة'),
               const SizedBox(height: 10),
               _buildRowView(
                 context,
@@ -59,7 +59,7 @@ class BillView extends StatelessWidget {
                   ),
                 ],
               ),
-              Divider(thickness: 2),
+              const Divider(thickness: 2),
               _buildDataTable(bill: bill, context: context),
               const SizedBox(height: 10),
               _buildRowView(

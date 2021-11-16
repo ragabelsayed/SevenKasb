@@ -23,16 +23,16 @@ class BillScreen extends StatelessWidget {
           backgroundColor: Palette.primaryColor,
           leading: MenuWidget(),
           shape: AppConstants.appBarBorder,
-          bottom: TabBar(
+          bottom: const TabBar(
             indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
             indicatorColor: Colors.amber,
             // labelColor: Colors.amber,
             tabs: [
-              Tab(
+              const Tab(
                 text: 'بيع',
                 icon: Icon(Icons.sell),
               ),
-              Tab(
+              const Tab(
                 text: 'شراء',
                 icon: Icon(Icons.receipt),
               ),
@@ -41,8 +41,8 @@ class BillScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            SellBill(),
-            PurchaseBill(),
+            const SellBill(),
+            const PurchaseBill(),
           ],
         ),
       ),

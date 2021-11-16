@@ -9,7 +9,7 @@ import '/providers/auth.dart';
 const unitUri = 'http://10.0.2.2:5000/api/unit';
 
 final unitProvider = ChangeNotifierProvider<UnitNotifier>((ref) {
-  String _token = ref.watch(authProvider).token;
+  String _token = ref.watch(authProvider);
   return UnitNotifier(authToken: _token);
 });
 

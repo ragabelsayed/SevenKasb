@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-
 part '../helper/user.g.dart';
 
 @HiveType(typeId: 3)

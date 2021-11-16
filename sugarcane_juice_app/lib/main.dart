@@ -3,18 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
-import 'package:sugarcane_juice_app/config/routes.dart';
-import 'package:sugarcane_juice_app/models/bill.dart';
-import 'package:sugarcane_juice_app/models/extra_expenses.dart';
-
-import 'package:sugarcane_juice_app/screens/splash_screen.dart';
-import '/screens/login_screen.dart';
+import '/config/routes.dart';
+import 'screens/login/login_screen.dart';
+import 'screens/main/main_screen.dart';
 import 'models/bill_item.dart';
+import '/models/bill.dart';
 import 'models/item.dart';
 import 'models/unit.dart';
 import 'models/user.dart';
+import '/models/extra_expenses.dart';
 import 'providers/auth.dart';
-import 'screens/main/main_screen.dart';
 
 final container = ProviderContainer();
 void main() async {
@@ -23,12 +21,7 @@ void main() async {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      // statusBarColor: Palette.primaryLightColor,
-      statusBarColor: Colors.transparent,
-      // statusBarIconBrightness: Brightness.light,
-      // statusBarBrightness: Brightness.light,
-    ),
+    SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
   await Hive.initFlutter();
   Hive
@@ -42,8 +35,11 @@ void main() async {
   await Hive.openBox<Bill>('bills');
   await Hive.openBox<BillItems>('billItems');
   await Hive.openBox<Extra>('extraExpenses');
-  final _isAuth = await container.read(authProvider).tryAutoLogin();
-  runApp(ProviderScope(child: MyApp(_isAuth)));
+
+  final _isAuth = await container.read(authProvider.notifier).tryAutoLogin();
+  runApp(
+    ProviderScope(child: MyApp(_isAuth)),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -55,6 +51,14 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+    if (widget.isAuth) {
+      context.read(authProvider.notifier).autoLogin();
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     container.dispose();
@@ -62,49 +66,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, watch, _) {
-        final auth = watch(authProvider);
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          // theme: ThemeData(primaryColor: Colors.green),
-          home: widget.isAuth
-              // auth.isAuth
-              ? MainScreen()
-              : LoginScreen(),
-          // : FutureBuilder(
-          //     future: auth.tryAutoLogin(),
-          //     builder: (ctx, authResultsnapshot) {
-          //       if (!authResultsnapshot.hasData) {
-          // Navigator.pushNamedAndRemoveUntil(
-          //   context,
-          //   LoginScreen.routName,
-          //   (route) => false,
-          // );
-          // Navigator.removeRoute(context, MaterialRo);
-          // return LoginScreen();
-          // }
-          // if (authResultsnapshot.hasData) {
-          //    MainScreen();
-          // }
-          // return authResultsnapshot.connectionState ==
-          //           ConnectionState.waiting
-          //       ?
-          //       SplashScreen()
-          //       : LoginScreen();
-          // return SplashScreen();
-          // },
-
-          //  :                  await Navigator.pushNamedAndRemoveUntil(
-          //   context,
-          //   LoginScreen.routName,
-          //   (route) => false,
-          // }),
-          // initialRoute: LoginScreen.routName,
-          routes: AppRoutes.routes,
-        );
-      },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      // theme: ThemeData(primaryColor: Colors.green),
+      home: widget.isAuth ? MainScreen() : LoginScreen(),
+      // initialRoute: LoginScreen.routName,
+      routes: AppRoutes.routes,
     );
   }
 }

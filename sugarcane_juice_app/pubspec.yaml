@@ -34,17 +34,12 @@ dependencies:
   # format dates
   intl: ^0.17.0
 
-  # show notes
   fluttertoast: ^8.0.8
-
-  syncfusion_flutter_datagrid: ^19.2.62-beta
   font_awesome_flutter: ^9.1.0
   flutter_zoom_drawer: ^2.1.1
   http: ^0.13.3
   flutter_riverpod: ^0.14.0+3
   shared_preferences: ^2.0.7
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

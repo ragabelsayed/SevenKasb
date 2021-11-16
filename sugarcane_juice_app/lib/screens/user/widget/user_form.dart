@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '/providers/auth.dart';
-import '../../login_screen.dart';
 import '/providers/user_provider.dart';
 import '/widget/toast_view.dart';
 import '/config/constants.dart';
@@ -36,12 +35,7 @@ class _UserFormState extends State<UserForm> {
         toast('تم التحديث بنجاح', true);
         toast('سيتم إعادة تسجيل الدخول', true);
         await Future.delayed(const Duration(seconds: 4));
-        await context.read(authProvider).logOut();
-        await Navigator.pushNamedAndRemoveUntil(
-          context,
-          LoginScreen.routName,
-          (route) => false,
-        );
+        await context.read(authProvider.notifier).logOut(context);
       } catch (e) {
         toast('خطأ! لم يتم التحديث', false);
         setState(() => _iswaiting = false);
@@ -76,8 +70,9 @@ class _UserFormState extends State<UserForm> {
             Opacity(
               opacity: _iswaiting ? 0.5 : 1.0,
               child: ListView(
+                shrinkWrap: true,
                 children: [
-                  DialogTitle(name: 'إسم المستخدم: '),
+                  const DialogTitle(name: 'إسم المستخدم: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: widget.user.userName ?? '',
@@ -89,7 +84,7 @@ class _UserFormState extends State<UserForm> {
                     },
                   ),
                   const SizedBox(height: 5),
-                  DialogTitle(name: 'إسم الشهرة: '),
+                  const DialogTitle(name: 'إسم الشهرة: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: widget.user.knownAs ?? '',
@@ -101,7 +96,7 @@ class _UserFormState extends State<UserForm> {
                     },
                   ),
                   const SizedBox(height: 5),
-                  DialogTitle(name: 'تاريخ الميلاد: '),
+                  const DialogTitle(name: 'تاريخ الميلاد: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: widget.user.dateOfBirth ?? '00 / 00 /0000',
@@ -113,7 +108,7 @@ class _UserFormState extends State<UserForm> {
                     },
                   ),
                   const SizedBox(height: 5),
-                  DialogTitle(name: 'المدينة: '),
+                  const DialogTitle(name: 'المدينة: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: widget.user.city ?? 'Mansoura',
@@ -125,7 +120,7 @@ class _UserFormState extends State<UserForm> {
                     },
                   ),
                   const SizedBox(height: 5),
-                  DialogTitle(name: 'رقم الهاتف: '),
+                  const DialogTitle(name: 'رقم الهاتف: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: widget.user.telephone ?? '00-000-000-000',

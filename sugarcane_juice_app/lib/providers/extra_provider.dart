@@ -9,12 +9,12 @@ const extraUri = 'http://10.0.2.2:5000/api/extraexpenses';
 Uri url = Uri.parse(extraUri);
 
 final extraExpensesProvider = FutureProvider<List<Extra>>((ref) async {
-  String _token = ref.watch(authProvider).token;
+  String _token = ref.watch(authProvider);
   return ExtraExpensesProvider(authToken: _token).fetchBills();
 });
 
 final addExtraExpensesProvider = Provider<ExtraExpensesProvider>((ref) {
-  String _token = ref.watch(authProvider).token;
+  String _token = ref.watch(authProvider);
   return ExtraExpensesProvider(authToken: _token);
 });
 

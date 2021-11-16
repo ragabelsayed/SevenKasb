@@ -13,7 +13,7 @@ class DialogTitle extends StatelessWidget {
             .textTheme
             .merge(
               TextTheme(
-                headline6: TextStyle(
+                headline6: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),

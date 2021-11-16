@@ -1,26 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sugarcane_juice_app/models/http_exception.dart';
+import '/screens/login/login_screen.dart';
+import '/models/http_exception.dart';
 
 const uri = 'http://10.0.2.2:5000/api/auth/login';
+Uri url = Uri.parse(uri);
 // const uri = 'http://localhost:5000/api/auth/login';
 
-final authProvider = ChangeNotifierProvider<Auth>((ref) {
-  return Auth();
-});
+final authProvider =
+    StateNotifierProvider<AuthNotifier, String>((ref) => AuthNotifier());
 
-class Auth with ChangeNotifier {
-  late String _token = '';
-  Uri url = Uri.parse(uri);
-
-  String get token {
-    return _token;
-  }
+class AuthNotifier extends StateNotifier<String> {
+  AuthNotifier() : super('');
 
   Future<void> _authenticate({
     required String name,
@@ -43,9 +38,8 @@ class Auth with ChangeNotifier {
 
     if (response.statusCode >= 200 && response.statusCode < 400) {
       final responseDate = json.decode(response.body) as Map<String, dynamic>;
-      _token = responseDate['token'];
-      _saveDataOnDevice(token: _token);
-      notifyListeners();
+      state = responseDate['token'];
+      _saveDataOnDevice(token: state);
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw HttpException(
         ' الأسم او الباسورد غير صحيح',
@@ -61,22 +55,29 @@ class Auth with ChangeNotifier {
     await _authenticate(name: name, passowrd: password, url: url);
   }
 
+  Future<void> autoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final extractedUserData =
+        json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
+    state = extractedUserData['token'];
+  }
+
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('userData')) {
-      return false;
-    } else {
-      final extractedUserData =
-          json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
-
-      _token = extractedUserData['token'];
+    if (prefs.containsKey('userData')) {
       return true;
+    } else {
+      return false;
     }
   }
 
-  Future<void> logOut() async {
-    _token = '';
-    notifyListeners();
+  Future<void> logOut(BuildContext context) async {
+    state = '';
+    await Navigator.pushNamedAndRemoveUntil(
+      context,
+      LoginScreen.routName,
+      (route) => false,
+    );
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }

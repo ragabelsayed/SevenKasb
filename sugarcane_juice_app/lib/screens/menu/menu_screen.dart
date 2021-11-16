@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../login_screen.dart';
 import '/providers/auth.dart';
 import '/config/palette.dart';
 
@@ -37,62 +36,54 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, bottom: 18),
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                foregroundImage: const AssetImage('assets/images/logo_1.jpg'),
-                radius: MediaQuery.of(context).size.width * 0.13,
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Spacer(flex: 3),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, bottom: 18),
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              foregroundImage: const AssetImage('assets/images/logo_1.jpg'),
+              radius: MediaQuery.of(context).size.width * 0.13,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                'سڤن قصب',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Colors.white),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Text(
+              'سڤن قصب',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5!
+                  .copyWith(color: Colors.white),
             ),
-            const Divider(color: Colors.amber),
-            const SizedBox(height: 10),
-            ...MenuItems.all.map((e) => _buildMenuItem(e)).toList(),
-            const Spacer(flex: 4),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, bottom: 30),
-              child: TextButton.icon(
-                style: TextButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  shape: const StadiumBorder(),
-                  backgroundColor: Colors.green,
-                  primary: Colors.white,
-                  side: const BorderSide(color: Colors.white),
-                ),
-                icon: const FaIcon(FontAwesomeIcons.signOutAlt),
-                label: Text(
-                  'تسجيل الخروج',
-                  style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w400),
-                ),
-                onPressed: () {
-                  context.read(authProvider).logOut();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    LoginScreen.routName,
-                    (route) => false,
-                  );
-                },
+          ),
+          const Divider(color: Colors.amber),
+          const SizedBox(height: 10),
+          ...MenuItems.all.map((e) => _buildMenuItem(e)).toList(),
+          const Spacer(flex: 4),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, bottom: 30),
+            child: TextButton.icon(
+              style: TextButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                shape: const StadiumBorder(),
+                backgroundColor: Colors.green,
+                primary: Colors.white,
+                side: const BorderSide(color: Colors.white),
               ),
+              icon: const FaIcon(FontAwesomeIcons.signOutAlt),
+              label: Text(
+                'تسجيل الخروج',
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+              ),
+              onPressed: () =>
+                  context.read(authProvider.notifier).logOut(context),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -77,17 +77,16 @@ class ExtraView extends StatelessWidget {
   }
 
   Row _buildRowView(BuildContext context,
-      {required String name, required String value}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      textDirection: TextDirection.rtl,
-      children: [
-        Text(
-          name,
-          style: Theme.of(context).textTheme.subtitle1,
-        ),
-        Text(value),
-      ],
-    );
-  }
+          {required String name, required String value}) =>
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        textDirection: TextDirection.rtl,
+        children: [
+          Text(
+            name,
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          Text(value),
+        ],
+      );
 }

@@ -1,7 +1,5 @@
-import 'package:sugarcane_juice_app/models/user.dart';
-
+import '/models/user.dart';
 import 'package:hive/hive.dart';
-
 part '../helper/extra_expenses.g.dart';
 
 @HiveType(typeId: 5)

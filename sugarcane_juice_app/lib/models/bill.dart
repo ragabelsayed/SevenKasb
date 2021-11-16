@@ -1,10 +1,8 @@
-import 'package:sugarcane_juice_app/models/item.dart';
-import 'package:sugarcane_juice_app/models/unit.dart';
-import 'package:sugarcane_juice_app/models/user.dart';
+import '/models/unit.dart';
+import '/models/item.dart';
+import '/models/user.dart';
 import 'bill_item.dart';
-
 import 'package:hive/hive.dart';
-
 part '../helper/bill.g.dart';
 
 @HiveType(typeId: 0)
@@ -68,27 +66,14 @@ class Bill extends HiveObject {
               item: Item(
                 id: e['itemNavigation']['id'],
                 name: e['itemNavigation']['name'] ?? '',
-                // price: '${e['itemNavigation']['price']}',
-                // quentity: '${e['itemNavigation']['quentity']}',
                 unit: Unit(
                   id: e['itemNavigation']['unitNavigation']['id'],
                   name: e['itemNavigation']['unitNavigation']['name'] ?? '',
                 ),
-                // type: e['itemNavigation']['type'] ?? 0,
               ),
             ),
           )
           .toList(),
-      // List.from(
-      //   _billItemList.map(
-      //     (e) => BillItems(
-      //       id: e['itemId'],
-      //       itemName: e['name'] ?? '',
-      //       // price: e['price'],
-      //       // quentity: e['quentity'],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

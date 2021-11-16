@@ -32,7 +32,10 @@ class ExtraExpensesScreen extends ConsumerWidget {
         color: Palette.primaryColor,
         child: extraExpenses.when(
           loading: () => const Center(
-            child: const CircularProgressIndicator(color: Colors.green),
+            child: const CircularProgressIndicator(
+              color: Palette.primaryColor,
+              backgroundColor: Palette.primaryLightColor,
+            ),
           ),
           error: (error, stackTrace) => ErrorView(error: error.toString()),
           data: (extraList) {
@@ -42,7 +45,6 @@ class ExtraExpensesScreen extends ConsumerWidget {
                 .where((extra) => extra.dataTime.isAfter(thirtyDaysAgo))
                 .toList();
             return extras.isNotEmpty
-                // return extraList.isNotEmpty
                 ? ExtraDataTableView(extraList: extras)
                 : const Center(
                     child: ErrorView(error: 'لا يوجد مصروفات إضافية'),

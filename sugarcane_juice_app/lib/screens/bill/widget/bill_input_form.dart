@@ -80,6 +80,15 @@ class _BillInputFormState extends State<BillInputForm> {
           );
 
       setState(() => _saveItOnce = false);
+      Navigator.pop(context);
+      widget.fToast.showToast(
+        child: ToastView(
+          message: 'إسحب لأسفل لتحديث',
+          success: true,
+        ),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: const Duration(seconds: 2),
+      );
     }
   }
 
@@ -125,7 +134,7 @@ class _BillInputFormState extends State<BillInputForm> {
               opacity: _isWaiting ? 0.5 : 1.0,
               child: Column(
                 children: [
-                  DialogTitle(name: 'إسم العميل/المُورد'),
+                  const DialogTitle(name: 'إسم العميل/المُورد'),
                   _buildTextFormField(
                     hintText: '   الاسم',
                     error: AppConstants.nameError,
@@ -140,10 +149,8 @@ class _BillInputFormState extends State<BillInputForm> {
                     textDirection: TextDirection.rtl,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DialogTitle(name: 'إضافة صنف: '),
+                      const DialogTitle(name: 'إضافة صنف: '),
                       Container(
-                        // height: 35,
-                        // width: 35,
                         height: 40,
                         width: 70,
                         decoration: BoxDecoration(
@@ -166,10 +173,7 @@ class _BillInputFormState extends State<BillInputForm> {
                               borderRadius: BorderRadius.circular(50),
                             ),
                           ),
-                          child: Icon(
-                            Icons.add,
-                            size: 27,
-                          ),
+                          child: const Icon(Icons.add, size: 27),
                           onPressed: () => showDialog(
                             context: context,
                             barrierDismissible: false,
@@ -214,7 +218,7 @@ class _BillInputFormState extends State<BillInputForm> {
                       'برجاء إضافة صنف او منتج اولا',
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.rtl,
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     ),
                   if (_isBillItemEmpty) const SizedBox(height: 10),
                   DataTableForm(
@@ -254,9 +258,9 @@ class _BillInputFormState extends State<BillInputForm> {
                   : Future.delayed(const Duration(milliseconds: 3)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(
-                      color: Colors.green,
+                      color: Palette.primaryColor,
                       backgroundColor: Palette.primaryLightColor,
                     ),
                   );

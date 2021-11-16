@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sugarcane_juice_app/models/bill_item.dart';
+import '/models/bill_item.dart';
 import '/widget/save_cancel_btns.dart';
 import '/providers/item_provider.dart';
 import '/providers/unit_provider.dart';
@@ -90,12 +90,15 @@ class _BillItemFormState extends State<BillItemForm> {
               future: widget.isOffline ? _saveFormOffLine() : _saveForm(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(color: Colors.green),
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Palette.primaryColor,
+                      backgroundColor: Palette.primaryLightColor,
+                    ),
                   );
                 } else if (snapshot.connectionState == ConnectionState.done) {
                   if (widget.isOffline) Navigator.of(context).pop();
-                  return Center(
+                  return const Center(
                     child: FaIcon(
                       FontAwesomeIcons.checkCircle,
                       color: Colors.green,
@@ -103,8 +106,7 @@ class _BillItemFormState extends State<BillItemForm> {
                     ),
                   );
                 } else {
-                  return Center(
-                    // child: Icon(Icons.done, color: Colors.green),
+                  return const Center(
                     child: FaIcon(
                       FontAwesomeIcons.checkCircle,
                       color: Colors.green,

@@ -30,10 +30,7 @@ class ErrorView extends StatelessWidget {
           child: Row(
             textDirection: TextDirection.rtl,
             children: [
-              Icon(
-                Icons.error_outline,
-                color: Colors.red,
-              ),
+              const Icon(Icons.error_outline, color: Colors.red),
               const SizedBox(width: 20),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 150,
