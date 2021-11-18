@@ -5,7 +5,9 @@ import '/providers/bill_provider.dart';
 class DataTableForm extends StatelessWidget {
   final List<BillItems> billItems;
   final Function(BillItems _billItem) deleteBillItem;
-  const DataTableForm({required this.billItems, required this.deleteBillItem});
+  const DataTableForm(
+      {Key? key, required this.billItems, required this.deleteBillItem})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,8 @@ class DataTableForm extends StatelessWidget {
       headingTextStyle: Theme.of(context)
           .textTheme
           .merge(
-            TextTheme(
-              headline6: const TextStyle(
+            const TextTheme(
+              headline6: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),

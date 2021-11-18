@@ -9,11 +9,12 @@ class CustomBottomSheet extends StatelessWidget {
   final Widget textField;
   final Widget saveBtn;
   const CustomBottomSheet({
+    Key? key,
     this.isOffline = false,
     required this.bill,
     required this.textField,
     required this.saveBtn,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class CustomBottomSheet extends StatelessWidget {
                   height: 50,
                   child: textField,
                 ),
-                Expanded(child: const SizedBox()),
+                const Expanded(child: SizedBox()),
                 Text('${bill.paid}'),
               ],
             ),

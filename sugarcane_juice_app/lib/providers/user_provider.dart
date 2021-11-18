@@ -71,7 +71,7 @@ class UserProvider {
         }),
       );
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 
@@ -95,7 +95,7 @@ class UserProvider {
         }),
       );
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 }

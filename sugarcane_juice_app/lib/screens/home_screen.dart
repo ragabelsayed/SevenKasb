@@ -7,6 +7,9 @@ import 'menu/menu_screen.dart';
 class HomeScreen extends ConsumerWidget {
   static const routName = '/home';
 
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context, ScopedReader watch) {
     ItemNotifier itemNotifier = watch(menuItemProvider.notifier);
     var currentItem = watch(menuItemProvider);

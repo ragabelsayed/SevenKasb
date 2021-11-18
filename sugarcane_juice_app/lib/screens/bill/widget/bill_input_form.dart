@@ -82,7 +82,7 @@ class _BillInputFormState extends State<BillInputForm> {
       setState(() => _saveItOnce = false);
       Navigator.pop(context);
       widget.fToast.showToast(
-        child: ToastView(
+        child: const ToastView(
           message: 'إسحب لأسفل لتحديث',
           success: true,
         ),
@@ -103,7 +103,7 @@ class _BillInputFormState extends State<BillInputForm> {
       setState(() => _saveItOnce = false);
       Navigator.pop(context);
       widget.fToast.showToast(
-        child: ToastView(
+        child: const ToastView(
           message: 'تم إضافة فاتورة',
           success: true,
         ),
@@ -157,9 +157,9 @@ class _BillInputFormState extends State<BillInputForm> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              offset: Offset(0, 6),
+                              offset: const Offset(0, 6),
                               blurRadius: 10,
-                              color: Color(0xFFB0B0B0).withOpacity(0.2),
+                              color: const Color(0xFFB0B0B0).withOpacity(0.2),
                             ),
                           ],
                         ),
@@ -214,11 +214,11 @@ class _BillInputFormState extends State<BillInputForm> {
                   ),
                   const SizedBox(height: 10),
                   if (_isBillItemEmpty)
-                    Text(
+                    const Text(
                       'برجاء إضافة صنف او منتج اولا',
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.rtl,
-                      style: const TextStyle(color: Colors.red),
+                      style: TextStyle(color: Colors.red),
                     ),
                   if (_isBillItemEmpty) const SizedBox(height: 10),
                   DataTableForm(

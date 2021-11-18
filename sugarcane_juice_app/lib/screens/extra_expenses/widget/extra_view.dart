@@ -6,7 +6,7 @@ import '/widget/dialog_title.dart';
 
 class ExtraView extends StatelessWidget {
   final Extra extra;
-  const ExtraView({required this.extra});
+  const ExtraView({Key? key, required this.extra}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +42,10 @@ class ExtraView extends StatelessWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                   Text(
-                    '${intl.DateFormat.yMd().format(extra.dataTime)}',
+                    intl.DateFormat.yMd().format(extra.dataTime),
                   ),
                   Text(
-                    '${intl.DateFormat.Hm().format(extra.dataTime)}',
+                    intl.DateFormat.Hm().format(extra.dataTime),
                   ),
                 ],
               ),
@@ -64,7 +64,7 @@ class ExtraView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  '${extra.reason}',
+                  extra.reason,
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.center,
                 ),

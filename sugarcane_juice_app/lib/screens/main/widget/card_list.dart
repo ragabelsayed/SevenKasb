@@ -3,9 +3,10 @@ import '/screens/menu/menu_screen.dart';
 import 'card_view.dart';
 
 class CardList extends StatelessWidget {
-  final AnimationController _controller;
-  final bool _isList;
-  const CardList(this._controller, this._isList);
+  final AnimationController controller;
+  final bool isList;
+  const CardList({Key? key, required this.controller, required this.isList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +37,9 @@ class CardList extends StatelessWidget {
       itemCount: _cardList.length,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: _isList ? 1 : 2,
+        crossAxisCount: isList ? 1 : 2,
         crossAxisSpacing: 20,
-        childAspectRatio: _isList ? 2 : 1,
+        childAspectRatio: isList ? 2 : 1,
         mainAxisSpacing: 20,
       ),
       itemBuilder: (context, i) {
@@ -46,15 +47,15 @@ class CardList extends StatelessWidget {
         final Animation<double> animation =
             Tween<double>(begin: 0.0, end: 1.0).animate(
           CurvedAnimation(
-            parent: _controller,
+            parent: controller,
             curve: Interval((1 / count) * i, 1.0, curve: Curves.fastOutSlowIn),
           ),
         );
 
-        _controller.forward();
+        controller.forward();
         return CardView(
           card: _cardList[i],
-          animationController: _controller,
+          animationController: controller,
           animation: animation,
         );
       },

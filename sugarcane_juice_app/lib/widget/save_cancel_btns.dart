@@ -3,7 +3,7 @@ import '/config/palette.dart';
 
 class SaveAndCancelBtns extends StatelessWidget {
   final Function onSave;
-  const SaveAndCancelBtns({required this.onSave});
+  const SaveAndCancelBtns({Key? key, required this.onSave}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,12 @@ class SaveAndCancelBtns extends StatelessWidget {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: Palette.primaryColor,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(30),
                   ),
                 )),
-            child: Text('إلغاء'),
+            child: const Text('إلغاء'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -36,13 +36,13 @@ class SaveAndCancelBtns extends StatelessWidget {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Palette.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.only(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
                   topRight: Radius.circular(30),
                 ),
               ),
             ),
-            child: Text('حفظ'),
+            child: const Text('حفظ'),
             onPressed: () => onSave(),
           ),
         ),

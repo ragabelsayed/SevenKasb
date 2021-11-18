@@ -22,6 +22,7 @@ class UnitAdapter extends TypeAdapter<Unit> {
 
   @override
   void write(BinaryWriter writer, Unit obj) {
+    // ignore: avoid_single_cascade_in_expression_statements
     writer..writeByte(0);
   }
 

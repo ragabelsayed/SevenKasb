@@ -12,13 +12,13 @@ import '/screens/user/user_screen.dart';
 
 class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
-    LoginScreen.routName: (ctx) => LoginScreen(),
-    HomeScreen.routName: (ctx) => HomeScreen(),
-    MainScreen.routName: (ctx) => MainScreen(),
-    BillScreen.routName: (ctx) => BillScreen(),
-    NewBillScreen.routName: (ctx) => NewBillScreen(),
-    ExtraExpensesScreen.routName: (ctx) => ExtraExpensesScreen(),
-    UserScreen.routName: (ctx) => UserScreen(),
+    LoginScreen.routName: (ctx) => const LoginScreen(),
+    HomeScreen.routName: (ctx) => const HomeScreen(),
+    MainScreen.routName: (ctx) => const MainScreen(),
+    BillScreen.routName: (ctx) => const BillScreen(),
+    NewBillScreen.routName: (ctx) => const NewBillScreen(),
+    ExtraExpensesScreen.routName: (ctx) => const ExtraExpensesScreen(),
+    UserScreen.routName: (ctx) => const UserScreen(),
   };
 }
 
@@ -34,15 +34,15 @@ class ItemNotifier extends StateNotifier<MenuItem> {
   Widget getScreen() {
     switch (state) {
       case MenuItems.bills:
-        return BillScreen();
+        return const BillScreen();
       case MenuItems.extra:
-        return ExtraExpensesScreen();
+        return const ExtraExpensesScreen();
       case MenuItems.offline:
-        return OfflineScreen();
+        return const OfflineScreen();
       case MenuItems.edit:
-        return UserScreen();
+        return const UserScreen();
       default:
-        return BillScreen();
+        return const BillScreen();
     }
   }
 }

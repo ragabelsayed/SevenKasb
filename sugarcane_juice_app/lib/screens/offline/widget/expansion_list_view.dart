@@ -145,7 +145,7 @@ class _ExpansionListViewState extends State<ExpansionListView> {
                         color: Colors.green.shade100,
                       ),
                       const SizedBox(height: 20),
-                      Text(
+                      const Text(
                         'لايوجد بيانات محفوظة 🧐',
                         textDirection: TextDirection.rtl,
                       )

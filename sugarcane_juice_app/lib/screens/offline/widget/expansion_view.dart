@@ -12,13 +12,14 @@ class ExpansionView extends StatelessWidget {
   final bool isSending;
   final Function sendToServer;
   const ExpansionView({
+    Key? key,
     required this.title,
     required this.subTitle,
     required this.onpress,
     required this.getList,
     required this.isSending,
     required this.sendToServer,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class ExpansionView extends StatelessWidget {
             CircleAvatar(
               child: Text(
                 '${getList.length}',
-                style: TextStyle(color: Palette.primaryColor),
+                style: const TextStyle(color: Palette.primaryColor),
               ),
               backgroundColor: Palette.primaryLightColor,
             )

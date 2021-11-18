@@ -10,7 +10,7 @@ const double btnSize = 60.0;
 
 class LinearFlowWidget extends StatefulWidget {
   final FToast fToast;
-  const LinearFlowWidget({required this.fToast});
+  const LinearFlowWidget({Key? key, required this.fToast}) : super(key: key);
 
   @override
   State<LinearFlowWidget> createState() => _LinearFlowWidgetState();
@@ -98,20 +98,20 @@ class FlowMenuDelegate extends FlowDelegate {
       : super(repaint: myAnimation);
 
   @override
-  void paintChildren(FlowPaintingContext ctx) {
-    final size = ctx.size;
+  void paintChildren(FlowPaintingContext context) {
+    final size = context.size;
     final xStart = size.width - btnSize;
     final yStart = size.height - btnSize;
 
-    final n = ctx.childCount;
+    final n = context.childCount;
     for (int i = n - 1; i >= 0; i--) {
-      final margin = 8;
-      final childSize = ctx.getChildSize(i)!.width;
+      const margin = 8;
+      final childSize = context.getChildSize(i)!.width;
       final dx = (childSize + margin) * i;
       final x = xStart;
       final y = yStart - dx * myAnimation.value;
 
-      ctx.paintChild(
+      context.paintChild(
         i,
         transform: Matrix4.translationValues(x, y, 0),
       );

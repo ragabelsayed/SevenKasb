@@ -10,7 +10,7 @@ import '/widget/rounded_text_btn.dart';
 
 class BillView extends StatelessWidget {
   final Bill bill;
-  const BillView({required this.bill});
+  const BillView({Key? key, required this.bill}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class BillView extends StatelessWidget {
               _buildRowView(
                 context,
                 name: ' :إسم العميل/المُورد',
-                value: '${bill.clientName}',
+                value: bill.clientName,
               ),
               const SizedBox(height: 3),
               Row(
@@ -50,11 +50,11 @@ class BillView extends StatelessWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                   Text(
-                    '${intl.DateFormat.yMd().format(bill.dateTime)}',
+                    intl.DateFormat.yMd().format(bill.dateTime),
                     // style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(
-                    '${intl.DateFormat.Hm().format(bill.dateTime)}',
+                    intl.DateFormat.Hm().format(bill.dateTime),
                     // style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ],
@@ -122,7 +122,7 @@ class BillView extends StatelessWidget {
       columnSpacing: 30,
       horizontalMargin: 0.0,
       headingRowHeight: 40,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             width: 0.5,

@@ -11,7 +11,7 @@ import '/widget/toast_view.dart';
 
 class PasswordFormScreen extends StatefulWidget {
   final FToast fToast;
-  const PasswordFormScreen({required this.fToast});
+  const PasswordFormScreen({Key? key, required this.fToast}) : super(key: key);
   @override
   _PasswordFormScreenState createState() => _PasswordFormScreenState();
 }
@@ -125,7 +125,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
               ),
               if (_isNotConfirm) const SizedBox(height: 15),
               if (_isNotConfirm)
-                Text(
+                const Text(
                   'برجأ التأكد من تطابق الباسورد الجديد',
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,
@@ -153,7 +153,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
                       ? _saveForm()
                       : Future.delayed(const Duration(seconds: 2)),
                   builder: (context, snapshot) => const Center(
-                    child: const CircularProgressIndicator(
+                    child: CircularProgressIndicator(
                       backgroundColor: Palette.primaryLightColor,
                       color: Palette.primaryColor,
                     ),

@@ -3,7 +3,7 @@ import '/config/palette.dart';
 
 class ErrorView extends StatelessWidget {
   final String error;
-  const ErrorView({required this.error});
+  const ErrorView({Key? key, required this.error}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ErrorView extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width - 150,
                 child: Text(
-                  '${error.toString()}',
+                  error.toString(),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,

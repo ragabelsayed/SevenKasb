@@ -5,14 +5,11 @@ import '/providers/auth.dart';
 import '/config/palette.dart';
 
 class MenuItems {
-  static const bills =
-      const MenuItem('الفواتير', FaIcon(FontAwesomeIcons.receipt));
+  static const bills = MenuItem('الفواتير', FaIcon(FontAwesomeIcons.receipt));
   static const extra =
-      const MenuItem('مصروفات إضافية', FaIcon(FontAwesomeIcons.wallet));
-  static const offline =
-      const MenuItem('أوف لاين', Icon(Icons.wifi_off, size: 30));
-  static const edit =
-      const MenuItem('الأعدادات', FaIcon(FontAwesomeIcons.userEdit));
+      MenuItem('مصروفات إضافية', FaIcon(FontAwesomeIcons.wallet));
+  static const offline = MenuItem('أوف لاين', Icon(Icons.wifi_off, size: 30));
+  static const edit = MenuItem('الأعدادات', FaIcon(FontAwesomeIcons.userEdit));
 
   static const all = [
     bills,
@@ -31,7 +28,9 @@ class MenuItem {
 class MenuScreen extends StatelessWidget {
   final MenuItem currentItem;
   final ValueChanged<MenuItem> onSelectedItem;
-  const MenuScreen({required this.currentItem, required this.onSelectedItem});
+  const MenuScreen(
+      {Key? key, required this.currentItem, required this.onSelectedItem})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,10 +73,9 @@ class MenuScreen extends StatelessWidget {
                 side: const BorderSide(color: Colors.white),
               ),
               icon: const FaIcon(FontAwesomeIcons.signOutAlt),
-              label: Text(
+              label: const Text(
                 'تسجيل الخروج',
-                style:
-                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
               ),
               onPressed: () =>
                   context.read(authProvider.notifier).logOut(context),

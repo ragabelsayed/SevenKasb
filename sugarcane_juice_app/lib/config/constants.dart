@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class AppConstants {
   // static const kAnimationDuration = Duration(milliseconds: 200);
-  static final appBarTitle = TextStyle(
+  static const appBarTitle = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w400,
     color: Colors.white,
     // height: 1.5,
   );
 
-  static ShapeBorder appBarBorder = RoundedRectangleBorder(
+  static ShapeBorder appBarBorder = const RoundedRectangleBorder(
     borderRadius: BorderRadius.vertical(
       bottom: Radius.circular(20),
     ),

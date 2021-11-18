@@ -10,6 +10,8 @@ import 'widget/bill_input_form.dart';
 class NewBillScreen extends StatelessWidget {
   static const routName = '/new_bill';
 
+  const NewBillScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     FToast fToast = FToast().init(context);
@@ -19,7 +21,7 @@ class NewBillScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Palette.primaryColor,
-          title: Text(
+          title: const Text(
             'إضافة فاتورة',
             style: AppConstants.appBarTitle,
           ),

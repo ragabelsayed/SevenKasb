@@ -5,7 +5,8 @@ import 'extra_view.dart';
 
 class ExtraDataTableView extends StatelessWidget {
   final List<Extra> extraList;
-  const ExtraDataTableView({required this.extraList});
+  const ExtraDataTableView({Key? key, required this.extraList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

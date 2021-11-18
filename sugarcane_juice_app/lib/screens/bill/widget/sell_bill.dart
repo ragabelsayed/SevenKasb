@@ -16,15 +16,15 @@ class SellBill extends ConsumerWidget {
       color: Palette.primaryColor,
       child: Scaffold(
         body: bills.when(
-          loading: () => Center(
-            child: const CircularProgressIndicator(color: Colors.green),
+          loading: () => const Center(
+            child: CircularProgressIndicator(color: Colors.green),
           ),
           error: (error, stackTrace) => ErrorView(error: error.toString()),
           data: (billList) {
             var sellList = billList.where((bill) => bill.type == 1).toList();
             return sellList.isNotEmpty
                 ? DataTableView(bills: sellList)
-                : Center(
+                : const Center(
                     child: ErrorView(error: 'لا يوجد فواتير بيع'),
                   );
           },

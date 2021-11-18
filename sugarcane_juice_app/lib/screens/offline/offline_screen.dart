@@ -14,13 +14,13 @@ class OfflineScreen extends StatelessWidget {
     FToast fToast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'أوف لاين',
           style: AppConstants.appBarTitle,
         ),
         centerTitle: true,
         backgroundColor: Palette.primaryColor,
-        leading: MenuWidget(),
+        leading: const MenuWidget(),
         shape: AppConstants.appBarBorder,
       ),
       body: ExpansionListView(ftoast: fToast),

@@ -44,15 +44,13 @@ class ItemNotifier extends ChangeNotifier {
       final extractedData = json.decode(response.body) as List;
       // print(extractedData);
       final List<Item> _loadedProducts = [];
-      extractedData.forEach(
-        (item) {
-          _loadedProducts.add(
-            Item.fromJson(
-              json: item,
-            ),
-          );
-        },
-      );
+      for (var item in extractedData) {
+        _loadedProducts.add(
+          Item.fromJson(
+            json: item,
+          ),
+        );
+      }
       _items = _loadedProducts;
       // notifyListeners();
     } on FormatException {
@@ -60,7 +58,6 @@ class ItemNotifier extends ChangeNotifier {
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
       );
     } catch (error) {
-      print(error);
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
       );
@@ -98,7 +95,6 @@ class ItemNotifier extends ChangeNotifier {
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
       );
     } catch (error) {
-      print(error);
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
       );
@@ -113,7 +109,7 @@ class ItemNotifier extends ChangeNotifier {
         _items[itemIndex] = newItem;
         // notifyListeners();
 
-        final response = await http.put(
+        await http.put(
           addurl,
           headers: {
             'Content-Type': 'application/json',
@@ -127,9 +123,8 @@ class ItemNotifier extends ChangeNotifier {
             'type': newItem.type,
           }),
         );
-        print(response.statusCode);
       } catch (error) {
-        throw error;
+        rethrow;
       }
     }
   }
@@ -151,7 +146,6 @@ class ItemNotifier extends ChangeNotifier {
         'Authorization': 'Bearer $authToken',
       },
     );
-    print(response.statusCode);
 
     if (response.statusCode >= 400) {
       _items.insert(existingItemIndex, existingItem);

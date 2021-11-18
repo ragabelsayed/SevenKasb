@@ -43,15 +43,13 @@ class UnitNotifier extends ChangeNotifier {
       });
       final extractedData = json.decode(response.body) as List;
       final List<Unit> _loadedProducts = [];
-      extractedData.forEach(
-        (unit) {
-          _loadedProducts.add(
-            Unit.fromJson(
-              json: unit,
-            ),
-          );
-        },
-      );
+      for (var unit in extractedData) {
+        _loadedProducts.add(
+          Unit.fromJson(
+            json: unit,
+          ),
+        );
+      }
       _items = _loadedProducts;
     } on FormatException {
       throw HttpException(

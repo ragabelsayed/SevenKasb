@@ -20,25 +20,25 @@ class UserScreen extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
+            title: const Text(
               'إعدادات المستخدم',
               style: AppConstants.appBarTitle,
             ),
             centerTitle: true,
             backgroundColor: Palette.primaryColor,
-            leading: MenuWidget(),
+            leading: const MenuWidget(),
             shape: AppConstants.appBarBorder,
-            bottom: TabBar(
+            bottom: const TabBar(
               indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
               indicatorColor: Colors.amber,
               tabs: [
-                const Tab(
+                Tab(
                   text: 'الأدمن',
-                  icon: const FaIcon(FontAwesomeIcons.userEdit),
+                  icon: FaIcon(FontAwesomeIcons.userEdit),
                 ),
-                const Tab(
+                Tab(
                   text: 'الباسورد',
-                  icon: const FaIcon(FontAwesomeIcons.lock),
+                  icon: FaIcon(FontAwesomeIcons.lock),
                 ),
               ],
             ),

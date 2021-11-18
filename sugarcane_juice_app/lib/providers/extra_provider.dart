@@ -35,15 +35,13 @@ class ExtraExpensesProvider {
 
       final extractedData = json.decode(response.body) as List;
       final List<Extra> _loadedBill = [];
-      extractedData.forEach(
-        (extra) {
-          _loadedBill.add(
-            Extra.fromJson(
-              json: extra as Map<String, dynamic>,
-            ),
-          );
-        },
-      );
+      for (var extra in extractedData) {
+        _loadedBill.add(
+          Extra.fromJson(
+            json: extra as Map<String, dynamic>,
+          ),
+        );
+      }
       return _loadedBill;
     } on FormatException {
       throw HttpException(

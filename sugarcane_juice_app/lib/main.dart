@@ -21,7 +21,7 @@ void main() async {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
   await Hive.initFlutter();
   Hive
@@ -38,13 +38,13 @@ void main() async {
 
   final _isAuth = await container.read(authProvider.notifier).tryAutoLogin();
   runApp(
-    ProviderScope(child: MyApp(_isAuth)),
+    ProviderScope(child: MyApp(isAuth: _isAuth)),
   );
 }
 
 class MyApp extends StatefulWidget {
   final bool isAuth;
-  const MyApp(this.isAuth);
+  const MyApp({Key? key, required this.isAuth}) : super(key: key);
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       // theme: ThemeData(primaryColor: Colors.green),
-      home: widget.isAuth ? MainScreen() : LoginScreen(),
+      home: widget.isAuth ? const MainScreen() : const LoginScreen(),
       // initialRoute: LoginScreen.routName,
       routes: AppRoutes.routes,
     );

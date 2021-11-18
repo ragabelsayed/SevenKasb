@@ -44,22 +44,19 @@ class BillProvider implements BillRepository {
 
       final extractedData = json.decode(response.body) as List;
       final List<Bill> _loadedBill = [];
-      extractedData.forEach(
-        (bill) {
-          _loadedBill.add(
-            Bill.fromJson(
-              json: bill as Map<String, dynamic>,
-            ),
-          );
-        },
-      );
+      for (var bill in extractedData) {
+        _loadedBill.add(
+          Bill.fromJson(
+            json: bill as Map<String, dynamic>,
+          ),
+        );
+      }
       return _loadedBill;
     } on FormatException {
       throw HttpException(
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
       );
     } catch (error) {
-      print(error);
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
       );
@@ -106,7 +103,6 @@ class BillProvider implements BillRepository {
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
       );
     } catch (error) {
-      print(error);
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
       );
@@ -121,9 +117,9 @@ class BillProvider implements BillRepository {
     var sum = 0.0;
     if (isOffline) {
       if (bill.offlineBillItems!.isNotEmpty) {
-        bill.offlineBillItems!.forEach((e) {
+        for (var e in bill.offlineBillItems!) {
           sum += getItemsTotal(price: e.price, quentity: e.quentity);
-        });
+        }
         bill.total = sum;
         return bill.total;
       } else {
@@ -131,9 +127,9 @@ class BillProvider implements BillRepository {
       }
     } else {
       if (bill.billItems.isNotEmpty) {
-        bill.billItems.forEach((e) {
+        for (var e in bill.billItems) {
           sum += e.item.total;
-        });
+        }
         bill.total = sum;
         return bill.total;
       } else {

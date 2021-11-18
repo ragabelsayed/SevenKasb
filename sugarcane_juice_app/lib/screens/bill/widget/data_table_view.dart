@@ -5,7 +5,7 @@ import 'bill_view.dart';
 
 class DataTableView extends StatelessWidget {
   final List<Bill> bills;
-  const DataTableView({required this.bills});
+  const DataTableView({Key? key, required this.bills}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

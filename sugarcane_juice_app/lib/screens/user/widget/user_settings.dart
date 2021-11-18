@@ -16,7 +16,7 @@ class UserSettings extends ConsumerWidget {
     return Scaffold(
       body: user.when(
         loading: () => const Center(
-          child: const CircularProgressIndicator(
+          child: CircularProgressIndicator(
             backgroundColor: Palette.primaryLightColor,
             color: Palette.primaryColor,
           ),

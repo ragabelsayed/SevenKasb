@@ -15,7 +15,9 @@ import '/widget/save_cancel_btns.dart';
 class InputExtraExpensesForm extends StatefulWidget {
   final FToast ftoast;
   final bool isOffLine;
-  const InputExtraExpensesForm({required this.ftoast, this.isOffLine = false});
+  const InputExtraExpensesForm(
+      {Key? key, required this.ftoast, this.isOffLine = false})
+      : super(key: key);
   @override
   State<InputExtraExpensesForm> createState() => _InputExtraExpensesFormState();
 }
@@ -24,7 +26,7 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
   final _formKey = GlobalKey<FormState>();
   DateTime? date;
   bool _iswaiting = false;
-  Extra _extra = Extra(
+  final Extra _extra = Extra(
     user: User(),
     reason: '',
     cash: 0.0,
@@ -85,14 +87,14 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
       return intl.DateFormat.yMd().format(DateTime.now());
     } else {
       _extra.dataTime = date!;
-      return '${intl.DateFormat.yMd().format(date!)}';
+      return intl.DateFormat.yMd().format(date!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return _iswaiting
-        ? Container(
+        ? SizedBox(
             height: 100,
             width: double.infinity,
             child: FutureBuilder(

@@ -9,13 +9,15 @@ import '/widget/rounded_text_btn.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routName = '/log_in';
+
+  const LoginScreen({Key? key}) : super(key: key);
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _emailcontroller = TextEditingController();
   bool _isPassowrdVisible = true;
   bool _isError = false;
   String _errorMessage = '';
@@ -197,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       FutureBuilder(
                         future: _saveForm(),
                         builder: (context, snapshot) =>
-                            CircularProgressIndicator(
+                            const CircularProgressIndicator(
                           backgroundColor: Palette.primaryLightColor,
                           color: Palette.primaryColor,
                         ),

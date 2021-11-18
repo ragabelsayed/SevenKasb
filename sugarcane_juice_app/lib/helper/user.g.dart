@@ -22,6 +22,7 @@ class UserAdapter extends TypeAdapter<User> {
 
   @override
   void write(BinaryWriter writer, User obj) {
+    // ignore: avoid_single_cascade_in_expression_statements
     writer..writeByte(0);
   }
 

@@ -11,10 +11,11 @@ class CardView extends StatelessWidget {
   final AnimationController animationController;
   final Animation<double> animation;
   const CardView({
+    Key? key,
     required this.card,
     required this.animationController,
     required this.animation,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class CardView extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.green.withOpacity(0.5),
-                    offset: Offset(0, 2),
+                    offset: const Offset(0, 2),
                     blurRadius: 10,
                   ),
                 ],

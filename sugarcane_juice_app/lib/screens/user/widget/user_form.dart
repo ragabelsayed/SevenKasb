@@ -14,7 +14,8 @@ import '/widget/rounded_text_btn.dart';
 class UserForm extends StatefulWidget {
   final User user;
   final FToast fToast;
-  const UserForm({required this.user, required this.fToast});
+  const UserForm({Key? key, required this.user, required this.fToast})
+      : super(key: key);
   @override
   _UserFormState createState() => _UserFormState();
 }

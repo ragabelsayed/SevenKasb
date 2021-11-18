@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DialogTitle extends StatelessWidget {
   final String? name;
-  const DialogTitle({this.name});
+  const DialogTitle({Key? key, this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +12,8 @@ class DialogTitle extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .merge(
-              TextTheme(
-                headline6: const TextStyle(
+              const TextTheme(
+                headline6: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),

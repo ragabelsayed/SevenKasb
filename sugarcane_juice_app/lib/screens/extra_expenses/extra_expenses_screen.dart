@@ -18,13 +18,13 @@ class ExtraExpensesScreen extends ConsumerWidget {
     FToast fToast = FToast().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'مصروفات إضافية',
           style: AppConstants.appBarTitle,
         ),
         centerTitle: true,
         backgroundColor: Palette.primaryColor,
-        leading: MenuWidget(),
+        leading: const MenuWidget(),
         shape: AppConstants.appBarBorder,
       ),
       body: RefreshIndicator(
@@ -32,7 +32,7 @@ class ExtraExpensesScreen extends ConsumerWidget {
         color: Palette.primaryColor,
         child: extraExpenses.when(
           loading: () => const Center(
-            child: const CircularProgressIndicator(
+            child: CircularProgressIndicator(
               color: Palette.primaryColor,
               backgroundColor: Palette.primaryLightColor,
             ),

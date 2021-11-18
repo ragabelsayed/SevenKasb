@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen>
       vsync: this,
       duration: const Duration(milliseconds: 2000),
     );
-    _bodyList = CardList(_animationController, _isList);
+    _bodyList = CardList(controller: _animationController, isList: _isList);
   }
 
   @override
@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
-        title: Text(
+        title: const Text(
           'سڤن قصب',
           textDirection: TextDirection.rtl,
           style: AppConstants.appBarTitle,
@@ -61,7 +61,10 @@ class _MainScreenState extends State<MainScreen>
                   return;
                 }
                 setState(() {
-                  _bodyList = CardList(_animationController, _isList);
+                  _bodyList = CardList(
+                    controller: _animationController,
+                    isList: _isList,
+                  );
                 });
               });
             },

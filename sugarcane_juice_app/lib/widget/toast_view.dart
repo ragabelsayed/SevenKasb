@@ -4,7 +4,8 @@ import '/config/palette.dart';
 class ToastView extends StatelessWidget {
   final String message;
   final bool success;
-  const ToastView({required this.message, this.success = false});
+  const ToastView({Key? key, required this.message, this.success = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

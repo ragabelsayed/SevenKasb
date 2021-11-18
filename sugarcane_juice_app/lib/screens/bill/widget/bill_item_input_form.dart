@@ -15,10 +15,11 @@ class BillItemForm extends StatefulWidget {
   final Function(BillItems billItems) billItem;
   final Function(bool billItemError) hasError;
   const BillItemForm({
+    Key? key,
     this.isOffline = false,
     required this.billItem,
     required this.hasError,
-  });
+  }) : super(key: key);
 
   @override
   State<BillItemForm> createState() => _BillItemFormState();

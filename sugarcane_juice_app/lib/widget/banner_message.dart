@@ -18,9 +18,9 @@ getBanner({
           TextButton(
             onPressed: () =>
                 ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-            child: Text(
+            child: const Text(
               'إغلاق',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Palette.primaryColor,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,

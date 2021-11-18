@@ -7,11 +7,12 @@ class RoundedTextButton extends StatelessWidget {
   final Color primaryColor;
   final Function onPressed;
   const RoundedTextButton({
+    Key? key,
     required this.text,
     this.backgroundColor = Palette.primaryColor,
     this.primaryColor = Colors.white,
     required this.onPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -8,6 +8,8 @@ import 'widget/sell_bill.dart';
 class BillScreen extends StatelessWidget {
   static const routName = '/bill';
 
+  const BillScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -15,34 +17,34 @@ class BillScreen extends StatelessWidget {
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'الفواتير',
             style: AppConstants.appBarTitle,
           ),
           centerTitle: true,
           backgroundColor: Palette.primaryColor,
-          leading: MenuWidget(),
+          leading: const MenuWidget(),
           shape: AppConstants.appBarBorder,
           bottom: const TabBar(
             indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
             indicatorColor: Colors.amber,
             // labelColor: Colors.amber,
             tabs: [
-              const Tab(
+              Tab(
                 text: 'بيع',
                 icon: Icon(Icons.sell),
               ),
-              const Tab(
+              Tab(
                 text: 'شراء',
                 icon: Icon(Icons.receipt),
               ),
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const SellBill(),
-            const PurchaseBill(),
+            SellBill(),
+            PurchaseBill(),
           ],
         ),
       ),

@@ -6,10 +6,11 @@ class AlertView extends StatelessWidget {
   final String message;
   final Function onpress;
   const AlertView({
+    Key? key,
     this.isSave = false,
     required this.message,
     required this.onpress,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
