@@ -15,16 +15,20 @@ class DataTableView extends StatelessWidget {
       'العميل',
       'الكود',
     ];
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: DataTable(
-        columns: _getColumns(columns),
-        rows: _getRow(bills: bills, context: context),
-        headingTextStyle: Theme.of(context).textTheme.headline6,
-        columnSpacing: MediaQuery.of(context).size.width / 10,
-        horizontalMargin: 0.0,
-        showBottomBorder: true,
+    return Scrollbar(
+      interactive: true,
+      radius: const Radius.circular(30),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: DataTable(
+          columns: _getColumns(columns),
+          rows: _getRow(bills: bills, context: context),
+          headingTextStyle: Theme.of(context).textTheme.headline6,
+          columnSpacing: MediaQuery.of(context).size.width / 10,
+          horizontalMargin: 0.0,
+          showBottomBorder: true,
+        ),
       ),
     );
   }
