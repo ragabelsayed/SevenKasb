@@ -17,11 +17,12 @@ class DataTableView extends StatelessWidget {
     ];
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 10),
+      physics: const AlwaysScrollableScrollPhysics(),
       child: DataTable(
         columns: _getColumns(columns),
         rows: _getRow(bills: bills, context: context),
         headingTextStyle: Theme.of(context).textTheme.headline6,
-        columnSpacing: MediaQuery.of(context).size.width / 8,
+        columnSpacing: MediaQuery.of(context).size.width / 10,
         horizontalMargin: 0.0,
         showBottomBorder: true,
       ),

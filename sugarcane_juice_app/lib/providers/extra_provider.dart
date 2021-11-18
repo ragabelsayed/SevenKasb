@@ -5,7 +5,10 @@ import '/models/extra_expenses.dart';
 import '/models/http_exception.dart';
 import '/providers/auth.dart';
 
-const extraUri = 'http://10.0.2.2:5000/api/extraexpenses';
+// AVD
+// const extraUri = 'http://10.0.2.2:5000/api/extraexpenses';
+// wifi ip
+const extraUri = 'http://192.168.1.7:5000/api/extraexpenses';
 Uri url = Uri.parse(extraUri);
 
 final extraExpensesProvider = FutureProvider<List<Extra>>((ref) async {

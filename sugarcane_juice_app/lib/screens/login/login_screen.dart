@@ -172,17 +172,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (_isError)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          textDirection: TextDirection.rtl,
-                          children: [
-                            const Icon(Icons.error, color: Colors.red),
-                            const SizedBox(width: 5),
-                            Text(
-                              _errorMessage,
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                          ],
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            textDirection: TextDirection.rtl,
+                            children: [
+                              const Icon(Icons.error, color: Colors.red),
+                              const SizedBox(width: 5),
+                              Text(
+                                _errorMessage,
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     if (!_isWaiting)

@@ -5,9 +5,16 @@ import '/models/user.dart';
 import '/models/http_exception.dart';
 import '/providers/auth.dart';
 
-const userUri = 'http://10.0.2.2:5000/api/users/1';
+// AVD
+// const userUri = 'http://10.0.2.2:5000/api/users/1';
+// wifi ip
+const userUri = 'http://192.168.1.7:5000/api/users/1';
 Uri url = Uri.parse(userUri);
-const passUri = 'http://10.0.2.2:5000/api/auth/1/changepassword';
+// AVD
+// const userUri = 'http://10.0.2.2:5000/api/users/1';
+// wifi ip
+// const passUri = 'http://10.0.2.2:5000/api/auth/1/changepassword';
+const passUri = 'http://192.168.1.7:5000/api/auth/1/changepassword';
 Uri passurl = Uri.parse(passUri);
 
 final userProvider = FutureProvider.autoDispose<User>((ref) async {

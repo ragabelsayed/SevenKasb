@@ -8,10 +8,12 @@ class SaveAndCancelBtns extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: 50,
-          width: MediaQuery.of(context).size.width / 3,
+          // width: MediaQuery.of(context).size.width / 3,
+          width: MediaQuery.of(context).size.width / 3.5,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: Palette.primaryColor,
@@ -29,7 +31,8 @@ class SaveAndCancelBtns extends StatelessWidget {
         const SizedBox(width: 5),
         SizedBox(
           height: 50,
-          width: MediaQuery.of(context).size.width / 3,
+          // width: MediaQuery.of(context).size.width / 3,
+          width: MediaQuery.of(context).size.width / 3.5,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Palette.primaryColor,

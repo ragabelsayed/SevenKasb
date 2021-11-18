@@ -7,9 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '/screens/login/login_screen.dart';
 import '/models/http_exception.dart';
 
-const uri = 'http://10.0.2.2:5000/api/auth/login';
-Uri url = Uri.parse(uri);
 // const uri = 'http://localhost:5000/api/auth/login';
+// AVD
+// const uri = 'http://10.0.2.2:5000/api/auth/login';
+// wifi ip address
+const uri = 'http://192.168.1.7:5000/api/auth/login';
+// hostName
+// const uri = 'http://DESKTOP-Q8JB2O6:5000/api/auth/login';
+Uri url = Uri.parse(uri);
 
 final authProvider =
     StateNotifierProvider<AuthNotifier, String>((ref) => AuthNotifier());
@@ -35,7 +40,6 @@ class AuthNotifier extends StateNotifier<String> {
         },
       ),
     );
-
     if (response.statusCode >= 200 && response.statusCode < 400) {
       final responseDate = json.decode(response.body) as Map<String, dynamic>;
       state = responseDate['token'];

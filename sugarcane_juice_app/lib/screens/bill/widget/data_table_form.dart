@@ -24,6 +24,7 @@ class DataTableForm extends StatelessWidget {
             ),
           )
           .headline6,
+      columnSpacing: MediaQuery.of(context).size.width / 10,
       horizontalMargin: 0.0,
       showCheckboxColumn: false,
       decoration: const BoxDecoration(

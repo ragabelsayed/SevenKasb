@@ -23,7 +23,7 @@ class ExtraDataTableView extends StatelessWidget {
         rows: _getRow(extras: extraList, context: context),
         headingTextStyle:
             Theme.of(context).textTheme.headline6!.copyWith(fontSize: 18),
-        columnSpacing: MediaQuery.of(context).size.width / 8,
+        columnSpacing: MediaQuery.of(context).size.width / 10,
         horizontalMargin: 0.0,
         showBottomBorder: true,
       ),

@@ -6,7 +6,10 @@ import '/models/http_exception.dart';
 import '/models/unit.dart';
 import '/providers/auth.dart';
 
-const unitUri = 'http://10.0.2.2:5000/api/unit';
+// AVD
+// const unitUri = 'http://10.0.2.2:5000/api/unit';
+// wifi ip
+const unitUri = 'http://192.168.1.7:5000/api/unit';
 
 final unitProvider = ChangeNotifierProvider<UnitNotifier>((ref) {
   String _token = ref.watch(authProvider);
