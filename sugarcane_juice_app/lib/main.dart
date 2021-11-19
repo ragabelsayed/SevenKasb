@@ -37,9 +37,7 @@ void main() async {
   await Hive.openBox<Extra>('extraExpenses');
 
   final _isAuth = await container.read(authProvider.notifier).tryAutoLogin();
-  runApp(
-    ProviderScope(child: MyApp(isAuth: _isAuth)),
-  );
+  runApp(ProviderScope(child: MyApp(isAuth: _isAuth)));
 }
 
 class MyApp extends StatefulWidget {
@@ -68,7 +66,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'SevenKasb',
       // theme: ThemeData(primaryColor: Colors.green),
       home: widget.isAuth ? const MainScreen() : const LoginScreen(),
       // initialRoute: LoginScreen.routName,

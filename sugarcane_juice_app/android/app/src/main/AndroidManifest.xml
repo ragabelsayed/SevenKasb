@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sugarcane_juice_app">
    <application
-        android:label="sugarcane_juice_app"
+        android:label="SevenKasb"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
