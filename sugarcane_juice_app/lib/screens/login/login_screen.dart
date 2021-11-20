@@ -76,8 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: size.height * 0.08),
+                    SizedBox(height: size.height * 0.15),
                     CircleAvatar(
                       backgroundColor: Colors.transparent,
                       foregroundImage:
