@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sugarcane_juice_app/config/palette.dart';
+import '/config/palette.dart';
 
 getBanner({
   required BuildContext context,

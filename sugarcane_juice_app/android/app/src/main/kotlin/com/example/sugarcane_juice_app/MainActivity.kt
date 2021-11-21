@@ -1,4 +1,4 @@
-package com.example.sugarcane_juice_app
+package com.rgb.sugarcane_juice
 
 import io.flutter.embedding.android.FlutterActivity
 
