@@ -5,15 +5,20 @@ import '/providers/auth.dart';
 import '/config/palette.dart';
 
 class MenuItems {
-  static const bills = MenuItem('الفواتير', FaIcon(FontAwesomeIcons.receipt));
+  static const bills =
+      MenuItem('الفواتير', FaIcon(FontAwesomeIcons.receipt, size: 28));
   static const extra =
-      MenuItem('مصروفات إضافية', FaIcon(FontAwesomeIcons.wallet));
+      MenuItem('مصروفات إضافية', FaIcon(FontAwesomeIcons.wallet, size: 25));
+  static const inventory =
+      MenuItem('الجرد', FaIcon(FontAwesomeIcons.clipboardList, size: 28));
   static const offline = MenuItem('أوف لاين', Icon(Icons.wifi_off, size: 30));
-  static const edit = MenuItem('الأعدادات', FaIcon(FontAwesomeIcons.userEdit));
+  static const edit =
+      MenuItem('الأعدادات', FaIcon(FontAwesomeIcons.userEdit, size: 28));
 
   static const all = [
     bills,
     extra,
+    inventory,
     offline,
     edit,
   ];

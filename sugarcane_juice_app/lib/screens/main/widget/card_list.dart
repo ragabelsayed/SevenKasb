@@ -21,7 +21,11 @@ class CardList extends StatelessWidget {
         'image': 'assets/images/money.svg',
         'route': MenuItems.extra
       },
-      {'name': 'الجرد', 'image': 'assets/images/stock.svg'},
+      {
+        'name': 'الجرد',
+        'image': 'assets/images/stock.svg',
+        'route': MenuItems.inventory,
+      },
       {
         'name': 'الإعدادات',
         'image': 'assets/images/user-settings.svg',

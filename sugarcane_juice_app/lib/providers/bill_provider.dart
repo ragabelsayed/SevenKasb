@@ -6,9 +6,9 @@ import '/models/http_exception.dart';
 import '/providers/auth.dart';
 
 // AVD
-// const billUri = 'http://10.0.2.2:5000/api/bill';
+const billUri = 'http://10.0.2.2:5000/api/bill';
 // wifi ip
-const billUri = 'http://192.168.1.7:5000/api/bill';
+// const billUri = 'http://192.168.1.7:5000/api/bill';
 Uri url = Uri.parse(billUri);
 
 abstract class BillRepository {
