@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sugarcane_juice/screens/inventory/widget/expansion_data_table.dart';
 import '/models/inventory.dart';
 import '/widget/dialog_title.dart';
 
@@ -17,7 +18,17 @@ class _ExpansionViewState extends State<ExpansionView> {
         textDirection: TextDirection.rtl,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DialogTitle(name: widget.inventory.item.name),
+          Row(
+            children: [
+              // Text(
+              //   '(${widget.inventory.item.unit.name})',
+              //   style: Theme.of(context).textTheme.subtitle2,
+              // ),
+              DialogTitle(name: widget.inventory.item.name),
+              const SizedBox(width: 5),
+              DialogTitle(name: widget.inventory.item.unit.name),
+            ],
+          ),
           Text(
             widget.inventory.inventoryType == InventoryType.daily
                 ? 'شهري'
@@ -38,20 +49,7 @@ class _ExpansionViewState extends State<ExpansionView> {
       controlAffinity: ListTileControlAffinity.leading,
       maintainState: true,
       children: [
-        Row(
-          textDirection: TextDirection.rtl,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              ':وحدة القياس',
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-            Text(
-              widget.inventory.item.unit.name,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-          ],
-        ),
+        ExpansionDataTable(cashItemHistory: widget.inventory.cashItemHistory),
       ],
     );
   }
