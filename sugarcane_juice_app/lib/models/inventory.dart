@@ -1,12 +1,22 @@
 import './item.dart';
 import './unit.dart';
 
+enum InventoryType { daily, monthly }
+
 class Inventory {
   Item item;
+  InventoryType inventoryType;
   List<Map<String, dynamic>> cashItemHistory;
-  Inventory({required this.item, required this.cashItemHistory});
+  Inventory({
+    required this.item,
+    required this.cashItemHistory,
+    required this.inventoryType,
+  });
 
-  factory Inventory.fromJson({required Map<String, dynamic> json}) {
+  factory Inventory.fromJson({
+    required Map<String, dynamic> json,
+    required InventoryType inventoryType,
+  }) {
     List _cashItemHistory = json['priceItems'];
     return Inventory(
       item: Item(
@@ -20,6 +30,7 @@ class Inventory {
       cashItemHistory: _cashItemHistory
           .map((e) => {'price': e['price'], 'quentity': e['quentity']})
           .toList(),
+      inventoryType: inventoryType,
     );
   }
 }

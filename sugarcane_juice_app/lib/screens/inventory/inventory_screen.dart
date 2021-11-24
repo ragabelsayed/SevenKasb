@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/widget/menu_widget.dart';
 import 'widget/purchase_inventory.dart';
-import 'widget/sell_inventory.dart';
+import 'widget/sales_inventory.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({Key? key}) : super(key: key);
@@ -42,8 +41,8 @@ class InventoryScreen extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
+              SalesInventory(fToast: fToast),
               PurchaseInventory(fToast: fToast),
-              SellInventory(fToast: fToast),
             ],
           ),
         ),
