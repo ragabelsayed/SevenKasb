@@ -89,7 +89,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
         width: btnSize,
         height: btnSize,
         child: FloatingActionButton(
-          heroTag: widget.toString(),
+          heroTag: icon.toString(),
           splashColor: Colors.green,
           backgroundColor: Colors.amber,
           child: icon == Icons.add
@@ -118,19 +118,19 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   _toast('لم يتم جلب الجرد الشهرى', false);
                 }
               }
-              // if (widget.inventoryType == InventoryType.sales) {
-              //   try {
-              //     await context
-              //         .read(inventoryPurchasesProvider.notifier)
-              //         .getInventory(
-              //           date: intl.DateFormat.M().format(date),
-              //           inventoryType: InventoryType.monthly,
-              //         );
-              //     _toast('تم جلب الجرد الشهرى', true);
-              //   } catch (e) {
-              //     _toast('لم يتم جلب الجرد الشهرى', false);
-              //   }
-              // }
+              if (widget.inventoryType == InventoryType.sales) {
+                try {
+                  await context
+                      .read(inventorySalesProvider.notifier)
+                      .getInventory(
+                        date: intl.DateFormat.M().format(date),
+                        inventoryType: InventoryType.monthly,
+                      );
+                  _toast('تم جلب الجرد الشهرى', true);
+                } catch (e) {
+                  _toast('لم يتم جلب الجرد الشهرى', false);
+                }
+              }
             }
             if (icon == Icons.calendar_view_day) {
               await _pickDate(context);
@@ -149,21 +149,21 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   _toast('لم يتم جلب الجرد اليومى', false);
                 }
               }
-              // if (widget.inventoryType == InventoryType.sales) {
-              //   try {
-              //     await context
-              //         .read(inventoryPurchasesProvider.notifier)
-              //         .getInventory(
-              //           date: intl.DateFormat.yMd()
-              //               .format(date)
-              //               .replaceAll(RegExp(r'/'), '-'),
-              //           inventoryType: InventoryType.daily,
-              //         );
-              //     _toast('تم جلب الجرد اليومى', true);
-              //   } catch (e) {
-              //     _toast('لم يتم جلب الجرد اليومى', false);
-              //   }
-              // }
+              if (widget.inventoryType == InventoryType.sales) {
+                try {
+                  await context
+                      .read(inventorySalesProvider.notifier)
+                      .getInventory(
+                        date: intl.DateFormat.yMd()
+                            .format(date)
+                            .replaceAll(RegExp(r'/'), '-'),
+                        inventoryType: InventoryType.daily,
+                      );
+                  _toast('تم جلب الجرد اليومى', true);
+                } catch (e) {
+                  _toast('لم يتم جلب الجرد اليومى', false);
+                }
+              }
             }
           },
         ),

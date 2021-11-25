@@ -27,8 +27,8 @@ class _ExpansionViewState extends State<ExpansionView> {
           ),
           Text(
             widget.inventory.inventoryType == InventoryType.daily
-                ? 'شهري'
-                : 'يومى',
+                ? 'يومى'
+                : 'شهري',
             textDirection: TextDirection.rtl,
             style: const TextStyle(
               fontStyle: FontStyle.italic,

@@ -15,36 +15,33 @@ class InventoryScreen extends StatelessWidget {
     FToast fToast = FToast().init(context);
     return DefaultTabController(
       length: 2,
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('الجرد', style: AppConstants.appBarTitle),
-            centerTitle: true,
-            backgroundColor: Palette.primaryColor,
-            leading: const MenuWidget(),
-            shape: AppConstants.appBarBorder,
-            bottom: const TabBar(
-              indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
-              indicatorColor: Colors.amber,
-              tabs: [
-                Tab(
-                  text: 'مبيعات',
-                  icon: FaIcon(FontAwesomeIcons.clipboardList),
-                ),
-                Tab(
-                  text: 'مشتريات',
-                  icon: FaIcon(FontAwesomeIcons.clipboardList),
-                ),
-              ],
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              SalesInventory(fToast: fToast),
-              PurchaseInventory(fToast: fToast),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('الجرد', style: AppConstants.appBarTitle),
+          centerTitle: true,
+          backgroundColor: Palette.primaryColor,
+          leading: const MenuWidget(),
+          shape: AppConstants.appBarBorder,
+          bottom: const TabBar(
+            indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
+            indicatorColor: Colors.amber,
+            tabs: [
+              Tab(
+                text: 'مبيعات',
+                icon: FaIcon(FontAwesomeIcons.clipboardList),
+              ),
+              Tab(
+                text: 'مشتريات',
+                icon: FaIcon(FontAwesomeIcons.clipboardList),
+              ),
             ],
           ),
+        ),
+        body: TabBarView(
+          children: [
+            SalesInventory(fToast: fToast),
+            PurchaseInventory(fToast: fToast),
+          ],
         ),
       ),
     );
