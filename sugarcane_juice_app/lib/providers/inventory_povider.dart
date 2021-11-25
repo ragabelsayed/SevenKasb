@@ -28,7 +28,13 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inventory>>
     required String date,
     required InventoryType inventoryType,
   }) async {
-    Uri url = Uri.parse('http://10.0.2.2:5000/mobile/year/2021/month/11');
+    late Uri url;
+    if (InventoryType.monthly == inventoryType) {
+      url = Uri.parse('http://10.0.2.2:5000/mobile/year/2021/month/$date');
+    }
+    if (InventoryType.daily == inventoryType) {
+      url = Uri.parse('http://10.0.2.2:5000/mobile/$date');
+    }
 
     final response = await http.get(
       url,

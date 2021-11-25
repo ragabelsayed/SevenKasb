@@ -1,7 +1,7 @@
 import './item.dart';
 import './unit.dart';
 
-enum InventoryType { daily, monthly }
+enum InventoryType { daily, monthly, purchase, sales }
 
 class Inventory {
   Item item;

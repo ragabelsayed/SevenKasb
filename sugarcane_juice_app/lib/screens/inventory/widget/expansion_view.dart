@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sugarcane_juice/screens/inventory/widget/expansion_data_table.dart';
 import '/models/inventory.dart';
 import '/widget/dialog_title.dart';
+import 'expansion_data_table.dart';
 
 class ExpansionView extends StatefulWidget {
   final Inventory inventory;
@@ -20,10 +20,6 @@ class _ExpansionViewState extends State<ExpansionView> {
         children: [
           Row(
             children: [
-              // Text(
-              //   '(${widget.inventory.item.unit.name})',
-              //   style: Theme.of(context).textTheme.subtitle2,
-              // ),
               DialogTitle(name: widget.inventory.item.name),
               const SizedBox(width: 5),
               DialogTitle(name: widget.inventory.item.unit.name),

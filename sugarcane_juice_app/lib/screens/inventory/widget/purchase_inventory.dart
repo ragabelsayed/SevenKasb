@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sugarcane_juice/models/inventory.dart';
-import 'package:sugarcane_juice/providers/inventory_povider.dart';
+import '/models/inventory.dart';
+import '/providers/inventory_povider.dart';
+import '/screens/inventory/widget/linear_flow_btns.dart';
 import 'expansion_view.dart';
 
 class PurchaseInventory extends ConsumerWidget {
@@ -17,14 +18,9 @@ class PurchaseInventory extends ConsumerWidget {
         itemCount: inventory.length,
         itemBuilder: (context, i) => ExpansionView(inventory: inventory[i]),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.amber,
-        onPressed: () {
-          context
-              .read(inventoryPurchasesProvider.notifier)
-              .getInventory(date: 'date', inventoryType: InventoryType.daily);
-        },
+      floatingActionButton: LinearFlowWidget(
+        fToast: fToast,
+        inventoryType: InventoryType.purchase,
       ),
     );
   }
