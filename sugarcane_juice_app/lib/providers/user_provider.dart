@@ -6,34 +6,37 @@ import '/models/http_exception.dart';
 import '/providers/auth.dart';
 
 // AVD
-const userUri = 'http://10.0.2.2:5000/api/users/1';
-// wifi ip
-// const userUri = 'http://192.168.1.7:5000/api/users/1';
-Uri url = Uri.parse(userUri);
+// const userUri = 'http://10.0.2.2:5000/api/users/1';
+// // wifi ip
+// // const userUri = 'http://192.168.1.7:5000/api/users/1';
+// Uri url = Uri.parse(userUri);
 // AVD
 // const userUri = 'http://10.0.2.2:5000/api/users/1';
 // wifi ip
-const passUri = 'http://10.0.2.2:5000/api/auth/1/changepassword';
+// const passUri = 'http://10.0.2.2:5000/api/auth/1/changepassword';
 // const passUri = 'http://192.168.1.7:5000/api/auth/1/changepassword';
-Uri passurl = Uri.parse(passUri);
+// Uri passurl = Uri.parse(passUri);
 
 final userProvider = FutureProvider.autoDispose<User>((ref) async {
-  String _token = ref.watch(authProvider);
-  return UserProvider(authToken: _token).fetchUserDate();
+  var _token = ref.watch(authProvider);
+  return UserProvider(authToken: _token['token'], userId: _token['userId'])
+      .fetchUserDate();
 });
 
 final updateUserProvider = Provider.autoDispose<UserProvider>((ref) {
-  String _token = ref.watch(authProvider);
-  return UserProvider(authToken: _token);
+  var _token = ref.watch(authProvider);
+  return UserProvider(authToken: _token['token'], userId: _token['userId']);
 });
 
 class UserProvider {
   late String authToken;
-  UserProvider({required this.authToken});
+  late int userId;
+  UserProvider({required this.authToken, required this.userId});
 
   Future<User> fetchUserDate() async {
+    Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
     try {
-      final response = await http.get(url, headers: {
+      final response = await http.get(_url, headers: {
         'Content-Type': 'application/json',
         'charset': 'utf-8',
         'Authorization': 'Bearer $authToken',
@@ -54,9 +57,10 @@ class UserProvider {
   }
 
   Future<void> updateUser(User user) async {
+    Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
     try {
       await http.put(
-        url,
+        _url,
         headers: {
           'Content-Type': 'application/json',
           'charset': 'utf-8',
@@ -80,9 +84,11 @@ class UserProvider {
     required String newPass,
     required String confirmPass,
   }) async {
+    Uri _passurl =
+        Uri.parse('http://10.0.2.2:5000/api/auth/$userId/changepassword');
     try {
       await http.put(
-        passurl,
+        _passurl,
         headers: {
           'Content-Type': 'application/json',
           'charset': 'utf-8',

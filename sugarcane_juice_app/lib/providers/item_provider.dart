@@ -12,8 +12,8 @@ const itemUri = 'http://10.0.2.2:5000/api/item';
 // const itemUri = 'http://192.168.1.7:5000/api/item';
 
 final itemProvider = ChangeNotifierProvider<ItemNotifier>((ref) {
-  String _token = ref.watch(authProvider);
-  return ItemNotifier(authToken: _token);
+  var _token = ref.watch(authProvider);
+  return ItemNotifier(authToken: _token['token']);
 });
 
 class ItemNotifier extends ChangeNotifier {
@@ -42,7 +42,6 @@ class ItemNotifier extends ChangeNotifier {
         'Authorization': 'Bearer $authToken',
       });
       final extractedData = json.decode(response.body) as List;
-      // print(extractedData);
       final List<Item> _loadedProducts = [];
       for (var item in extractedData) {
         _loadedProducts.add(
@@ -52,7 +51,6 @@ class ItemNotifier extends ChangeNotifier {
         );
       }
       _items = _loadedProducts;
-      // notifyListeners();
     } on FormatException {
       throw HttpException(
         'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
@@ -88,7 +86,6 @@ class ItemNotifier extends ChangeNotifier {
         unit: item.unit,
         type: item.type,
       );
-      // _items.add(newItem);
       return newItem;
     } on FormatException {
       throw HttpException(

@@ -12,8 +12,8 @@ const unitUri = 'http://10.0.2.2:5000/api/unit';
 // const unitUri = 'http://192.168.1.7:5000/api/unit';
 
 final unitProvider = ChangeNotifierProvider<UnitNotifier>((ref) {
-  String _token = ref.watch(authProvider);
-  return UnitNotifier(authToken: _token);
+  var _token = ref.watch(authProvider);
+  return UnitNotifier(authToken: _token['token']);
 });
 
 class UnitNotifier extends ChangeNotifier {
@@ -77,7 +77,6 @@ class UnitNotifier extends ChangeNotifier {
         id: json.decode(response.body)['unit']['id'],
         name: unit.name,
       );
-      // _items.add(newUnit);
       return newUnit;
     } on FormatException {
       throw HttpException(

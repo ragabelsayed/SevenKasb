@@ -16,21 +16,21 @@ class ExtraExpensesScreen extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final extraExpenses = watch(extraExpensesProvider);
     FToast fToast = FToast().init(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'مصروفات إضافية',
-          style: AppConstants.appBarTitle,
+    return RefreshIndicator(
+      onRefresh: () => context.refresh(extraExpensesProvider),
+      color: Palette.primaryColor,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'مصروفات إضافية',
+            style: AppConstants.appBarTitle,
+          ),
+          centerTitle: true,
+          backgroundColor: Palette.primaryColor,
+          leading: const MenuWidget(),
+          shape: AppConstants.appBarBorder,
         ),
-        centerTitle: true,
-        backgroundColor: Palette.primaryColor,
-        leading: const MenuWidget(),
-        shape: AppConstants.appBarBorder,
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => context.refresh(extraExpensesProvider),
-        color: Palette.primaryColor,
-        child: extraExpenses.when(
+        body: extraExpenses.when(
           loading: () => const Center(
             child: CircularProgressIndicator(
               color: Palette.primaryColor,
@@ -51,22 +51,22 @@ class ExtraExpensesScreen extends ConsumerWidget {
                   );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'اضافة مصاريف إضافية',
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.amber,
-        onPressed: () => showModalBottomSheet(
-          context: context,
-          isDismissible: false,
-          enableDrag: false,
-          isScrollControlled: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'اضافة مصاريف إضافية',
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.amber,
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            isDismissible: false,
+            enableDrag: false,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+            ),
+            builder: (ctx) {
+              return InputExtraExpensesForm(ftoast: fToast);
+            },
           ),
-          builder: (ctx) {
-            return InputExtraExpensesForm(ftoast: fToast);
-          },
         ),
       ),
     );

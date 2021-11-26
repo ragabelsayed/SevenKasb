@@ -14,15 +14,15 @@ abstract class MainInvenotry {
 final inventoryPurchasesProvider =
     StateNotifierProvider<InventoryPurchaseNotifier, List<Inventory>>(
   (ref) {
-    String _token = ref.watch(authProvider);
-    return InventoryPurchaseNotifier(_token);
+    var _token = ref.watch(authProvider);
+    return InventoryPurchaseNotifier(_token['token']);
   },
 );
 final inventorySalesProvider =
     StateNotifierProvider<InventorySalesNotifier, List<Inventory>>(
   (ref) {
-    String _token = ref.watch(authProvider);
-    return InventorySalesNotifier(_token);
+    var _token = ref.watch(authProvider);
+    return InventorySalesNotifier(_token['token']);
   },
 );
 
