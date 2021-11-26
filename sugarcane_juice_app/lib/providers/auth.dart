@@ -9,9 +9,9 @@ import '/models/http_exception.dart';
 
 // const uri = 'http://localhost:5000/api/auth/login';
 // AVD
-// const uri = 'http://10.0.2.2:5000/api/auth/login';
+const uri = 'http://10.0.2.2:5000/api/auth/login';
 // wifi ip address
-const uri = 'http://192.168.1.7:5000/api/auth/login';
+// const uri = 'http://192.168.1.7:5000/api/auth/login';
 // hostName
 // const uri = 'http://DESKTOP-Q8JB2O6:5000/api/auth/login';
 Uri url = Uri.parse(uri);

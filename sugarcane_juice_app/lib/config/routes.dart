@@ -9,6 +9,7 @@ import '/screens/main/main_screen.dart';
 import '/screens/menu/menu_screen.dart';
 import '/screens/offline/offline_screen.dart';
 import '/screens/user/user_screen.dart';
+import '/screens/inventory/inventory_screen.dart';
 
 class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
@@ -37,6 +38,8 @@ class ItemNotifier extends StateNotifier<MenuItem> {
         return const BillScreen();
       case MenuItems.extra:
         return const ExtraExpensesScreen();
+      case MenuItems.inventory:
+        return const InventoryScreen();
       case MenuItems.offline:
         return const OfflineScreen();
       case MenuItems.edit:
