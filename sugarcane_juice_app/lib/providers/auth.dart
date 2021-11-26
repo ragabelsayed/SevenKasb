@@ -16,11 +16,11 @@ const uri = 'http://10.0.2.2:5000/api/auth/login';
 // const uri = 'http://DESKTOP-Q8JB2O6:5000/api/auth/login';
 Uri url = Uri.parse(uri);
 
-final authProvider =
-    StateNotifierProvider<AuthNotifier, String>((ref) => AuthNotifier());
+final authProvider = StateNotifierProvider<AuthNotifier, Map<String, dynamic>>(
+    (ref) => AuthNotifier());
 
-class AuthNotifier extends StateNotifier<String> {
-  AuthNotifier() : super('');
+class AuthNotifier extends StateNotifier<Map<String, dynamic>> {
+  AuthNotifier() : super({});
 
   Future<void> _authenticate({
     required String name,
@@ -42,8 +42,14 @@ class AuthNotifier extends StateNotifier<String> {
     );
     if (response.statusCode >= 200 && response.statusCode < 400) {
       final responseDate = json.decode(response.body) as Map<String, dynamic>;
-      state = responseDate['token'];
-      _saveDataOnDevice(token: state);
+      state.addAll({
+        'token': responseDate['token'],
+        'userId': responseDate['user']['id'],
+      });
+      _saveDataOnDevice(
+        token: responseDate['token'],
+        userId: responseDate['user']['id'],
+      );
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw HttpException(
         ' الأسم او الباسورد غير صحيح',
@@ -63,7 +69,10 @@ class AuthNotifier extends StateNotifier<String> {
     final prefs = await SharedPreferences.getInstance();
     final extractedUserData =
         json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
-    state = extractedUserData['token'];
+    state.addAll({
+      'token': extractedUserData['token'],
+      'userId': extractedUserData['userId'],
+    });
   }
 
   Future<bool> tryAutoLogin() async {
@@ -76,8 +85,8 @@ class AuthNotifier extends StateNotifier<String> {
   }
 
   Future<void> logOut(BuildContext context) async {
-    state = '';
-    await Navigator.pushNamedAndRemoveUntil(
+    state.clear();
+    Navigator.pushNamedAndRemoveUntil(
       context,
       LoginScreen.routName,
       (route) => false,
@@ -86,11 +95,9 @@ class AuthNotifier extends StateNotifier<String> {
     prefs.clear();
   }
 
-  void _saveDataOnDevice({required String token}) async {
+  void _saveDataOnDevice({required String token, required int userId}) async {
     final prefs = await SharedPreferences.getInstance();
-    final userData = json.encode({
-      'token': token,
-    });
+    final userData = json.encode({'token': token, 'userId': userId});
     prefs.setString('userData', userData);
   }
 }

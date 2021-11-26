@@ -12,18 +12,20 @@ const extraUri = 'http://10.0.2.2:5000/api/extraexpenses';
 Uri url = Uri.parse(extraUri);
 
 final extraExpensesProvider = FutureProvider<List<Extra>>((ref) async {
-  String _token = ref.watch(authProvider);
-  return ExtraExpensesProvider(authToken: _token).fetchBills();
+  var _token = ref.watch(authProvider);
+  return ExtraExpensesProvider(authToken: _token['token']).fetchBills();
 });
 
 final addExtraExpensesProvider = Provider<ExtraExpensesProvider>((ref) {
-  String _token = ref.watch(authProvider);
-  return ExtraExpensesProvider(authToken: _token);
+  var _token = ref.watch(authProvider);
+  return ExtraExpensesProvider(
+      authToken: _token['token'], userId: _token['userId']);
 });
 
 class ExtraExpensesProvider {
-  ExtraExpensesProvider({required this.authToken});
+  ExtraExpensesProvider({required this.authToken, this.userId});
   late String authToken;
+  int? userId;
 
   Future<List<Extra>> fetchBills() async {
     try {
@@ -64,7 +66,7 @@ class ExtraExpensesProvider {
           'Authorization': 'Bearer $authToken',
         },
         body: json.encode({
-          'userId': 1,
+          'userId': userId,
           'reason': extra.reason,
           'paid': extra.cash,
           'createdAt': extra.dataTime.toIso8601String(),

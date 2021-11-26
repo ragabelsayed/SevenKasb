@@ -16,13 +16,13 @@ abstract class BillRepository {
 }
 
 final billProvider = FutureProvider.autoDispose<List<Bill>>((ref) async {
-  String _token = ref.watch(authProvider);
-  return BillProvider(authToken: _token).fetchBills();
+  var _token = ref.watch(authProvider);
+  return BillProvider(authToken: _token['token']).fetchBills();
 });
 
 final addBillProvider = Provider.autoDispose<BillProvider>((ref) {
-  String _token = ref.watch(authProvider);
-  return BillProvider(authToken: _token);
+  var _token = ref.watch(authProvider);
+  return BillProvider(authToken: _token['token'], userId: _token['userId']);
 });
 
 final isOffLineProvider = StateProvider<bool>((ref) {
@@ -30,8 +30,9 @@ final isOffLineProvider = StateProvider<bool>((ref) {
 });
 
 class BillProvider implements BillRepository {
-  BillProvider({required this.authToken});
+  BillProvider({required this.authToken, this.userId});
   late String authToken;
+  int? userId;
 
   @override
   Future<List<Bill>> fetchBills() async {
@@ -73,8 +74,7 @@ class BillProvider implements BillRepository {
           'Authorization': 'Bearer $authToken',
         },
         body: json.encode({
-          // 'userId': 1,
-          'userId': 3,
+          'userId': userId,
           'billItems': List.from(
             isOffline
                 ? bill.offlineBillItems!.map(
