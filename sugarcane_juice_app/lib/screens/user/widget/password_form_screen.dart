@@ -46,22 +46,31 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
     final _isValid = _formKey.currentState!.validate();
     if (_isValid) {
       _formKey.currentState!.save();
-      try {
-        setState(() => _saveItOnce = false);
-        await context.read(updateUserProvider).updatePassword(
-              oldPass: _controller1.text,
-              newPass: _controller2.text,
-              confirmPass: _controller3.text,
-            );
-        setState(() => _iswaiting = false);
-        toast('تم التحديث بنجاح', true);
-        toast('سيتم إعادة تسجيل الدخول', true);
-        await Future.delayed(const Duration(seconds: 4));
-        await context.read(authProvider.notifier).logOut(context);
-      } catch (e) {
-        toast('خطأ! لم يتم التحديث', false);
+      if (_controller2.text == _controller3.text) {
+        setState(() => _isNotConfirm = false);
+        try {
+          setState(() => _saveItOnce = false);
+          await context.read(updateUserProvider).updatePassword(
+                oldPass: _controller1.text,
+                newPass: _controller2.text,
+                confirmPass: _controller3.text,
+              );
+          setState(() => _iswaiting = false);
+          toast('تم التحديث بنجاح', true);
+          toast('سيتم إعادة تسجيل الدخول', true);
+          await Future.delayed(const Duration(seconds: 4));
+          await context.read(authProvider.notifier).logOut(context);
+        } catch (e) {
+          toast('خطأ! لم يتم التحديث', false);
+          setState(() => _iswaiting = false);
+        }
+      } else {
+        setState(() => _isNotConfirm = true);
         setState(() => _iswaiting = false);
       }
+    }
+    if (!_isValid) {
+      setState(() => _iswaiting = false);
     }
   }
 
@@ -74,15 +83,6 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
       gravity: ToastGravity.BOTTOM,
       toastDuration: const Duration(seconds: 2),
     );
-  }
-
-  void checkEquility() {
-    if (_controller2.text == _controller3.text) {
-      setState(() => _isNotConfirm = false);
-      if (!_iswaiting) setWaiting();
-    } else {
-      setState(() => _isNotConfirm = true);
-    }
   }
 
   void setWaiting() => setState(() {
@@ -141,7 +141,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
                       isSave: true,
                       message: 'هل انت متأكد من حفظ هذا التعديل؟',
                       onpress: () {
-                        checkEquility();
+                        setWaiting();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -206,6 +206,9 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
       validator: (newValue) {
         if (newValue!.isEmpty) {
           return error;
+        }
+        if (newValue.length < 4) {
+          return 'الباسورد ضعيف برجاء جعلة اكبر من 4 احروف';
         }
       },
       onSaved: (newValue) => setState(() => controller.text = newValue ?? ''),

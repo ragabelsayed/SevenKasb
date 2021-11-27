@@ -100,9 +100,9 @@ class _UserFormState extends State<UserForm> {
                   const DialogTitle(name: 'تاريخ الميلاد: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: widget.user.dateOfBirth ?? '00 / 00 /0000',
+                    initValue: widget.user.dateOfBirth ?? 'day - month - year',
                     error: 'قُمْ بإدخال تاريخ الميلاد',
-                    type: TextInputType.emailAddress,
+                    type: TextInputType.number,
                     action: TextInputAction.next,
                     onSave: (value) {
                       widget.user.dateOfBirth = value;
