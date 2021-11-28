@@ -110,7 +110,8 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   await context
                       .read(inventoryPurchasesProvider.notifier)
                       .getInventory(
-                        date: intl.DateFormat.M().format(date),
+                        year: intl.DateFormat.y().format(date),
+                        month: intl.DateFormat.M().format(date),
                         inventoryType: InventoryType.monthly,
                       );
                   _toast('تم جلب الجرد الشهرى', true);
@@ -123,7 +124,8 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   await context
                       .read(inventorySalesProvider.notifier)
                       .getInventory(
-                        date: intl.DateFormat.M().format(date),
+                        year: intl.DateFormat.y().format(date),
+                        month: intl.DateFormat.M().format(date),
                         inventoryType: InventoryType.monthly,
                       );
                   _toast('تم جلب الجرد الشهرى', true);
@@ -139,7 +141,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   await context
                       .read(inventoryPurchasesProvider.notifier)
                       .getInventory(
-                        date: intl.DateFormat.yMd()
+                        day: intl.DateFormat.d()
                             .format(date)
                             .replaceAll(RegExp(r'/'), '-'),
                         inventoryType: InventoryType.daily,
@@ -154,7 +156,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   await context
                       .read(inventorySalesProvider.notifier)
                       .getInventory(
-                        date: intl.DateFormat.yMd()
+                        day: intl.DateFormat.d()
                             .format(date)
                             .replaceAll(RegExp(r'/'), '-'),
                         inventoryType: InventoryType.daily,

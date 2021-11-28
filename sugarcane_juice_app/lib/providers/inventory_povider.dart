@@ -6,7 +6,10 @@ import '/models/inventory.dart';
 
 abstract class MainInvenotry {
   Future<void> getInventory({
-    required String date,
+    // required String date,
+    String? year,
+    String? month,
+    String? day,
     required InventoryType inventoryType,
   });
 }
@@ -30,17 +33,21 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inventory>>
     implements MainInvenotry {
   InventoryPurchaseNotifier(this.authToken) : super([]);
   final String authToken;
+
   @override
   Future<void> getInventory({
-    required String date,
+    String? year,
+    String? month,
+    String? day,
     required InventoryType inventoryType,
   }) async {
     late Uri url;
     if (InventoryType.monthly == inventoryType) {
-      url = Uri.parse('http://10.0.2.2:5000/mobile/year/2021/month/$date');
+      url = Uri.parse(
+          'http://10.0.2.2:5000/mobilebarren/0/year/$year/month/$month');
     }
     if (InventoryType.daily == inventoryType) {
-      url = Uri.parse('http://10.0.2.2:5000/mobile/$date');
+      url = Uri.parse('http://10.0.2.2:5000/mobilebarren/0/$day');
     }
 
     final response = await http.get(
@@ -68,14 +75,19 @@ class InventorySalesNotifier extends StateNotifier<List<Inventory>>
   final String authToken;
 
   @override
-  Future<void> getInventory(
-      {required String date, required InventoryType inventoryType}) async {
+  Future<void> getInventory({
+    String? year,
+    String? month,
+    String? day,
+    required InventoryType inventoryType,
+  }) async {
     late Uri url;
     if (InventoryType.monthly == inventoryType) {
-      url = Uri.parse('http://10.0.2.2:5000/mobile/year/2021/month/$date');
+      url = Uri.parse(
+          'http://10.0.2.2:5000/mobilebarren/1/year/$year/month/$month');
     }
     if (InventoryType.daily == inventoryType) {
-      url = Uri.parse('http://10.0.2.2:5000/mobile/$date');
+      url = Uri.parse('http://10.0.2.2:5000/mobilebarren/1/$day');
     }
 
     final response = await http.get(
