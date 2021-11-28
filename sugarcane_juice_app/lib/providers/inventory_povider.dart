@@ -44,10 +44,10 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inventory>>
     late Uri url;
     if (InventoryType.monthly == inventoryType) {
       url = Uri.parse(
-          'http://10.0.2.2:5000/mobilebarren/0/year/$year/month/$month');
+          'http://10.0.2.2:5000/api/mobilebarren/0/year/$year/month/$month');
     }
     if (InventoryType.daily == inventoryType) {
-      url = Uri.parse('http://10.0.2.2:5000/mobilebarren/0/$day');
+      url = Uri.parse('http://10.0.2.2:5000/api/mobilebarren/0/$day');
     }
 
     final response = await http.get(
@@ -84,10 +84,10 @@ class InventorySalesNotifier extends StateNotifier<List<Inventory>>
     late Uri url;
     if (InventoryType.monthly == inventoryType) {
       url = Uri.parse(
-          'http://10.0.2.2:5000/mobilebarren/1/year/$year/month/$month');
+          'http://10.0.2.2:5000/api/mobilebarren/1/year/$year/month/$month');
     }
     if (InventoryType.daily == inventoryType) {
-      url = Uri.parse('http://10.0.2.2:5000/mobilebarren/1/$day');
+      url = Uri.parse('http://10.0.2.2:5000/api/mobilebarren/1/$day');
     }
 
     final response = await http.get(

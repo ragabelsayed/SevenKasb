@@ -141,7 +141,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   await context
                       .read(inventoryPurchasesProvider.notifier)
                       .getInventory(
-                        day: intl.DateFormat.d()
+                        day: intl.DateFormat.yMd()
                             .format(date)
                             .replaceAll(RegExp(r'/'), '-'),
                         inventoryType: InventoryType.daily,
@@ -156,7 +156,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   await context
                       .read(inventorySalesProvider.notifier)
                       .getInventory(
-                        day: intl.DateFormat.d()
+                        day: intl.DateFormat.yMd()
                             .format(date)
                             .replaceAll(RegExp(r'/'), '-'),
                         inventoryType: InventoryType.daily,
