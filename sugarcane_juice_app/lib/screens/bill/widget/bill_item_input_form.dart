@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '/models/bill_item.dart';
 import '/widget/save_cancel_btns.dart';
 import '/providers/item_provider.dart';
-import '/providers/unit_provider.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import '/models/item.dart';
@@ -50,9 +49,9 @@ class _BillItemFormState extends State<BillItemForm> {
     if (_isValid) {
       _formKey.currentState!.save();
       try {
-        final newUnit =
-            await context.read(unitProvider).addUnit(_billItems.item.unit);
-        _billItems.item.unit = newUnit;
+        // final newUnit =
+        //     await context.read(unitProvider).addUnit(_billItems.item.unit);
+        // _billItems.item.unit = newUnit;
 
         final newItem =
             await context.read(itemProvider).addItem(_billItems.item);

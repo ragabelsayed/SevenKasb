@@ -37,7 +37,18 @@ class ExtraExpensesScreen extends ConsumerWidget {
               backgroundColor: Palette.primaryLightColor,
             ),
           ),
-          error: (error, stackTrace) => ErrorView(error: error.toString()),
+          error: (error, stackTrace) {
+            if (error == true) {
+              return ErrorView(
+                error: error.toString(),
+                isExpier: true,
+              );
+            } else {
+              return ErrorView(
+                error: error.toString(),
+              );
+            }
+          },
           data: (extraList) {
             var date = DateTime.now();
             var thirtyDaysAgo = date.subtract(const Duration(days: 30));

@@ -46,9 +46,10 @@ class ExtraExpensesProvider {
       }
       return _loadedBill;
     } on FormatException {
-      throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-      );
+      throw true;
+      // HttpException(
+      //   'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      // );
     } catch (error) {
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
@@ -73,9 +74,10 @@ class ExtraExpensesProvider {
         }),
       );
     } on FormatException {
-      throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-      );
+      throw true;
+      // HttpException(
+      //   'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      // );
     } catch (error) {
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',

@@ -23,7 +23,18 @@ class PurchaseBill extends ConsumerWidget {
               backgroundColor: Palette.primaryLightColor,
             ),
           ),
-          error: (error, stackTrace) => ErrorView(error: error.toString()),
+          error: (error, stackTrace) {
+            if (error == true) {
+              return ErrorView(
+                error: error.toString(),
+                isExpier: true,
+              );
+            } else {
+              return ErrorView(
+                error: error.toString(),
+              );
+            }
+          },
           data: (billList) {
             var purchaseList =
                 billList.where((bill) => bill.type == 0).toList();

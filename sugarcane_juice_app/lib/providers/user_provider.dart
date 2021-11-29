@@ -46,9 +46,10 @@ class UserProvider {
       final _loadedUser = User.fromJson(json: extractedData);
       return _loadedUser;
     } on FormatException {
-      throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-      );
+      throw true;
+      // HttpException(
+      //   'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      // );
     } catch (error) {
       throw HttpException(
         'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',

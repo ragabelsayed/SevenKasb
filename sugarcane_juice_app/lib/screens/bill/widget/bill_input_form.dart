@@ -294,6 +294,7 @@ class _BillInputFormState extends State<BillInputForm> {
               opacity: _isWaiting ? 0.5 : 1.0,
               child: _buildTextFormField(
                 hintText: '    0.0',
+                initialValue: '0.0',
                 error: AppConstants.priceError,
                 type: TextInputType.number,
                 isUpdated: true,
@@ -320,6 +321,7 @@ class _BillInputFormState extends State<BillInputForm> {
 
   TextFormField _buildTextFormField({
     required String hintText,
+    String? initialValue,
     required String error,
     required TextInputType type,
     required TextInputAction action,
@@ -341,6 +343,7 @@ class _BillInputFormState extends State<BillInputForm> {
         errorBorder: AppConstants.errorBorder,
         focusedBorder: AppConstants.focusedBorder,
       ),
+      initialValue: initialValue,
       onFieldSubmitted: (value) {
         if (value.isNotEmpty) {
           _formKey.currentState!.validate();

@@ -19,7 +19,18 @@ class SellBill extends ConsumerWidget {
           loading: () => const Center(
             child: CircularProgressIndicator(color: Colors.green),
           ),
-          error: (error, stackTrace) => ErrorView(error: error.toString()),
+          error: (error, stackTrace) {
+            if (error == true) {
+              return ErrorView(
+                error: error.toString(),
+                isExpier: true,
+              );
+            } else {
+              return ErrorView(
+                error: error.toString(),
+              );
+            }
+          },
           data: (billList) {
             var sellList = billList.where((bill) => bill.type == 1).toList();
             return sellList.isNotEmpty

@@ -63,9 +63,10 @@ class ItemNotifier extends ChangeNotifier {
   }
 
   Future<Item> addItem(Item item) async {
+    var _url = Uri.parse('http://10.0.2.2:5000/api/mobileItem');
     try {
       final response = await http.post(
-        url,
+        _url,
         headers: {
           'Content-Type': 'application/json',
           'charset': 'utf-8',
@@ -74,8 +75,9 @@ class ItemNotifier extends ChangeNotifier {
         body: json.encode({
           'name': item.name,
           'price': item.price,
-          'unitId': item.unit.id!,
-          'type': item.type,
+          "unitNavigation": {"name": item.unit.name.trim()}
+          // 'unitId': item.unit.id!,
+          // 'type': item.type,
         }),
       );
       final newItem = Item(

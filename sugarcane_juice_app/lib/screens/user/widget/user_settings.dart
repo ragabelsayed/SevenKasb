@@ -21,7 +21,18 @@ class UserSettings extends ConsumerWidget {
             color: Palette.primaryColor,
           ),
         ),
-        error: (error, stackTrace) => ErrorView(error: error.toString()),
+        error: (error, stackTrace) {
+          if (error == true) {
+            return ErrorView(
+              error: error.toString(),
+              isExpier: true,
+            );
+          } else {
+            return ErrorView(
+              error: error.toString(),
+            );
+          }
+        },
         data: (_user) => UserForm(user: _user, fToast: fToast),
       ),
     );

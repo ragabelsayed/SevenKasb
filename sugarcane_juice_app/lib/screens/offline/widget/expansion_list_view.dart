@@ -8,7 +8,6 @@ import '/models/bill.dart';
 import '/models/bill_item.dart';
 import '/providers/bill_provider.dart';
 import '/providers/item_provider.dart';
-import '/providers/unit_provider.dart';
 import '/models/extra_expenses.dart';
 import '/providers/extra_provider.dart';
 import '/providers/offLine_provider.dart';
@@ -56,10 +55,9 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         await Future.forEach(bills, (Bill bill) async {
           await Future.forEach(bill.offlineBillItems!,
               (BillItems billItem) async {
-            final newUnit =
-                await context.read(unitProvider).addUnit(billItem.item.unit);
-            billItem.item.unit = newUnit;
-
+            // final newUnit =
+            //     await context.read(unitProvider).addUnit(billItem.item.unit);
+            // billItem.item.unit = newUnit;
             final newItem =
                 await context.read(itemProvider).addItem(billItem.item);
             billItem.item = newItem;
