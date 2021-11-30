@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:sugarcane_juice/helper/box.dart';
 import '/models/http_exception.dart';
 import '/models/item.dart';
 import '/providers/auth.dart';
@@ -19,6 +20,7 @@ final itemProvider = ChangeNotifierProvider<ItemNotifier>((ref) {
 class ItemNotifier extends ChangeNotifier {
   ItemNotifier({required this.authToken});
   late String authToken;
+  final _itemBox = Boxes.getItemBox();
   List<Item> _items = [];
   List<Item> get items => [..._items];
 
@@ -35,7 +37,6 @@ class ItemNotifier extends ChangeNotifier {
 
   Uri url = Uri.parse(itemUri);
   Future<void> fetchAndSetData() async {
-    // try {
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'charset': 'utf-8',
@@ -52,18 +53,13 @@ class ItemNotifier extends ChangeNotifier {
         );
       }
       _items = _loadedProducts;
+      await _itemBox.clear();
+      await _itemBox.addAll(_items);
     }
-    if (response.statusCode >= 400 && response.statusCode < 500) {}
+    if (response.statusCode >= 400 && response.statusCode < 500) {
+      _items = _itemBox.values.toList();
+    }
     if (response.statusCode >= 500) {}
-    // } on FormatException {
-    //   throw HttpException(
-    //     'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-    //   );
-    // } catch (error) {
-    //   throw HttpException(
-    //     'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
-    //   );
-    // }
   }
 
   Future<Item> addItem(Item item) async {

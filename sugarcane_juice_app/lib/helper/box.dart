@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import '/models/item.dart';
 import '/models/unit.dart';
 import '/models/bill_item.dart';
 import '/models/bill.dart';
@@ -9,4 +10,5 @@ class Boxes {
   static Box<BillItems> getBillItemsBox() => Hive.box<BillItems>('billItems');
   static Box<Extra> getExtraExpensessBox() => Hive.box<Extra>('extraExpenses');
   static Box<Unit> getUnitBox() => Hive.box<Unit>('units');
+  static Box<Item> getItemBox() => Hive.box<Item>('items');
 }

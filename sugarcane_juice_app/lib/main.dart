@@ -36,6 +36,7 @@ void main() async {
   await Hive.openBox<BillItems>('billItems');
   await Hive.openBox<Extra>('extraExpenses');
   await Hive.openBox<Unit>('units');
+  await Hive.openBox<Item>('items');
 
   final _isAuth = await container.read(authProvider.notifier).tryAutoLogin();
   runApp(ProviderScope(child: MyApp(isAuth: _isAuth)));

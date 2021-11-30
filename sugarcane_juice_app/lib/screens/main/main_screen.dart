@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sugarcane_juice/providers/unit_provider.dart';
+import '/providers/item_provider.dart';
+import '/providers/unit_provider.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import 'widget/card_list.dart';
@@ -27,9 +28,10 @@ class _MainScreenState extends State<MainScreen>
       duration: const Duration(milliseconds: 2000),
     );
     _bodyList = CardList(controller: _animationController, isList: _isList);
+
     Future.delayed(Duration.zero, () {
       context.read(unitProvider).fetchAndSetData();
-      // context.read(itemProvider).fetchAndSetData();
+      context.read(itemProvider).fetchAndSetData();
     });
   }
 

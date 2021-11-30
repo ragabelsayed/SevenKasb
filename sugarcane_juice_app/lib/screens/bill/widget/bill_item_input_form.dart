@@ -27,7 +27,8 @@ class BillItemForm extends StatefulWidget {
 
 class _BillItemFormState extends State<BillItemForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController controller = TextEditingController();
+  TextEditingController unitController = TextEditingController();
+  TextEditingController itemController = TextEditingController();
   bool _iswaiting = false;
   late BillItems _billItems;
 
@@ -133,16 +134,36 @@ class _BillItemFormState extends State<BillItemForm> {
                     ),
                     const SizedBox(height: 10),
                     _buildTextFormField(
+                      // hintText: 'اسم الصنف',
                       hintText: '    اسم الصنف',
                       error: AppConstants.nameError,
                       type: TextInputType.name,
                       action: TextInputAction.next,
+                      controller: itemController,
+                      dropDown: DropdownIconBtn(
+                        isItem: true,
+                        dropdownValue: (
+                            {dropdownItemValue, dropdownUnitValue}) {
+                          itemController.text = dropdownItemValue!.name;
+                          unitController.text = dropdownItemValue.unit.name;
+                        },
+                      ),
                       onSave: (value) {
                         _billItems.item.name = value;
                       },
                     ),
+                    // _buildTextFormField(
+                    //   hintText: '    اسم الصنف',
+                    //   error: AppConstants.nameError,
+                    //   type: TextInputType.name,
+                    //   action: TextInputAction.next,
+                    //   onSave: (value) {
+                    //     _billItems.item.name = value;
+                    //   },
+                    // ),
                     const SizedBox(height: 10),
                     _buildTextFormField(
+                      // hintText: 'سعر الصنف',
                       hintText: '    سعر الصنف',
                       error: AppConstants.priceError,
                       type: TextInputType.number,
@@ -153,6 +174,7 @@ class _BillItemFormState extends State<BillItemForm> {
                     ),
                     const SizedBox(height: 10),
                     _buildTextFormField(
+                      // hintText: 'الكمية',
                       hintText: '    الكمية',
                       error: AppConstants.quentityError,
                       type: TextInputType.number,
@@ -163,14 +185,17 @@ class _BillItemFormState extends State<BillItemForm> {
                     ),
                     const SizedBox(height: 10),
                     _buildTextFormField(
+                      // hintText: 'وحدة القياس',
                       hintText: '    وحدة القياس',
                       error: AppConstants.unitError,
                       type: TextInputType.emailAddress,
                       action: TextInputAction.done,
-                      controller: controller,
-                      dropDown: DropdownIconBtn(
-                        newunit: (unit) => controller.text = unit.name,
-                      ),
+                      controller: unitController,
+                      // dropDown: DropdownIconBtn(
+                      //   dropdownValue: (
+                      //           {dropdownItemValue, dropdownUnitValue}) =>
+                      //       unitController.text = dropdownUnitValue!.name,
+                      // ),
                       onSave: (value) => _billItems.item.unit.name = value,
                     ),
                     // const SizedBox(height: 10),
