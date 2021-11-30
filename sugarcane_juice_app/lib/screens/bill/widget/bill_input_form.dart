@@ -74,7 +74,7 @@ class _BillInputFormState extends State<BillInputForm> {
     }
     if (_isValid && _bill.billItems.isNotEmpty) {
       _formKey.currentState!.save();
-      await context.read(addBillProvider).addBill(_bill).onError(
+      await context.read(addBillProvider).addBill(bill: _bill).onError(
             (error, stackTrace) =>
                 getBanner(context: context, errorMessage: error.toString()),
           );
@@ -89,6 +89,35 @@ class _BillInputFormState extends State<BillInputForm> {
         gravity: ToastGravity.BOTTOM,
         toastDuration: const Duration(seconds: 2),
       );
+
+      //   print(1111);
+      // await context
+      //     .read(addBillProvider)
+      //     .addBill(bill: _bill, ftoast: widget.fToast)
+      //     .onError(
+      //   (error, stackTrace) {
+      //     widget.fToast.showToast(
+      //       child: ToastView(
+      //         message: error.toString(),
+      //         success: false,
+      //       ),
+      // gravity: ToastGravity.BOTTOM,
+      // toastDuration: const Duration(seconds: 2),
+      // );
+      // return getBanner(context: context, errorMessage: error.toString());
+      // },
+      // );
+      // print("returrrrrrn");
+      // setState(() => _saveItOnce = false);
+      // Navigator.pop(context);
+      // widget.fToast.showToast(
+      //   child: const ToastView(
+      //     message: 'إسحب لأسفل لتحديث',
+      //     success: true,
+      //   ),
+      //   gravity: ToastGravity.BOTTOM,
+      //   toastDuration: const Duration(seconds: 2),
+      // );
     }
   }
 
@@ -186,6 +215,11 @@ class _BillInputFormState extends State<BillInputForm> {
                                     errorMessage:
                                         'لم تتم اضافة الصنف تاكد من الاتصال بالشبكة الصحيحه',
                                   );
+                                  // getBanner(
+                                  //   context: context,
+                                  //   errorMessage:
+                                  //       'لم تتم اضافة الصنف تاكد من الاتصال بالشبكة الصحيحه',
+                                  // );
                                 } else {
                                   return;
                                 }

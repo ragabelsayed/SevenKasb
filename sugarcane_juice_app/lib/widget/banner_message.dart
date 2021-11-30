@@ -9,6 +9,7 @@ getBanner({
     ..clearMaterialBanners()
     ..showMaterialBanner(
       MaterialBanner(
+        key: ValueKey(errorMessage),
         content: Text(
           errorMessage.toString(),
           style: Theme.of(context).snackBarTheme.contentTextStyle,

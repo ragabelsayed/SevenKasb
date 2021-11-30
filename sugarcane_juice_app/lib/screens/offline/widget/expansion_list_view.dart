@@ -64,7 +64,9 @@ class _ExpansionListViewState extends State<ExpansionListView> {
             await billItem.save();
           });
           await bill.save();
-          await context.read(addBillProvider).addBill(bill, true);
+          await context
+              .read(addBillProvider)
+              .addBill(bill: bill, isOffline: true);
         });
 
         _toast(' تم ارسال الفواتير', true);

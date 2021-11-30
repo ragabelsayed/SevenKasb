@@ -62,8 +62,10 @@ class _BillItemFormState extends State<BillItemForm> {
 
         widget.billItem(_billItems);
         widget.hasError(false);
+        // widget.hasError(false);
         Navigator.of(context).pop();
       } catch (e) {
+        // widget.hasError(true);
         widget.hasError(true);
         Navigator.of(context).pop();
       }

@@ -16,19 +16,25 @@ class ToastView extends StatelessWidget {
         // color: Colors.greenAccent,
         color: Palette.primaryLightColor,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        textDirection: TextDirection.rtl,
         children: [
-          if (success) const Icon(Icons.check),
-          if (!success)
-            const Icon(
-              Icons.error_outline,
-              color: Colors.red,
-            ),
-          const SizedBox(width: 12.0),
-          Text(
-            message,
-            maxLines: null,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (success) const Icon(Icons.check),
+              if (!success)
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                ),
+              const SizedBox(width: 12.0),
+              Text(
+                message,
+                maxLines: null,
+              ),
+            ],
           ),
         ],
       ),

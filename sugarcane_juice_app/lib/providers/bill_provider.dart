@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:sugarcane_juice/helper/box.dart';
+import 'package:sugarcane_juice/widget/toast_view.dart';
 import '/models/bill.dart';
 import '/models/http_exception.dart';
 import '/providers/auth.dart';
@@ -32,6 +35,8 @@ final isOffLineProvider = StateProvider<bool>((ref) {
 class BillProvider implements BillRepository {
   BillProvider({required this.authToken, this.userId});
   late String authToken;
+  final _billItemBox = Boxes.getBillItemsBox();
+  final _billBox = Boxes.getBillsBox();
   int? userId;
 
   @override
@@ -65,51 +70,88 @@ class BillProvider implements BillRepository {
     }
   }
 
-  Future<void> addBill(Bill bill, [bool isOffline = false]) async {
-    try {
-      await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'charset': 'utf-8',
-          'Authorization': 'Bearer $authToken',
-        },
-        body: json.encode({
-          'userId': userId,
-          'billItems': List.from(
-            isOffline
-                ? bill.offlineBillItems!.map(
-                    (e) => {
-                      'quentity': e.quentity,
-                      'price': e.price,
-                      'itemId': e.item.id!,
-                    },
-                  )
-                : bill.billItems.map(
-                    (e) => {
-                      'quentity': e.quentity,
-                      'price': e.price,
-                      'itemId': e.item.id!,
-                    },
-                  ),
-          ),
-          'cost': isOffline ? sumTotal(bill, true) : sumTotal(bill),
-          'paid': bill.paid,
-          'clientName': bill.clientName,
-          'createdAt': bill.dateTime.toIso8601String(),
-          'type': bill.type,
-        }),
-      );
-    } on FormatException {
-      throw true;
-      // HttpException(
-      //   'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-      // );
-    } catch (error) {
-      throw HttpException(
-        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
-      );
-    }
+  Future<void> addBill({
+    required Bill bill,
+    FToast? ftoast,
+    bool isOffline = false,
+  }) async {
+    // try {
+    // final _bill = bill;
+    print('bbbbb');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'charset': 'utf-8',
+        'Authorization': 'Bearer $authToken',
+      },
+      body: json.encode({
+        'userId': userId,
+        'billItems': List.from(
+          isOffline
+              ? bill.offlineBillItems!.map(
+                  (e) => {
+                    'quentity': e.quentity,
+                    'price': e.price,
+                    'itemId': e.item.id!,
+                  },
+                )
+              : bill.billItems.map(
+                  (e) => {
+                    'quentity': e.quentity,
+                    'price': e.price,
+                    'itemId': e.item.id!,
+                  },
+                ),
+        ),
+        'cost': isOffline ? sumTotal(bill, true) : sumTotal(bill),
+        'paid': bill.paid,
+        'clientName': bill.clientName,
+        'createdAt': bill.dateTime.toIso8601String(),
+        'type': bill.type,
+      }),
+    );
+    // print(response.statusCode);
+    // if (response.statusCode >= 200 && response.statusCode < 400) {
+    //   print("online");
+    //   return ftoast!.showToast(
+    //     child: const ToastView(
+    //       message: 'إسحب لأسفل لتحديث',
+    //       success: true,
+    //     ),
+    //     gravity: ToastGravity.BOTTOM,
+    //     toastDuration: const Duration(seconds: 2),
+    //   );
+    // }
+    // if (response.statusCode >= 400 && response.statusCode < 500) {
+    //   print("offLine");
+    //   await _billItemBox.addAll(bill.billItems);
+    //   bill.offlineBillItems!.addAll(bill.billItems);
+    //   await bill.save();
+    //   await _billBox.add(bill);
+    //   print(_billBox.length);
+    //   return ftoast!.showToast(
+    //     child: const ToastView(
+    //       message: 'حدث خطأ ولقد تم الحفظ اوف لاين',
+    //       success: true,
+    //     ),
+    //     gravity: ToastGravity.BOTTOM,
+    //     toastDuration: const Duration(seconds: 2),
+    //   );
+    // }
+    // if (response.statusCode >= 500) {
+    //   throw HttpException('تعذر الاتصال بالسيرفر');
+    // }
+    // } on FormatException {
+    //   throw true;
+    //   // HttpException(
+    //   //   'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+    //   // );
+    // } catch (error) {
+    //   throw HttpException(
+    //     'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+    //   );
+    // }
   }
 
   static double getItemsTotal(
