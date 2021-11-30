@@ -38,8 +38,10 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
     if (_isValid) {
       _formKey.currentState!.save();
       try {
-        await context.read(addExtraExpensesProvider).addExtra(_extra);
-        _toast(' تم اضافة المصروف', true);
+        await context
+            .read(addExtraExpensesProvider)
+            .addExtra(extra: _extra, fToast: widget.ftoast, context: context);
+        // _toast(' تم اضافة المصروف', true);
         Navigator.of(context).pop();
         _toast(' إسحب لأسفل لتحديث', true);
       } catch (e) {

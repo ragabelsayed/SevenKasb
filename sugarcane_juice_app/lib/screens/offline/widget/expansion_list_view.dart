@@ -33,13 +33,13 @@ class _ExpansionListViewState extends State<ExpansionListView> {
     if (extra.isNotEmpty) {
       try {
         await Future.forEach(extra, (Extra e) async {
-          await context.read(addExtraExpensesProvider).addExtra(e);
+          await context.read(addExtraExpensesProvider).addExtra(extra: e);
         });
         _toast(' تم ارسال المصروفات', true);
         _toast(' سيتم المسح من الجهاز', true);
         await context.read(extraOfflineProvider.notifier).removeExtra();
         setState(() => _isSending1 = false);
-        await Boxes.getExtraExpensessBox().close();
+        // await Boxes.getExtraExpensessBox().close();
         _toast(' تم المسح من الجهاز', true);
       } catch (e) {
         setState(() => _isSending1 = false);
@@ -73,8 +73,8 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         _toast(' سيتم الحذف من الجهاز', true);
         await context.read(billOfflineProvider.notifier).removeBills();
         setState(() => _isSending2 = false);
-        await Boxes.getBillItemsBox().close();
-        await Boxes.getBillsBox().close();
+        // await Boxes.getBillItemsBox().close();
+        // await Boxes.getBillsBox().close();
         _toast(' تم الحذف من الجهاز', true);
       } catch (e) {
         setState(() => _isSending2 = false);
