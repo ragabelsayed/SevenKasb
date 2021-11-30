@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:sugarcane_juice/helper/box.dart';
 import '/models/http_exception.dart';
 import '/models/unit.dart';
 import '/providers/auth.dart';
@@ -19,6 +20,7 @@ final unitProvider = ChangeNotifierProvider<UnitNotifier>((ref) {
 class UnitNotifier extends ChangeNotifier {
   UnitNotifier({required this.authToken});
   late String authToken;
+  final _unitBox = Boxes.getUnitBox();
   List<Unit> _items = [];
   String? _currentUnit;
 
@@ -35,12 +37,12 @@ class UnitNotifier extends ChangeNotifier {
 
   Uri url = Uri.parse(unitUri);
   Future<void> fetchAndSetData() async {
-    try {
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'charset': 'utf-8',
-        'Authorization': 'Bearer $authToken',
-      });
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'charset': 'utf-8',
+      'Authorization': 'Bearer $authToken',
+    });
+    if (response.statusCode >= 200 && response.statusCode < 400) {
       final extractedData = json.decode(response.body) as List;
       final List<Unit> _loadedProducts = [];
       for (var unit in extractedData) {
@@ -51,15 +53,13 @@ class UnitNotifier extends ChangeNotifier {
         );
       }
       _items = _loadedProducts;
-    } on FormatException {
-      throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-      );
-    } catch (error) {
-      throw HttpException(
-        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
-      );
+      await _unitBox.clear();
+      await _unitBox.addAll(_items);
     }
+    if (response.statusCode >= 400 && response.statusCode < 500) {
+      _items = _unitBox.values.toList();
+    }
+    if (response.statusCode >= 500) {}
   }
 
   Future<Unit> addUnit(Unit unit) async {

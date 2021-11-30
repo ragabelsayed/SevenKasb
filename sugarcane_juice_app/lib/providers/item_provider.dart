@@ -35,12 +35,13 @@ class ItemNotifier extends ChangeNotifier {
 
   Uri url = Uri.parse(itemUri);
   Future<void> fetchAndSetData() async {
-    try {
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'charset': 'utf-8',
-        'Authorization': 'Bearer $authToken',
-      });
+    // try {
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'charset': 'utf-8',
+      'Authorization': 'Bearer $authToken',
+    });
+    if (response.statusCode >= 200 && response.statusCode < 400) {
       final extractedData = json.decode(response.body) as List;
       final List<Item> _loadedProducts = [];
       for (var item in extractedData) {
@@ -51,15 +52,18 @@ class ItemNotifier extends ChangeNotifier {
         );
       }
       _items = _loadedProducts;
-    } on FormatException {
-      throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-      );
-    } catch (error) {
-      throw HttpException(
-        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
-      );
     }
+    if (response.statusCode >= 400 && response.statusCode < 500) {}
+    if (response.statusCode >= 500) {}
+    // } on FormatException {
+    //   throw HttpException(
+    //     'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+    //   );
+    // } catch (error) {
+    //   throw HttpException(
+    //     'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+    //   );
+    // }
   }
 
   Future<Item> addItem(Item item) async {

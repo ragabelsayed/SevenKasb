@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sugarcane_juice/screens/bill/widget/dropdown_icon_btn.dart';
 import '/models/bill_item.dart';
 import '/widget/save_cancel_btns.dart';
 import '/providers/item_provider.dart';
@@ -26,6 +27,7 @@ class BillItemForm extends StatefulWidget {
 
 class _BillItemFormState extends State<BillItemForm> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController controller = TextEditingController();
   bool _iswaiting = false;
   late BillItems _billItems;
 
@@ -165,10 +167,22 @@ class _BillItemFormState extends State<BillItemForm> {
                       error: AppConstants.unitError,
                       type: TextInputType.emailAddress,
                       action: TextInputAction.done,
-                      onSave: (value) {
-                        _billItems.item.unit.name = value;
-                      },
+                      controller: controller,
+                      dropDown: DropdownIconBtn(
+                        newunit: (unit) => controller.text = unit.name,
+                      ),
+                      onSave: (value) => _billItems.item.unit.name = value,
                     ),
+                    // const SizedBox(height: 10),
+                    // _buildTextFormField(
+                    //   hintText: '    وحدة القياس',
+                    //   error: AppConstants.unitError,
+                    //   type: TextInputType.emailAddress,
+                    //   action: TextInputAction.done,
+                    //   onSave: (value) {
+                    //     _billItems.item.unit.name = value;
+                    //   },
+                    // ),
                     const SizedBox(height: 30),
                     SaveAndCancelBtns(onSave: () => setWaiting())
                   ],
@@ -183,11 +197,14 @@ class _BillItemFormState extends State<BillItemForm> {
     required String error,
     required TextInputType type,
     required TextInputAction action,
+    TextEditingController? controller,
+    Widget? dropDown,
     required Function(String) onSave,
   }) {
     return TextFormField(
-      keyboardType: type,
+      controller: controller,
       textInputAction: action,
+      keyboardType: type,
       textDirection: TextDirection.rtl,
       maxLines: 1,
       // textAlign: TextAlign.center,
@@ -197,6 +214,7 @@ class _BillItemFormState extends State<BillItemForm> {
         hintText: hintText,
         hintMaxLines: 1,
         hintTextDirection: TextDirection.rtl,
+        suffixIcon: dropDown,
         border: AppConstants.border,
         errorBorder: AppConstants.errorBorder,
         focusedBorder: AppConstants.focusedBorder,
