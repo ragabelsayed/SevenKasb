@@ -80,25 +80,33 @@ class ExtraExpensesProvider {
     );
 
     if (response.statusCode >= 200 && response.statusCode < 400) {
-      return fToast!.showToast(
-        child: const ToastView(
-          message: 'تم اضافة المصروف',
-          success: true,
-        ),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: const Duration(seconds: 2),
-      );
+      if (fToast != null) {
+        return fToast.showToast(
+          child: const ToastView(
+            message: 'تم اضافة المصروف',
+            success: true,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+      } else {
+        return;
+      }
     }
     if (response.statusCode >= 400 && response.statusCode < 500) {
-      await context!.read(extraOfflineProvider.notifier).addExtra(extra);
-      return fToast!.showToast(
-        child: const ToastView(
-          message: 'حدث خطأ ولقد تم الحفظ اوف لاين',
-          success: true,
-        ),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: const Duration(seconds: 2),
-      );
+      if (fToast != null) {
+        await context!.read(extraOfflineProvider.notifier).addExtra(extra);
+        return fToast.showToast(
+          child: const ToastView(
+            message: 'حدث خطأ ولقد تم الحفظ اوف لاين',
+            success: true,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+      } else {
+        throw HttpException('خطأ');
+      }
     }
     if (response.statusCode > 500) {
       throw HttpException(
