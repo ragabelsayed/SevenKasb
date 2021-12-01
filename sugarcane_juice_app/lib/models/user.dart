@@ -3,22 +3,22 @@ part '../helper/user.g.dart';
 
 @HiveType(typeId: 3)
 class User extends HiveObject {
-  @HiveType(typeId: 0)
+  @HiveField(0)
   int? id;
 
-  @HiveType(typeId: 1)
+  @HiveField(1)
   String? userName;
 
-  @HiveType(typeId: 2)
+  @HiveField(2)
   String? knownAs;
 
-  @HiveType(typeId: 3)
+  @HiveField(3)
   String? dateOfBirth;
 
-  @HiveType(typeId: 4)
+  @HiveField(4)
   String? city;
 
-  @HiveType(typeId: 0)
+  @HiveField(5)
   String? telephone;
 
   User({

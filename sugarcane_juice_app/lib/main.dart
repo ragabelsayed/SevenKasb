@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     super.dispose();
     container.dispose();
+    Hive.close();
   }
 
   @override

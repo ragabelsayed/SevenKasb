@@ -1,35 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../models/unit.dart';
+part of '../models/inventory.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UnitAdapter extends TypeAdapter<Unit> {
+class InventoryAdapter extends TypeAdapter<Inventory> {
   @override
-  final int typeId = 4;
+  final int typeId = 6;
 
   @override
-  Unit read(BinaryReader reader) {
+  Inventory read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Unit(
-      id: fields[0] as int?,
-      name: fields[1] as String,
+    return Inventory(
+      item: fields[0] as Item,
+      cashItemHistory: (fields[2] as List)
+          .map((dynamic e) => (e as Map).cast<String, dynamic>())
+          .toList(),
+      inventoryType: fields[1] as InventoryType,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Unit obj) {
+  void write(BinaryWriter writer, Inventory obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.item)
       ..writeByte(1)
-      ..write(obj.name);
+      ..write(obj.inventoryType)
+      ..writeByte(2)
+      ..write(obj.cashItemHistory);
   }
 
   @override
@@ -38,7 +43,7 @@ class UnitAdapter extends TypeAdapter<Unit> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UnitAdapter &&
+      other is InventoryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
