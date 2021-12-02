@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
+import '/models/inventory.dart';
 import '/config/routes.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/main/main_screen.dart';
@@ -30,13 +31,15 @@ void main() async {
     ..registerAdapter(UserAdapter())
     ..registerAdapter(ItemAdapter())
     ..registerAdapter(UnitAdapter())
-    ..registerAdapter(ExtraAdapter());
+    ..registerAdapter(ExtraAdapter())
+    ..registerAdapter(InventoryAdapter());
 
   await Hive.openBox<Bill>('bills');
   await Hive.openBox<BillItems>('billItems');
   await Hive.openBox<Extra>('extraExpenses');
   await Hive.openBox<Unit>('units');
   await Hive.openBox<Item>('items');
+  await Hive.openBox<User>('users');
 
   final _isAuth = await container.read(authProvider.notifier).tryAutoLogin();
   runApp(ProviderScope(child: MyApp(isAuth: _isAuth)));

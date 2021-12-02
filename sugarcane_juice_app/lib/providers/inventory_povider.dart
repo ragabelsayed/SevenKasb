@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -106,5 +107,23 @@ class InventorySalesNotifier extends StateNotifier<List<Inventory>>
       );
     }
     state = [...state, ..._loadedProducts];
+  }
+}
+
+class InventoryQueue {
+  // Queue<Inventory> queue = Queue<Inventory>();
+  ListQueue<Inventory> queue = ListQueue<Inventory>(60);
+
+  void lastSixtyDays(List<Inventory> items) {
+    // after get list of date from server
+    // lof in each one
+    // for (var item in items) {
+    //  check item date isAfter last item item in queue date
+    // if (true) {
+    // remove frist item in queue
+    //  add new this item in last queue
+    // save Queue
+    // }
+    // }
   }
 }

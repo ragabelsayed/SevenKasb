@@ -12,9 +12,9 @@ import '/widget/dialog_title.dart';
 import '/widget/rounded_text_btn.dart';
 
 class UserForm extends StatefulWidget {
-  final User user;
+  final Map<String, dynamic> userData;
   final FToast fToast;
-  const UserForm({Key? key, required this.user, required this.fToast})
+  const UserForm({Key? key, required this.userData, required this.fToast})
       : super(key: key);
   @override
   _UserFormState createState() => _UserFormState();
@@ -24,6 +24,23 @@ class _UserFormState extends State<UserForm> {
   final _formKey = GlobalKey<FormState>();
   bool _iswaiting = false;
   bool _saveItOnce = false;
+  late User _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.userData['user'];
+    Future.delayed(Duration.zero, () {
+      widget.fToast.showToast(
+        child: ToastView(
+          message: widget.userData['message'],
+          success: true,
+        ),
+        gravity: ToastGravity.TOP,
+        toastDuration: const Duration(seconds: 3),
+      );
+    });
+  }
 
   Future<void> _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
@@ -31,7 +48,7 @@ class _UserFormState extends State<UserForm> {
       _formKey.currentState!.save();
       try {
         setState(() => _saveItOnce = false);
-        await context.read(updateUserProvider).updateUser(widget.user);
+        await context.read(updateUserProvider).updateUser(_user);
         setState(() => _iswaiting = false);
         toast('تم التحديث بنجاح', true);
         toast('سيتم إعادة تسجيل الدخول', true);
@@ -76,77 +93,73 @@ class _UserFormState extends State<UserForm> {
                   const DialogTitle(name: 'إسم المستخدم: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: widget.user.userName ?? '',
+                    initValue: _user.userName ?? '',
                     error: 'قُمْ بإدخال اسم المستخدم',
                     type: TextInputType.name,
                     action: TextInputAction.next,
-                    onSave: (value) {
-                      widget.user.userName = value;
-                    },
+                    onSave: (value) => _user.userName = value,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'إسم الشهرة: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: widget.user.knownAs ?? '',
+                    initValue: _user.knownAs ?? '',
                     error: 'قُمْ بإدخال اللقب',
                     type: TextInputType.emailAddress,
                     action: TextInputAction.next,
-                    onSave: (value) {
-                      widget.user.knownAs = value;
-                    },
+                    onSave: (value) => _user.knownAs = value,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'تاريخ الميلاد: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: widget.user.dateOfBirth ?? 'day - month - year',
+                    initValue: _user.dateOfBirth ?? 'day - month - year',
                     error: 'قُمْ بإدخال تاريخ الميلاد',
                     type: TextInputType.number,
                     action: TextInputAction.next,
-                    onSave: (value) {
-                      widget.user.dateOfBirth = value;
-                    },
+                    onSave: (value) => _user.dateOfBirth = value,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'المدينة: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: widget.user.city ?? 'Mansoura',
+                    initValue: _user.city ?? 'Mansoura',
                     error: 'قُمْ بإدخال المدينة',
                     type: TextInputType.name,
                     action: TextInputAction.next,
-                    onSave: (value) {
-                      widget.user.city = value;
-                    },
+                    onSave: (value) => _user.city = value,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'رقم الهاتف: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: widget.user.telephone ?? '00-000-000-000',
+                    initValue: _user.telephone ?? '00-000-000-000',
                     error: 'قُمْ بإدخال رقم الهاتف',
                     type: TextInputType.phone,
                     action: TextInputAction.done,
-                    onSave: (value) {
-                      widget.user.telephone = value;
-                    },
+                    onSave: (value) => _user.telephone = value,
                   ),
                   const SizedBox(height: 50),
                   RoundedTextButton(
-                    text: 'تعديل',
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => AlertView(
-                        isSave: true,
-                        message: 'هل انت متأكد من حفظ هذا التعديل؟',
-                        onpress: () {
-                          if (!_iswaiting) setWaiting();
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ),
+                      text: 'تعديل',
+                      backgroundColor: widget.userData['isUpdated']
+                          ? Palette.primaryColor
+                          : Colors.grey.shade400,
+                      onPressed: () {
+                        if (widget.userData['isUpdated']) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertView(
+                              isSave: true,
+                              message: 'هل انت متأكد من حفظ هذا التعديل؟',
+                              onpress: () {
+                                if (!_iswaiting) setWaiting();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          );
+                        }
+                      }),
                 ],
               ),
             ),

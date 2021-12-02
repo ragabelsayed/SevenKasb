@@ -1,26 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sugarcane_juice/helper/box.dart';
 import '/models/user.dart';
-import '/models/http_exception.dart';
 import '/providers/auth.dart';
 
-// AVD
-// const userUri = 'http://10.0.2.2:5000/api/users/1';
-// // wifi ip
-// // const userUri = 'http://192.168.1.7:5000/api/users/1';
-// Uri url = Uri.parse(userUri);
-// AVD
-// const userUri = 'http://10.0.2.2:5000/api/users/1';
-// wifi ip
-// const passUri = 'http://10.0.2.2:5000/api/auth/1/changepassword';
-// const passUri = 'http://192.168.1.7:5000/api/auth/1/changepassword';
-// Uri passurl = Uri.parse(passUri);
+final _userBox = Boxes.getUserBox();
 
-final userProvider = FutureProvider.autoDispose<User>((ref) async {
+final userProvider =
+    StateNotifierProvider<UserDateNotifier, Map<String, dynamic>>((ref) {
   var _token = ref.watch(authProvider);
-  return UserProvider(authToken: _token['token'], userId: _token['userId'])
-      .fetchUserDate();
+  return UserDateNotifier(authToken: _token['token'], userId: _token['userId']);
 });
 
 final updateUserProvider = Provider.autoDispose<UserProvider>((ref) {
@@ -28,34 +18,51 @@ final updateUserProvider = Provider.autoDispose<UserProvider>((ref) {
   return UserProvider(authToken: _token['token'], userId: _token['userId']);
 });
 
+class UserDateNotifier extends StateNotifier<Map<String, dynamic>> {
+  UserDateNotifier({required this.authToken, required this.userId})
+      : super({
+          'user': _userBox.values.single,
+          'isUpdated': false,
+          'isError': false,
+          'message': '... جارى الاتصال',
+        });
+  final String authToken;
+  final int userId;
+
+  Future<void> fetchUserDate() async {
+    Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
+    final response = await http.get(_url, headers: {
+      'Content-Type': 'application/json',
+      'charset': 'utf-8',
+      'Authorization': 'Bearer $authToken',
+    });
+    if (response.statusCode >= 200 && response.statusCode < 400) {
+      final extractedData =
+          await json.decode(response.body) as Map<String, dynamic>;
+      final _loadedUser = User.fromJson(json: extractedData);
+      state = {
+        'user': _loadedUser,
+        'isUpdated': true,
+        'isError': false,
+        'message': ''
+      };
+      await _userBox.clear();
+      await _userBox.add(_loadedUser);
+    } else {
+      state = {
+        'user': _userBox.values.single,
+        'isUpdated': false,
+        'isError': true,
+        'message': 'تعذر الاتصال بالسيرفر'
+      };
+    }
+  }
+}
+
 class UserProvider {
   late String authToken;
   late int userId;
   UserProvider({required this.authToken, required this.userId});
-
-  Future<User> fetchUserDate() async {
-    Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
-    try {
-      final response = await http.get(_url, headers: {
-        'Content-Type': 'application/json',
-        'charset': 'utf-8',
-        'Authorization': 'Bearer $authToken',
-      });
-      final extractedData =
-          await json.decode(response.body) as Map<String, dynamic>;
-      final _loadedUser = User.fromJson(json: extractedData);
-      return _loadedUser;
-    } on FormatException {
-      throw true;
-      // HttpException(
-      //   'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-      // );
-    } catch (error) {
-      throw HttpException(
-        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
-      );
-    }
-  }
 
   Future<void> updateUser(User user) async {
     Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
