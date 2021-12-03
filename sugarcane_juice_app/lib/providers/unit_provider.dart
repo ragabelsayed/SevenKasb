@@ -55,11 +55,9 @@ class UnitNotifier extends ChangeNotifier {
       _items = _loadedProducts;
       await _unitBox.clear();
       await _unitBox.addAll(_items);
-    }
-    if (response.statusCode >= 400 && response.statusCode < 500) {
+    } else {
       _items = _unitBox.values.toList();
     }
-    if (response.statusCode >= 500) {}
   }
 
   Future<Unit> addUnit(Unit unit) async {

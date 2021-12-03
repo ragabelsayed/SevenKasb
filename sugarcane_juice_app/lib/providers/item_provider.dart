@@ -55,11 +55,9 @@ class ItemNotifier extends ChangeNotifier {
       _items = _loadedProducts;
       await _itemBox.clear();
       await _itemBox.addAll(_items);
-    }
-    if (response.statusCode >= 400 && response.statusCode < 500) {
+    } else {
       _items = _itemBox.values.toList();
     }
-    if (response.statusCode >= 500) {}
   }
 
   Future<Item> addItem(Item item) async {
