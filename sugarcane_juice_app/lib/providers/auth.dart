@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sugarcane_juice/helper/box.dart';
+import 'package:sugarcane_juice/models/user.dart';
 import '/screens/login/login_screen.dart';
 import '/models/http_exception.dart';
 
@@ -50,6 +52,8 @@ class AuthNotifier extends StateNotifier<Map<String, dynamic>> {
         token: responseDate['token'],
         userId: responseDate['user']['id'],
       );
+      await Boxes.getUserBox().clear();
+      await Boxes.getUserBox().add(User.fromJson(json: responseDate['user']));
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw HttpException(
         ' الأسم او الباسورد غير صحيح',
