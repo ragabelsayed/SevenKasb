@@ -12,6 +12,7 @@ const itemUri = 'http://10.0.2.2:5000/api/item';
 // wifi ip
 // const itemUri = 'http://192.168.1.7:5000/api/item';
 
+Uri url = Uri.parse(itemUri);
 final itemProvider = ChangeNotifierProvider<ItemNotifier>((ref) {
   var _token = ref.watch(authProvider);
   return ItemNotifier(authToken: _token['token']);
@@ -35,7 +36,6 @@ class ItemNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Uri url = Uri.parse(itemUri);
   Future<void> fetchAndSetData() async {
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
@@ -61,10 +61,9 @@ class ItemNotifier extends ChangeNotifier {
   }
 
   Future<Item> addItem(Item item) async {
-    var _url = Uri.parse('http://10.0.2.2:5000/api/mobileItem');
     try {
       final response = await http.post(
-        _url,
+        url,
         headers: {
           'Content-Type': 'application/json',
           'charset': 'utf-8',
@@ -73,9 +72,8 @@ class ItemNotifier extends ChangeNotifier {
         body: json.encode({
           'name': item.name,
           'price': item.price,
-          "unitNavigation": {"name": item.unit.name.trim()}
-          // 'unitId': item.unit.id!,
-          // 'type': item.type,
+          'unitId': item.unit.id!,
+          'type': item.type,
         }),
       );
       final newItem = Item(

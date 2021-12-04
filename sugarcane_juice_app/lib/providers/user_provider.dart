@@ -57,12 +57,6 @@ class UserDateNotifier extends StateNotifier<Map<String, dynamic>> {
       };
     }
   }
-}
-
-class UserProvider {
-  late String authToken;
-  late int userId;
-  UserProvider({required this.authToken, required this.userId});
 
   Future<void> updateUser(User user) async {
     Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
@@ -82,10 +76,22 @@ class UserProvider {
           'telephone': user.telephone,
         }),
       );
+      state = {
+        'user': user,
+        'isUpdated': true,
+        'isError': false,
+        'message': ''
+      };
     } catch (error) {
       rethrow;
     }
   }
+}
+
+class UserProvider {
+  late String authToken;
+  late int userId;
+  UserProvider({required this.authToken, required this.userId});
 
   Future<void> updatePassword({
     required String oldPass,

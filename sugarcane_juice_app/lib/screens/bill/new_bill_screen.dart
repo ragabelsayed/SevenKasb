@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sugarcane_juice/screens/bill/widget/new_item.dart';
 import '/providers/bill_provider.dart';
 import '/providers/offLine_provider.dart';
 import '/config/constants.dart';
@@ -27,6 +28,7 @@ class NewBillScreen extends StatelessWidget {
           ),
           centerTitle: true,
           shape: AppConstants.appBarBorder,
+          actions: [NewItem(ftoast: fToast)],
           leading: _isOffLine
               ? IconButton(
                   icon: const Icon(Icons.arrow_back),

@@ -12,6 +12,7 @@ const unitUri = 'http://10.0.2.2:5000/api/unit';
 // wifi ip
 // const unitUri = 'http://192.168.1.7:5000/api/unit';
 
+Uri url = Uri.parse(unitUri);
 final unitProvider = ChangeNotifierProvider<UnitNotifier>((ref) {
   var _token = ref.watch(authProvider);
   return UnitNotifier(authToken: _token['token']);
@@ -35,7 +36,6 @@ class UnitNotifier extends ChangeNotifier {
 
   List<Unit> get items => [..._items];
 
-  Uri url = Uri.parse(unitUri);
   Future<void> fetchAndSetData() async {
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',

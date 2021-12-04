@@ -48,7 +48,8 @@ class _UserFormState extends State<UserForm> {
       _formKey.currentState!.save();
       try {
         setState(() => _saveItOnce = false);
-        await context.read(updateUserProvider).updateUser(_user);
+        // await context.read(updateUserProvider).updateUser(_user);
+        await context.read(userProvider.notifier).updateUser(_user);
         setState(() => _iswaiting = false);
         toast('تم التحديث بنجاح', true);
         toast('سيتم إعادة تسجيل الدخول', true);
@@ -158,6 +159,8 @@ class _UserFormState extends State<UserForm> {
                               },
                             ),
                           );
+                        } else {
+                          toast('انت غير متصل بالشبكة', false);
                         }
                       }),
                 ],
