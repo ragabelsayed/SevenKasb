@@ -40,6 +40,7 @@ class ItemForm extends StatefulWidget {
 
 class _ItemFormState extends State<ItemForm> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController unitController = TextEditingController();
   late Item _item;
   bool _iswaiting = false;
 
@@ -55,13 +56,19 @@ class _ItemFormState extends State<ItemForm> {
       _formKey.currentState!.save();
       setWaiting();
       try {
-        final newUnit = await context.read(unitProvider).addUnit(_item.unit);
-        _item.unit = newUnit;
-
-        final newItem = await context.read(itemProvider).addItem(_item);
-        _toast('تم إضافة الصنف بنجاح', true);
-        Navigator.of(context).pop();
-        Boxes.getItemBox().add(newItem);
+        if (_item.unit.id != null) {
+          final newItem = await context.read(itemProvider).addItem(_item);
+          _toast('تم إضافة الصنف بنجاح', true);
+          Navigator.of(context).pop();
+          Boxes.getItemBox().add(newItem);
+        } else {
+          final newUnit = await context.read(unitProvider).addUnit(_item.unit);
+          _item.unit = newUnit;
+          final newItem = await context.read(itemProvider).addItem(_item);
+          _toast('تم إضافة الصنف بنجاح', true);
+          Navigator.of(context).pop();
+          Boxes.getItemBox().add(newItem);
+        }
       } catch (e) {
         _toast('لم تتم إضافة الصنف', false);
         Navigator.of(context).pop();
@@ -122,9 +129,15 @@ class _ItemFormState extends State<ItemForm> {
                       error: AppConstants.unitError,
                       type: TextInputType.emailAddress,
                       action: TextInputAction.done,
-                      onSave: (value) {
-                        _item.unit.name = value;
-                      },
+                      unitController: unitController,
+                      readOnly: _item.unit.id != null ? true : false,
+                      dropDown: DropDownUnit(
+                        dropdownValue: (dropdownUnitValue) {
+                          unitController.text = dropdownUnitValue!.name;
+                          setState(() => _item.unit = dropdownUnitValue);
+                        },
+                      ),
+                      onSave: (value) => _item.unit.name = value,
                     ),
                     const SizedBox(height: 30),
                     SaveAndCancelBtns(onSave: () => _saveForm())
@@ -140,9 +153,13 @@ class _ItemFormState extends State<ItemForm> {
     required String error,
     required TextInputType type,
     required TextInputAction action,
+    bool readOnly = false,
+    TextEditingController? unitController,
+    Widget? dropDown,
     required Function(String) onSave,
   }) {
     return TextFormField(
+      controller: unitController,
       textInputAction: action,
       keyboardType: type,
       textDirection: TextDirection.rtl,
@@ -153,11 +170,13 @@ class _ItemFormState extends State<ItemForm> {
         filled: true,
         hintText: hintText,
         hintMaxLines: 1,
+        suffixIcon: dropDown,
         hintTextDirection: TextDirection.rtl,
         border: AppConstants.border,
         errorBorder: AppConstants.errorBorder,
         focusedBorder: AppConstants.focusedBorder,
       ),
+      readOnly: readOnly,
       onFieldSubmitted: (value) {
         if (value.isNotEmpty) {
           _formKey.currentState!.validate();
@@ -169,6 +188,29 @@ class _ItemFormState extends State<ItemForm> {
         }
       },
       onSaved: (newValue) => onSave(newValue!),
+    );
+  }
+}
+
+class DropDownUnit extends ConsumerWidget {
+  const DropDownUnit({Key? key, required this.dropdownValue}) : super(key: key);
+  final Function(Unit? dropdownUnitValue) dropdownValue;
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    List<Unit> unitList = watch(unitProvider).items;
+    return PopupMenuButton<Unit>(
+      icon: const Icon(
+        Icons.arrow_drop_down,
+        color: Colors.amber,
+      ),
+      onSelected: (value) {
+        dropdownValue(value);
+      },
+      itemBuilder: (BuildContext context) => unitList
+          .map<PopupMenuItem<Unit>>(
+            (unit) => PopupMenuItem(child: Text(unit.name), value: unit),
+          )
+          .toList(),
     );
   }
 }

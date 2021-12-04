@@ -89,35 +89,6 @@ class _BillInputFormState extends State<BillInputForm> {
         gravity: ToastGravity.BOTTOM,
         toastDuration: const Duration(seconds: 2),
       );
-
-      //   print(1111);
-      // await context
-      //     .read(addBillProvider)
-      //     .addBill(bill: _bill, ftoast: widget.fToast)
-      //     .onError(
-      //   (error, stackTrace) {
-      //     widget.fToast.showToast(
-      //       child: ToastView(
-      //         message: error.toString(),
-      //         success: false,
-      //       ),
-      // gravity: ToastGravity.BOTTOM,
-      // toastDuration: const Duration(seconds: 2),
-      // );
-      // return getBanner(context: context, errorMessage: error.toString());
-      // },
-      // );
-      // print("returrrrrrn");
-      // setState(() => _saveItOnce = false);
-      // Navigator.pop(context);
-      // widget.fToast.showToast(
-      //   child: const ToastView(
-      //     message: 'إسحب لأسفل لتحديث',
-      //     success: true,
-      //   ),
-      //   gravity: ToastGravity.BOTTOM,
-      //   toastDuration: const Duration(seconds: 2),
-      // );
     }
   }
 
@@ -169,16 +140,14 @@ class _BillInputFormState extends State<BillInputForm> {
                     error: AppConstants.nameError,
                     type: TextInputType.name,
                     action: TextInputAction.next,
-                    onSave: (value) {
-                      _bill.clientName = value;
-                    },
+                    onSave: (value) => _bill.clientName = value,
                   ),
                   const SizedBox(height: 10),
                   Row(
                     textDirection: TextDirection.rtl,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const DialogTitle(name: 'إضافة صنف: '),
+                      const DialogTitle(name: 'إختار الصنف: '),
                       Container(
                         height: 40,
                         width: 70,
@@ -207,38 +176,21 @@ class _BillInputFormState extends State<BillInputForm> {
                             context: context,
                             barrierDismissible: false,
                             builder: (ctx) => BillItemForm(
-                              isOffline: _isOffline,
-                              hasError: (billItemError) {
-                                if (billItemError) {
-                                  getBanner(
-                                    context: context,
-                                    errorMessage:
-                                        'لم تتم اضافة الصنف تاكد من الاتصال بالشبكة الصحيحه',
-                                  );
-                                  // getBanner(
-                                  //   context: context,
-                                  //   errorMessage:
-                                  //       'لم تتم اضافة الصنف تاكد من الاتصال بالشبكة الصحيحه',
-                                  // );
-                                } else {
-                                  return;
-                                }
-                              },
                               billItem: (billItems) {
-                                if (!_isOffline) {
-                                  setState(() {
-                                    _bill.billItems.add(billItems);
-                                    _isBillItemEmpty = false;
-                                  });
-                                } else {
-                                  setState(() async {
-                                    await billItemsBox.add(billItems);
-                                    setState(() =>
-                                        _bill.offlineBillItems!.add(billItems));
-                                    await _bill.save();
-                                    _isBillItemEmpty = false;
-                                  });
-                                }
+                                // if (!_isOffline) {
+                                setState(() {
+                                  _bill.billItems.add(billItems);
+                                  _isBillItemEmpty = false;
+                                });
+                                // } else {
+                                // setState(() async {
+                                //   await billItemsBox.add(billItems);
+                                //   setState(() =>
+                                //       _bill.offlineBillItems!.add(billItems));
+                                //   await _bill.save();
+                                //   _isBillItemEmpty = false;
+                                // });
+                                // }
                               },
                             ),
                           ),
