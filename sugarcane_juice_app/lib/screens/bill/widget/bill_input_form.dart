@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '/helper/box.dart';
 import '/widget/toast_view.dart';
@@ -15,7 +14,6 @@ import '/providers/bill_provider.dart';
 import './bill_item_input_form.dart';
 import './custom_bottom_sheet.dart';
 import './data_table_form.dart';
-import '/widget/banner_message.dart';
 import '/widget/alert_view.dart';
 import '/widget/dialog_title.dart';
 import '/widget/rounded_text_btn.dart';
@@ -30,7 +28,8 @@ class BillInputForm extends StatefulWidget {
 
 class _BillInputFormState extends State<BillInputForm> {
   final _formKey = GlobalKey<FormState>();
-  var billItemsBox = Boxes.getBillItemsBox();
+  final _billItemBox = Boxes.getBillItemsBox();
+  final _billBox = Boxes.getBillsBox();
   bool _isBillItemEmpty = false;
   bool _isWaiting = false;
   bool _saveItOnce = false;
@@ -51,7 +50,7 @@ class _BillInputFormState extends State<BillInputForm> {
         clientName: '',
         dateTime: DateTime.now(),
         billItems: [],
-        offlineBillItems: HiveList(billItemsBox, objects: []),
+        offlineBillItems: HiveList(_billItemBox, objects: []),
       );
       context.read(billOfflineProvider.notifier).addBill(_bill);
     } else {
@@ -63,6 +62,7 @@ class _BillInputFormState extends State<BillInputForm> {
         clientName: '',
         dateTime: DateTime.now(),
         billItems: [],
+        offlineBillItems: HiveList(_billItemBox, objects: []),
       );
     }
   }
@@ -74,21 +74,33 @@ class _BillInputFormState extends State<BillInputForm> {
     }
     if (_isValid && _bill.billItems.isNotEmpty) {
       _formKey.currentState!.save();
-      await context.read(addBillProvider).addBill(bill: _bill).onError(
-            (error, stackTrace) =>
-                getBanner(context: context, errorMessage: error.toString()),
-          );
-
       setState(() => _saveItOnce = false);
-      Navigator.pop(context);
-      widget.fToast.showToast(
-        child: const ToastView(
-          message: 'إسحب لأسفل لتحديث',
-          success: true,
-        ),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: const Duration(seconds: 2),
-      );
+      try {
+        await context.read(addBillProvider).addBill(bill: _bill);
+        Navigator.pop(context);
+        widget.fToast.showToast(
+          child: const ToastView(
+            message: 'إسحب لأسفل لتحديث',
+            success: true,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+      } catch (e) {
+        await _billItemBox.addAll(_bill.billItems);
+        _bill.offlineBillItems!.addAll(_bill.billItems);
+        await _billBox.add(_bill);
+        await _bill.save();
+        Navigator.pop(context);
+        widget.fToast.showToast(
+          child: const ToastView(
+            message: 'حدث خطأ ولقد تم الحفظ اوف لاين',
+            success: true,
+          ),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 2),
+        );
+      }
     }
   }
 
@@ -177,20 +189,20 @@ class _BillInputFormState extends State<BillInputForm> {
                             barrierDismissible: false,
                             builder: (ctx) => BillItemForm(
                               billItem: (billItems) {
-                                // if (!_isOffline) {
-                                setState(() {
-                                  _bill.billItems.add(billItems);
-                                  _isBillItemEmpty = false;
-                                });
-                                // } else {
-                                // setState(() async {
-                                //   await billItemsBox.add(billItems);
-                                //   setState(() =>
-                                //       _bill.offlineBillItems!.add(billItems));
-                                //   await _bill.save();
-                                //   _isBillItemEmpty = false;
-                                // });
-                                // }
+                                if (!_isOffline) {
+                                  setState(() {
+                                    _bill.billItems.add(billItems);
+                                    _isBillItemEmpty = false;
+                                  });
+                                } else {
+                                  setState(() async {
+                                    await _billItemBox.add(billItems);
+                                    setState(() =>
+                                        _bill.offlineBillItems!.add(billItems));
+                                    await _bill.save();
+                                    _isBillItemEmpty = false;
+                                  });
+                                }
                               },
                             ),
                           ),
@@ -242,24 +254,12 @@ class _BillInputFormState extends State<BillInputForm> {
               future: _saveItOnce
                   ? _saveForm()
                   : Future.delayed(const Duration(milliseconds: 3)),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Palette.primaryColor,
-                      backgroundColor: Palette.primaryLightColor,
-                    ),
-                  );
-                } else {
-                  return const Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.checkCircle,
-                      color: Colors.green,
-                      size: 50,
-                    ),
-                  );
-                }
-              },
+              builder: (context, snapshot) => const Center(
+                child: CircularProgressIndicator(
+                  color: Palette.primaryColor,
+                  backgroundColor: Palette.primaryLightColor,
+                ),
+              ),
             ),
           if (_isWaiting && _isOffline)
             FutureBuilder(

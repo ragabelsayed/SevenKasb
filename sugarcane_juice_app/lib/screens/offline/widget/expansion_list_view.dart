@@ -4,9 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '/models/bill.dart';
-import '/models/bill_item.dart';
 import '/providers/bill_provider.dart';
-import '/providers/item_provider.dart';
 import '/models/extra_expenses.dart';
 import '/providers/extra_provider.dart';
 import '/providers/offLine_provider.dart';
@@ -38,7 +36,6 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         _toast(' سيتم المسح من الجهاز', true);
         await context.read(extraOfflineProvider.notifier).removeExtra();
         setState(() => _isSending1 = false);
-        // await Boxes.getExtraExpensessBox().close();
         _toast(' تم المسح من الجهاز', true);
       } catch (e) {
         setState(() => _isSending1 = false);
@@ -51,29 +48,16 @@ class _ExpansionListViewState extends State<ExpansionListView> {
     final bills = context.read(billOfflineProvider);
     if (bills.isNotEmpty) {
       try {
-        await Future.forEach(bills, (Bill bill) async {
-          await Future.forEach(bill.offlineBillItems!,
-              (BillItems billItem) async {
-            // final newUnit =
-            //     await context.read(unitProvider).addUnit(billItem.item.unit);
-            // billItem.item.unit = newUnit;
-            final newItem =
-                await context.read(itemProvider).addItem(billItem.item);
-            billItem.item = newItem;
-            await billItem.save();
-          });
-          await bill.save();
-          await context
+        await Future.forEach(
+          bills,
+          (Bill bill) async => await context
               .read(addBillProvider)
-              .addBill(bill: bill, isOffline: true);
-        });
-
+              .addBill(bill: bill, isOffline: true),
+        );
         _toast(' تم ارسال الفواتير', true);
         _toast(' سيتم الحذف من الجهاز', true);
         await context.read(billOfflineProvider.notifier).removeBills();
         setState(() => _isSending2 = false);
-        // await Boxes.getBillItemsBox().close();
-        // await Boxes.getBillsBox().close();
         _toast(' تم الحذف من الجهاز', true);
       } catch (e) {
         setState(() => _isSending2 = false);
@@ -89,7 +73,7 @@ class _ExpansionListViewState extends State<ExpansionListView> {
         success: succes,
       ),
       gravity: ToastGravity.BOTTOM,
-      toastDuration: const Duration(seconds: 2),
+      toastDuration: const Duration(seconds: 1),
     );
   }
 
