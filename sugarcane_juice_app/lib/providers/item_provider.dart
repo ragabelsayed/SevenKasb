@@ -87,11 +87,11 @@ class ItemNotifier extends ChangeNotifier {
       return newItem;
     } on FormatException {
       throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+        'عفوًا لقد انتهت صلاحيتُك لإستخدام البرنامج \n أعِدْ تسجيل الدخول',
       );
     } catch (error) {
       throw HttpException(
-        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+        'تعذَّر الإتصال بالسيرفر برجاء التأكُّد من الإتصال بالشبكة',
       );
     }
   }

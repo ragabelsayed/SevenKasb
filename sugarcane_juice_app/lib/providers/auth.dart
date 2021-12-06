@@ -56,11 +56,11 @@ class AuthNotifier extends StateNotifier<Map<String, dynamic>> {
       await Boxes.getUserBox().add(User.fromJson(json: responseDate['user']));
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw HttpException(
-        ' الأسم او الباسورد غير صحيح',
+        'الإسم أو كلمة السر غير صحيحة',
       );
     } else {
       throw HttpException(
-        'تعذر الاتصال بالسيرفر او تأكد من البيانات',
+        'تعذُّر الإتصال بالسيرفر أو تأكَّد من البيانات',
       );
     }
   }

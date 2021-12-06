@@ -46,7 +46,7 @@ class CustomBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               textDirection: TextDirection.rtl,
               children: [
-                const DialogTitle(name: 'الإجمالى: '),
+                const DialogTitle(name: 'الإجمالي: '),
                 Text('${BillProvider.sumTotal(bill, isOffline)}'),
               ],
             ),
@@ -69,7 +69,7 @@ class CustomBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               textDirection: TextDirection.rtl,
               children: [
-                const DialogTitle(name: 'ألباقى: '),
+                const DialogTitle(name: 'الباقي: '),
                 Text('${BillProvider.getRemaining(bill)}'),
               ],
             ),

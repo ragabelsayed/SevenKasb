@@ -44,7 +44,7 @@ class ErrorView extends StatelessWidget {
                   width: MediaQuery.of(context).size.width - 150,
                   child: Text(
                     isExpier
-                        ? 'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاءاضغط لاعادة تسجيل الدخول'
+                        ? 'عفوًا لقد انتهت صلاحيتُك لإستخدام البرنامج \n برجاءاضغط لإعادة تسجيل الدخول'
                         : error.toString(),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,

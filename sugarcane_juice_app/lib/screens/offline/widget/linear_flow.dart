@@ -56,7 +56,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           tooltip: icon == FontAwesomeIcons.receipt
               ? 'إضافة فاتورة جديدة'
               : icon == FontAwesomeIcons.wallet
-                  ? 'إضافة مصروف إضافى'
+                  ? 'إضافة مصروف إضافي'
                   : null,
           splashColor: Colors.green,
           backgroundColor: Colors.amber,

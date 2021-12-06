@@ -163,10 +163,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (newValue) {
                           if (newValue!.isEmpty) {
-                            return 'قُمْ بإدخال الباسورد رجاءً';
+                            return 'قُمْ بإدخال كلمة السر رجاءً';
                           }
                           if (newValue.length <= 4) {
-                            return 'الباسورد أقل من 4 حروف';
+                            return 'كلمة السر أقل من 4 حروف';
                           }
                         },
                         onSaved: (newValue) => userData['password'] = newValue!,

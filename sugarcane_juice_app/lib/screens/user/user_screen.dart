@@ -37,7 +37,7 @@ class UserScreen extends StatelessWidget {
                   icon: FaIcon(FontAwesomeIcons.userEdit),
                 ),
                 Tab(
-                  text: 'الباسورد',
+                  text: 'كلمة المرور',
                   icon: FaIcon(FontAwesomeIcons.lock),
                 ),
               ],

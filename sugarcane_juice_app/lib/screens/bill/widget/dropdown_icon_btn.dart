@@ -42,7 +42,7 @@ class DropdownIconBtn extends ConsumerWidget {
         height: 50,
         child: Center(
           child: Text(
-            '!لايوجد صنف بهذا الاسم برجاء إضافتة اولا',
+            '!لا يوجد صنف بهذا الإسم برجاء إضافتها أولًا',
             style: TextStyle(
                 color: Colors.red.shade300, fontWeight: FontWeight.bold),
           ),

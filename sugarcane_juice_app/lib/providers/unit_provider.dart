@@ -78,11 +78,11 @@ class UnitNotifier extends ChangeNotifier {
       return newUnit;
     } on FormatException {
       throw HttpException(
-        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+        'عفوًا لقد انتهت صلاحيتُك لإستخدام البرنامج \n أعِدْ تسجيل الدخول',
       );
     } catch (error) {
       throw HttpException(
-        'لم تتم إضافة هذة الوحدة',
+        'لم تتم إضافة هذه الوحدة',
       );
     }
   }

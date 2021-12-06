@@ -117,7 +117,6 @@ class _ItemFormState extends State<ItemForm> {
                     _buildTextFormField(
                       hintText: '    اسم الصنف',
                       error: AppConstants.nameError,
-                      type: TextInputType.emailAddress,
                       action: TextInputAction.next,
                       onSave: (value) {
                         _item.name = value;
@@ -127,7 +126,6 @@ class _ItemFormState extends State<ItemForm> {
                     _buildTextFormField(
                       hintText: '    وحدة القياس',
                       error: AppConstants.unitError,
-                      type: TextInputType.emailAddress,
                       action: TextInputAction.done,
                       unitController: unitController,
                       readOnly: _item.unit.id != null ? true : false,
@@ -151,7 +149,6 @@ class _ItemFormState extends State<ItemForm> {
   TextFormField _buildTextFormField({
     required String hintText,
     required String error,
-    required TextInputType type,
     required TextInputAction action,
     bool readOnly = false,
     TextEditingController? unitController,
@@ -161,7 +158,7 @@ class _ItemFormState extends State<ItemForm> {
     return TextFormField(
       controller: unitController,
       textInputAction: action,
-      keyboardType: type,
+      keyboardType: TextInputType.emailAddress,
       textDirection: TextDirection.rtl,
       maxLines: 1,
       // textAlign: TextAlign.center,

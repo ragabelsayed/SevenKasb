@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart' as intl;
 import '/providers/auth.dart';
 import '/providers/user_provider.dart';
 import '/widget/toast_view.dart';
@@ -48,7 +50,6 @@ class _UserFormState extends State<UserForm> {
       _formKey.currentState!.save();
       try {
         setState(() => _saveItOnce = false);
-        // await context.read(updateUserProvider).updateUser(_user);
         await context.read(userProvider.notifier).updateUser(_user);
         setState(() => _iswaiting = false);
         toast('تم التحديث بنجاح', true);
@@ -91,7 +92,7 @@ class _UserFormState extends State<UserForm> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  const DialogTitle(name: 'إسم المستخدم: '),
+                  const DialogTitle(name: 'إسم المُستخدم: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: _user.userName ?? '',
@@ -101,7 +102,7 @@ class _UserFormState extends State<UserForm> {
                     onSave: (value) => _user.userName = value,
                   ),
                   const SizedBox(height: 5),
-                  const DialogTitle(name: 'إسم الشهرة: '),
+                  const DialogTitle(name: 'إسم الشُهرة: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: _user.knownAs ?? '',
@@ -114,7 +115,9 @@ class _UserFormState extends State<UserForm> {
                   const DialogTitle(name: 'تاريخ الميلاد: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: _user.dateOfBirth ?? 'day - month - year',
+                    initValue: intl.DateFormat.yMd()
+                        .format(DateTime.parse(_user.dateOfBirth!)),
+                    // 'day - month - year',
                     error: 'قُمْ بإدخال تاريخ الميلاد',
                     type: TextInputType.number,
                     action: TextInputAction.next,
@@ -137,6 +140,7 @@ class _UserFormState extends State<UserForm> {
                     initValue: _user.telephone ?? '00-000-000-000',
                     error: 'قُمْ بإدخال رقم الهاتف',
                     type: TextInputType.phone,
+                    isNamberOnly: true,
                     action: TextInputAction.done,
                     onSave: (value) => _user.telephone = value,
                   ),
@@ -152,7 +156,7 @@ class _UserFormState extends State<UserForm> {
                             context: context,
                             builder: (context) => AlertView(
                               isSave: true,
-                              message: 'هل انت متأكد من حفظ هذا التعديل؟',
+                              message: 'هل أنت مُتأكد من حفظ هذا التعديل؟',
                               onpress: () {
                                 if (!_iswaiting) setWaiting();
                                 Navigator.of(context).pop();
@@ -160,7 +164,7 @@ class _UserFormState extends State<UserForm> {
                             ),
                           );
                         } else {
-                          toast('انت غير متصل بالشبكة', false);
+                          toast('أنت غير مُتصل بالشبكة', false);
                         }
                       }),
                 ],
@@ -190,6 +194,7 @@ class _UserFormState extends State<UserForm> {
     required String initValue,
     required String error,
     required TextInputType type,
+    bool isNamberOnly = false,
     required TextInputAction action,
     required Function(String) onSave,
   }) {
@@ -198,6 +203,9 @@ class _UserFormState extends State<UserForm> {
       textInputAction: action,
       textDirection: TextDirection.rtl,
       maxLines: 1,
+      inputFormatters: isNamberOnly
+          ? [FilteringTextInputFormatter.allow(RegExp('[0-9]'))]
+          : null,
       decoration: InputDecoration(
         fillColor: Palette.primaryLightColor,
         filled: true,

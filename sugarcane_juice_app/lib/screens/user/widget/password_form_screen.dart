@@ -101,24 +101,24 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
             children: [
               const SizedBox(height: 5),
               _buildTextFormField(
-                hint: 'الباسورد القديم',
-                error: 'قُمْ بإدخال الباسورد القديم',
+                hint: 'كلمة السر القديمة',
+                error: 'قُمْ بإدخال كلمة السر القديمة',
                 type: TextInputType.visiblePassword,
                 action: TextInputAction.next,
                 controller: _controller1,
               ),
               const SizedBox(height: 10),
               _buildTextFormField(
-                hint: 'الباسورد الجديد',
-                error: 'قُمْ بإدخال الباسورد الجديد',
+                hint: 'كلمة السر الجديدة',
+                error: 'قُمْ بإدخال كلمة السر الجديدة',
                 type: TextInputType.visiblePassword,
                 action: TextInputAction.next,
                 controller: _controller2,
               ),
               const SizedBox(height: 10),
               _buildTextFormField(
-                hint: 'تأكيد الباسورد',
-                error: 'قُمْ بتأكيد الباسورد',
+                hint: 'تأكيد كلمة السر',
+                error: 'قُمْ بتأكيد كلمة السر',
                 type: TextInputType.visiblePassword,
                 action: TextInputAction.done,
                 controller: _controller3,
@@ -126,7 +126,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
               if (_isNotConfirm) const SizedBox(height: 15),
               if (_isNotConfirm)
                 const Text(
-                  'برجأ التأكد من تطابق الباسورد الجديد',
+                  'برجاء التأكد من تطابُق كلمة السر الجديد',
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,
                   style: TextStyle(color: Colors.red),
@@ -139,7 +139,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
                     context: context,
                     builder: (context) => AlertView(
                       isSave: true,
-                      message: 'هل انت متأكد من حفظ هذا التعديل؟',
+                      message: 'هل أنت مُتأكد من حفظ هذا التعديل؟',
                       onpress: () {
                         setWaiting();
                         Navigator.of(context).pop();
@@ -208,7 +208,7 @@ class _PasswordFormScreenState extends State<PasswordFormScreen> {
           return error;
         }
         if (newValue.length < 4) {
-          return 'الباسورد ضعيف برجاء جعلة اكبر من 4 احروف';
+          return 'كلمة السر ضعيفة ويجب أن تكون أكبر من 4 حروف';
         }
       },
       onSaved: (newValue) => setState(() => controller.text = newValue ?? ''),

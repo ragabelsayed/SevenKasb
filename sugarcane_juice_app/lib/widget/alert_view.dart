@@ -26,7 +26,7 @@ class AlertView extends StatelessWidget {
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Palette.primaryColor),
-              child: const Text('الغاء'),
+              child: const Text('إلغاء'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             const SizedBox(width: 10),

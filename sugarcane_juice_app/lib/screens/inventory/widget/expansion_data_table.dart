@@ -9,7 +9,7 @@ class ExpansionDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final columns = [
-      'الإجمالى',
+      'الإجمالي',
       'الكمية',
       'السعر',
     ];

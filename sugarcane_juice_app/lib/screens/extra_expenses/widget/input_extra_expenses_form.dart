@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,9 +44,9 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
             .addExtra(extra: _extra, fToast: widget.ftoast, context: context);
         // _toast(' تم اضافة المصروف', true);
         Navigator.of(context).pop();
-        _toast(' إسحب لأسفل لتحديث', true);
+        _toast('اسحب لأسفل للتحديث', true);
       } catch (e) {
-        _toast('لم تتم اضافة المصروف', false);
+        _toast('لم تتم إضافةُ المصروف', false);
         Navigator.of(context).pop();
       }
     }
@@ -57,10 +58,10 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
       _formKey.currentState!.save();
       try {
         await context.read(extraOfflineProvider.notifier).addExtra(_extra);
-        _toast(' تم اضافة المصروف', true);
+        _toast('تم إضافة المصروف', true);
         Navigator.of(context).pop();
       } catch (e) {
-        _toast('لم تتم اضافة المصروف', false);
+        _toast('لم تتم إضافةُ المصروف', false);
         Navigator.of(context).pop();
       }
     }
@@ -132,6 +133,7 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
                     hintText: '    كمية المصروف',
                     error: AppConstants.extraCashError,
                     type: TextInputType.number,
+                    isNamberOnly: true,
                     action: TextInputAction.done,
                     onSave: (value) {
                       _extra.cash = double.parse(value);
@@ -211,6 +213,7 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
     required String hintText,
     required String error,
     required TextInputType type,
+    bool isNamberOnly = false,
     required TextInputAction action,
     required Function(String) onSave,
   }) {
@@ -220,6 +223,9 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
       textDirection: TextDirection.rtl,
       maxLines: null,
       // textAlign: TextAlign.center,
+      inputFormatters: isNamberOnly
+          ? [FilteringTextInputFormatter.allow(RegExp('[0-9.,]'))]
+          : null,
       decoration: InputDecoration(
         fillColor: Palette.primaryLightColor,
         filled: true,

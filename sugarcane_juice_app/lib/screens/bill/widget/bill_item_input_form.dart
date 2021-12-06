@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '/models/bill_item.dart';
 import '/widget/save_cancel_btns.dart';
 import '/config/constants.dart';
@@ -61,7 +62,7 @@ class _BillItemFormState extends State<BillItemForm> {
             shrinkWrap: true,
             children: [
               Text(
-                'إختيار الصنف',
+                'اختر الصنف',
                 textDirection: TextDirection.rtl,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline6,
@@ -77,7 +78,6 @@ class _BillItemFormState extends State<BillItemForm> {
               _buildTextFormField(
                 hintText: 'السعر',
                 error: AppConstants.priceError,
-                type: TextInputType.number,
                 action: TextInputAction.next,
                 onSave: (value) {
                   _billItems.price = double.parse(value);
@@ -87,8 +87,7 @@ class _BillItemFormState extends State<BillItemForm> {
               _buildTextFormField(
                 hintText: 'الكمية',
                 error: AppConstants.quentityError,
-                type: TextInputType.number,
-                action: TextInputAction.next,
+                action: TextInputAction.done,
                 onSave: (value) {
                   _billItems.quentity = double.parse(value);
                 },
@@ -105,7 +104,6 @@ class _BillItemFormState extends State<BillItemForm> {
   TextFormField _buildTextFormField({
     required String hintText,
     required String error,
-    required TextInputType type,
     required TextInputAction action,
     TextEditingController? controller,
     Widget? dropDown,
@@ -114,10 +112,11 @@ class _BillItemFormState extends State<BillItemForm> {
     return TextFormField(
       controller: controller,
       textInputAction: action,
-      keyboardType: type,
+      keyboardType: TextInputType.number,
       textDirection: TextDirection.rtl,
       maxLines: 1,
       textAlign: TextAlign.center,
+      inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.,]'))],
       decoration: InputDecoration(
         fillColor: Palette.primaryLightColor,
         filled: true,

@@ -31,7 +31,7 @@ class InventoryScreen extends StatelessWidget {
                 icon: FaIcon(FontAwesomeIcons.clipboardList),
               ),
               Tab(
-                text: 'مشتريات',
+                text: 'مُشتريات',
                 icon: FaIcon(FontAwesomeIcons.clipboardList),
               ),
             ],

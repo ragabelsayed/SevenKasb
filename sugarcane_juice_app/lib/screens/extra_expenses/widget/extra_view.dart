@@ -19,7 +19,7 @@ class ExtraView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             textDirection: TextDirection.rtl,
             children: [
-              const DialogTitle(name: 'المصروف الإضافى'),
+              const DialogTitle(name: 'المصروف الإضافي'),
               const SizedBox(height: 10),
               _buildRowView(
                 context,

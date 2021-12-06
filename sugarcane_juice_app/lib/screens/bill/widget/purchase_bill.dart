@@ -41,7 +41,7 @@ class PurchaseBill extends ConsumerWidget {
             return purchaseList.isNotEmpty
                 ? DataTableView(bills: purchaseList)
                 : const Center(
-                    child: ErrorView(error: 'لا يوجد فواتير شراء'),
+                    child: ErrorView(error: 'لا يُوجد فواتير شراء'),
                   );
           },
         ),

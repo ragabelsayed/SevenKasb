@@ -13,7 +13,7 @@ class MenuItems {
       MenuItem('الجرد', FaIcon(FontAwesomeIcons.clipboardList, size: 28));
   static const offline = MenuItem('أوف لاين', Icon(Icons.wifi_off, size: 30));
   static const edit =
-      MenuItem('الأعدادات', FaIcon(FontAwesomeIcons.userEdit, size: 28));
+      MenuItem('الإعدادات', FaIcon(FontAwesomeIcons.userEdit, size: 28));
 
   static const all = [
     bills,

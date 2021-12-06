@@ -53,13 +53,13 @@ class ExpansionView extends StatelessWidget {
         const SizedBox(height: 10),
         if (!isSending)
           RoundedTextButton(
-            text: 'إرسال لسيرفر',
+            text: 'إرسال للسيرفر',
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) => AlertView(
                   isSave: true,
-                  message: 'هل أنت متأكد من الحفظ فى السيرفر',
+                  message: 'هل أنت مُتأكد من الحفظ فى السيرفر؟',
                   onpress: () => onpress(),
                 ),
               );

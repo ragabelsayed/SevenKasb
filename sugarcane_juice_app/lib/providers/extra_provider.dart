@@ -56,7 +56,7 @@ class ExtraExpensesProvider {
       // );
     } catch (error) {
       throw HttpException(
-        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+        'تعذَّر الإتصال بالسيرفر برجاء التأكُّد من الإتصال بالشبكة',
       );
     }
   }
@@ -83,7 +83,7 @@ class ExtraExpensesProvider {
       if (fToast != null) {
         return fToast.showToast(
           child: const ToastView(
-            message: 'تم اضافة المصروف',
+            message: 'تم إضافة المصروف',
             success: true,
           ),
           gravity: ToastGravity.BOTTOM,
@@ -98,7 +98,7 @@ class ExtraExpensesProvider {
         await context!.read(extraOfflineProvider.notifier).addExtra(extra);
         return fToast.showToast(
           child: const ToastView(
-            message: 'حدث خطأ ولقد تم الحفظ اوف لاين',
+            message: 'حدث خطأ ولقد تم الحفظ أوف لاين',
             success: true,
           ),
           gravity: ToastGravity.BOTTOM,
@@ -110,7 +110,7 @@ class ExtraExpensesProvider {
     }
     if (response.statusCode > 500) {
       throw HttpException(
-        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
+        'تعذَّر الإتصال بالسيرفر برجاء التأكُّد من الإتصال بالشبكة',
       );
     }
     // } on FormatException {

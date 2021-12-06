@@ -24,7 +24,7 @@ class UserDateNotifier extends StateNotifier<Map<String, dynamic>> {
           'user': _userBox.values.single,
           'isUpdated': false,
           'isError': false,
-          'message': '... جارى الاتصال',
+          'message': '... جارٍ الاتصال',
         });
   final String authToken;
   final int userId;
@@ -53,7 +53,7 @@ class UserDateNotifier extends StateNotifier<Map<String, dynamic>> {
         'user': _userBox.values.single,
         'isUpdated': false,
         'isError': true,
-        'message': 'تعذر الاتصال بالسيرفر'
+        'message': 'تعذَّر الإتصال بالسيرفر'
       };
     }
   }

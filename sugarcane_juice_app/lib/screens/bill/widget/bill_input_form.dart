@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -80,7 +81,7 @@ class _BillInputFormState extends State<BillInputForm> {
         Navigator.pop(context);
         widget.fToast.showToast(
           child: const ToastView(
-            message: 'إسحب لأسفل لتحديث',
+            message: 'اسحب لأسفل للتحديث',
             success: true,
           ),
           gravity: ToastGravity.BOTTOM,
@@ -148,7 +149,7 @@ class _BillInputFormState extends State<BillInputForm> {
                 children: [
                   const DialogTitle(name: 'إسم العميل/المُورد'),
                   _buildTextFormField(
-                    hintText: '   الاسم',
+                    hintText: '   الإسم',
                     error: AppConstants.nameError,
                     type: TextInputType.name,
                     action: TextInputAction.next,
@@ -159,7 +160,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     textDirection: TextDirection.rtl,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const DialogTitle(name: 'إختار الصنف: '),
+                      const DialogTitle(name: 'اختر الصنف: '),
                       Container(
                         height: 40,
                         width: 70,
@@ -213,7 +214,7 @@ class _BillInputFormState extends State<BillInputForm> {
                   const SizedBox(height: 10),
                   if (_isBillItemEmpty)
                     const Text(
-                      'برجاء إضافة صنف او منتج اولا',
+                      'برجاء إضافة صنف أو منتج أولًا',
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.rtl,
                       style: TextStyle(color: Colors.red),
@@ -225,7 +226,7 @@ class _BillInputFormState extends State<BillInputForm> {
                     deleteBillItem: (_billItem) => showDialog(
                       context: context,
                       builder: (context) => AlertView(
-                        message: 'هل انت متاكد من حذف هذا الصنف؟',
+                        message: 'هل أنت مُتأكّد من حذف هذا الصنف؟',
                         onpress: () {
                           if (!_isOffline) {
                             setState(() {
@@ -284,6 +285,7 @@ class _BillInputFormState extends State<BillInputForm> {
                 error: AppConstants.priceError,
                 type: TextInputType.number,
                 isUpdated: true,
+                isNamberOnly: true,
                 action: TextInputAction.done,
                 onSave: (newValue) {
                   if (double.parse(newValue) > 0) {
@@ -311,14 +313,18 @@ class _BillInputFormState extends State<BillInputForm> {
     required String error,
     required TextInputType type,
     required TextInputAction action,
+    bool isNamberOnly = false,
     bool isUpdated = false,
     required Function(String) onSave,
   }) {
     return TextFormField(
       keyboardType: type,
       textInputAction: action,
-      textDirection: TextDirection.rtl,
       maxLines: 1,
+      textDirection: TextDirection.rtl,
+      inputFormatters: isNamberOnly
+          ? [FilteringTextInputFormatter.allow(RegExp('[0-9.,]'))]
+          : null,
       decoration: InputDecoration(
         fillColor: Palette.primaryLightColor,
         filled: true,

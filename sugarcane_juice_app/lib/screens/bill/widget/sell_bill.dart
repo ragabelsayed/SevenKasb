@@ -36,7 +36,7 @@ class SellBill extends ConsumerWidget {
             return sellList.isNotEmpty
                 ? DataTableView(bills: sellList)
                 : const Center(
-                    child: ErrorView(error: 'لا يوجد فواتير بيع'),
+                    child: ErrorView(error: 'لا يُوجد فواتير بيع'),
                   );
           },
         ),

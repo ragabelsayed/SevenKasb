@@ -63,7 +63,7 @@ class ExtraExpensesScreen extends ConsumerWidget {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          tooltip: 'اضافة مصاريف إضافية',
+          tooltip: 'إضافة مصاريف إضافية',
           child: const Icon(Icons.add),
           backgroundColor: Colors.amber,
           onPressed: () => showModalBottomSheet(

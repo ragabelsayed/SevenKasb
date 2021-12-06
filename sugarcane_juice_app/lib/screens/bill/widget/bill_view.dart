@@ -64,7 +64,7 @@ class BillView extends StatelessWidget {
               const SizedBox(height: 10),
               _buildRowView(
                 context,
-                name: ' :الإجمالى',
+                name: ' :الإجمالي',
                 value: '${BillProvider.sumTotal(bill)}',
               ),
               const SizedBox(height: 3),
@@ -76,7 +76,7 @@ class BillView extends StatelessWidget {
               const SizedBox(height: 3),
               _buildRowView(
                 context,
-                name: ' :ألباقى',
+                name: ' :الباقي',
                 value: '${BillProvider.getRemaining(bill)}',
               ),
               const SizedBox(height: 20),
@@ -115,7 +115,7 @@ class BillView extends StatelessWidget {
   }
 
   Widget _buildDataTable({required Bill bill, required BuildContext context}) {
-    final billColumns = ['الإجمالى', 'الكمية', 'السعر', 'الصنف'];
+    final billColumns = ['الإجمالي', 'الكمية', 'السعر', 'الصنف'];
     return DataTable(
       columns: _getColumns(billColumns),
       rows: _getRow(billItems: bill.billItems, context: context),

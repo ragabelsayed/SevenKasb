@@ -45,7 +45,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
             .copyWith(color: Colors.white),
       ),
       'btn2': Text(
-        'يومى',
+        'يومي',
         style: Theme.of(context)
             .textTheme
             .subtitle1!
@@ -114,9 +114,9 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                         month: intl.DateFormat.M().format(date),
                         inventoryType: InventoryType.monthly,
                       );
-                  _toast('تم جلب الجرد الشهرى', true);
+                  _toast('تم جلب الجرد الشهري', true);
                 } catch (e) {
-                  _toast('لم يتم جلب الجرد الشهرى', false);
+                  _toast('لم يتم جلب الجرد الشهري', false);
                 }
               }
               if (widget.inventoryType == InventoryType.sales) {
@@ -128,9 +128,9 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                         month: intl.DateFormat.M().format(date),
                         inventoryType: InventoryType.monthly,
                       );
-                  _toast('تم جلب الجرد الشهرى', true);
+                  _toast('تم جلب الجرد الشهري', true);
                 } catch (e) {
-                  _toast('لم يتم جلب الجرد الشهرى', false);
+                  _toast('لم يتم جلب الجرد الشهري', false);
                 }
               }
             }
@@ -146,9 +146,9 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                             .replaceAll(RegExp(r'/'), '-'),
                         inventoryType: InventoryType.daily,
                       );
-                  _toast('تم جلب الجرد اليومى', true);
+                  _toast('تم جلب الجرد اليومي', true);
                 } catch (e) {
-                  _toast('لم يتم جلب الجرد اليومى', false);
+                  _toast('لم يتم جلب الجرد اليومي', false);
                 }
               }
               if (widget.inventoryType == InventoryType.sales) {
@@ -161,9 +161,9 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                             .replaceAll(RegExp(r'/'), '-'),
                         inventoryType: InventoryType.daily,
                       );
-                  _toast('تم جلب الجرد اليومى', true);
+                  _toast('تم جلب الجرد اليومي', true);
                 } catch (e) {
-                  _toast('لم يتم جلب الجرد اليومى', false);
+                  _toast('لم يتم جلب الجرد اليومي', false);
                 }
               }
             }
