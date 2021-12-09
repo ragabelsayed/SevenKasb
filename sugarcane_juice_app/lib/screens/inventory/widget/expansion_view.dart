@@ -20,20 +20,20 @@ class _ExpansionViewState extends State<ExpansionView> {
         children: [
           Row(
             children: [
-              DialogTitle(name: widget.inventory.item.name),
-              const SizedBox(width: 5),
-              DialogTitle(name: widget.inventory.item.unit.name),
+              // DialogTitle(name: widget.inventory.item.name),
+              // const SizedBox(width: 5),
+              // DialogTitle(name: widget.inventory.item.unit.name),
             ],
           ),
-          Text(
-            widget.inventory.inventoryType == InventoryType.daily
-                ? 'يومى'
-                : 'شهري',
-            textDirection: TextDirection.rtl,
-            style: const TextStyle(
-              fontStyle: FontStyle.italic,
-            ),
-          )
+          //   Text(
+          //     widget.inventory.inventoryType == InventoryType.daily
+          //         ? 'يومى'
+          //         : 'شهري',
+          //     textDirection: TextDirection.rtl,
+          //     style: const TextStyle(
+          //       fontStyle: FontStyle.italic,
+          //     ),
+          //   )
         ],
       ),
       textColor: Colors.amber,
@@ -45,7 +45,7 @@ class _ExpansionViewState extends State<ExpansionView> {
       controlAffinity: ListTileControlAffinity.leading,
       maintainState: true,
       children: [
-        ExpansionDataTable(cashItemHistory: widget.inventory.cashItemHistory),
+        // ExpansionDataTable(cashItemHistory: widget.inventory.cashItemHistory),
       ],
     );
   }

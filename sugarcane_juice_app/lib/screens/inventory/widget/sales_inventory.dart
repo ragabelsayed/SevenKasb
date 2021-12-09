@@ -12,12 +12,12 @@ class SalesInventory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final inventory = watch(inventorySalesProvider);
+    // final inventory = watch(inventorySalesProvider);
     return Scaffold(
-      body: ListView.builder(
-        itemCount: inventory.length,
-        itemBuilder: (context, i) => ExpansionView(inventory: inventory[i]),
-      ),
+      // body: ListView.builder(
+      //   itemCount: inventory.length,
+      //   itemBuilder: (context, i) => ExpansionView(inventory: inventory[i]),
+      // ),
       floatingActionButton: LinearFlowWidget(
         fToast: fToast,
         inventoryType: InventoryType.sales,

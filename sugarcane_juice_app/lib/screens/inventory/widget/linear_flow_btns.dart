@@ -98,75 +98,75 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   ? btns['btn1']
                   : btns['btn2'],
           onPressed: () async {
-            if (controller.status == AnimationStatus.completed) {
-              controller.reverse();
-            } else {
-              controller.forward();
-            }
-            if (icon == Icons.calendar_view_month) {
-              await _pickDate(context);
-              if (widget.inventoryType == InventoryType.purchase) {
-                try {
-                  await context
-                      .read(inventoryPurchasesProvider.notifier)
-                      .getInventory(
-                        year: intl.DateFormat.y().format(date),
-                        month: intl.DateFormat.M().format(date),
-                        inventoryType: InventoryType.monthly,
-                      );
-                  _toast('تم جلب الجرد الشهري', true);
-                } catch (e) {
-                  _toast('لم يتم جلب الجرد الشهري', false);
-                }
-              }
-              if (widget.inventoryType == InventoryType.sales) {
-                try {
-                  await context
-                      .read(inventorySalesProvider.notifier)
-                      .getInventory(
-                        year: intl.DateFormat.y().format(date),
-                        month: intl.DateFormat.M().format(date),
-                        inventoryType: InventoryType.monthly,
-                      );
-                  _toast('تم جلب الجرد الشهري', true);
-                } catch (e) {
-                  _toast('لم يتم جلب الجرد الشهري', false);
-                }
-              }
-            }
-            if (icon == Icons.calendar_view_day) {
-              await _pickDate(context);
-              if (widget.inventoryType == InventoryType.purchase) {
-                try {
-                  await context
-                      .read(inventoryPurchasesProvider.notifier)
-                      .getInventory(
-                        day: intl.DateFormat.yMd()
-                            .format(date)
-                            .replaceAll(RegExp(r'/'), '-'),
-                        inventoryType: InventoryType.daily,
-                      );
-                  _toast('تم جلب الجرد اليومي', true);
-                } catch (e) {
-                  _toast('لم يتم جلب الجرد اليومي', false);
-                }
-              }
-              if (widget.inventoryType == InventoryType.sales) {
-                try {
-                  await context
-                      .read(inventorySalesProvider.notifier)
-                      .getInventory(
-                        day: intl.DateFormat.yMd()
-                            .format(date)
-                            .replaceAll(RegExp(r'/'), '-'),
-                        inventoryType: InventoryType.daily,
-                      );
-                  _toast('تم جلب الجرد اليومي', true);
-                } catch (e) {
-                  _toast('لم يتم جلب الجرد اليومي', false);
-                }
-              }
-            }
+            //   if (controller.status == AnimationStatus.completed) {
+            //     controller.reverse();
+            //   } else {
+            //     controller.forward();
+            //   }
+            //   if (icon == Icons.calendar_view_month) {
+            //     await _pickDate(context);
+            //     if (widget.inventoryType == InventoryType.purchase) {
+            //       try {
+            //         await context
+            //             .read(inventoryPurchasesProvider.notifier)
+            //             .getInventory(
+            //               year: intl.DateFormat.y().format(date),
+            //               month: intl.DateFormat.M().format(date),
+            //               inventoryType: InventoryType.monthly,
+            //             );
+            //         _toast('تم جلب الجرد الشهري', true);
+            //       } catch (e) {
+            //         _toast('لم يتم جلب الجرد الشهري', false);
+            //       }
+            //     }
+            //     if (widget.inventoryType == InventoryType.sales) {
+            //       try {
+            //         await context
+            //             .read(inventorySalesProvider.notifier)
+            //             .getInventory(
+            //               year: intl.DateFormat.y().format(date),
+            //               month: intl.DateFormat.M().format(date),
+            //               inventoryType: InventoryType.monthly,
+            //             );
+            //         _toast('تم جلب الجرد الشهري', true);
+            //       } catch (e) {
+            //         _toast('لم يتم جلب الجرد الشهري', false);
+            //       }
+            //     }
+            //   }
+            //   if (icon == Icons.calendar_view_day) {
+            //     await _pickDate(context);
+            //     if (widget.inventoryType == InventoryType.purchase) {
+            //       try {
+            //         await context
+            //             .read(inventoryPurchasesProvider.notifier)
+            //             .getInventory(
+            //               day: intl.DateFormat.yMd()
+            //                   .format(date)
+            //                   .replaceAll(RegExp(r'/'), '-'),
+            //               inventoryType: InventoryType.daily,
+            //             );
+            //         _toast('تم جلب الجرد اليومي', true);
+            //       } catch (e) {
+            //         _toast('لم يتم جلب الجرد اليومي', false);
+            //       }
+            //     }
+            //     if (widget.inventoryType == InventoryType.sales) {
+            //       try {
+            //         await context
+            //             .read(inventorySalesProvider.notifier)
+            //             .getInventory(
+            //               day: intl.DateFormat.yMd()
+            //                   .format(date)
+            //                   .replaceAll(RegExp(r'/'), '-'),
+            //               inventoryType: InventoryType.daily,
+            //             );
+            //         _toast('تم جلب الجرد اليومي', true);
+            //       } catch (e) {
+            //         _toast('لم يتم جلب الجرد اليومي', false);
+            //       }
+            //     }
+            //   }
           },
         ),
       );

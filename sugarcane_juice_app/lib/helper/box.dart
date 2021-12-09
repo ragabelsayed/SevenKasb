@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sugarcane_juice/models/inventory.dart';
 import '/models/user.dart';
 import '/models/item.dart';
 import '/models/unit.dart';
@@ -13,4 +14,6 @@ class Boxes {
   static Box<Unit> getUnitBox() => Hive.box<Unit>('units');
   static Box<Item> getItemBox() => Hive.box<Item>('items');
   static Box<User> getUserBox() => Hive.box<User>('users');
+  static Box<Inventory> getUserInventory() =>
+      Hive.box<Inventory>('inventories');
 }

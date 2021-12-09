@@ -17,24 +17,21 @@ class InventoryAdapter extends TypeAdapter<Inventory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Inventory(
-      item: fields[0] as Item,
-      cashItemHistory: (fields[2] as List)
+      inventoryDate: fields[0] as DateTime,
+      itemList: (fields[1] as List)
           .map((dynamic e) => (e as Map).cast<String, dynamic>())
           .toList(),
-      inventoryType: fields[1] as InventoryType,
     );
   }
 
   @override
   void write(BinaryWriter writer, Inventory obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.item)
-      ..writeByte(1)
-      ..write(obj.inventoryType)
       ..writeByte(2)
-      ..write(obj.cashItemHistory);
+      ..writeByte(0)
+      ..write(obj.inventoryDate)
+      ..writeByte(1)
+      ..write(obj.itemList);
   }
 
   @override
