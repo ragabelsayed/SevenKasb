@@ -60,7 +60,7 @@ class ItemNotifier extends ChangeNotifier {
     }
   }
 
-  Future<Item> addItem(Item item) async {
+  Future<void> addItem(Item item) async {
     try {
       final response = await http.post(
         url,
@@ -84,7 +84,9 @@ class ItemNotifier extends ChangeNotifier {
         unit: item.unit,
         type: item.type,
       );
-      return newItem;
+      _items.add(newItem);
+      notifyListeners();
+      _itemBox.add(newItem);
     } on FormatException {
       throw HttpException(
         'عفوًا لقد انتهت صلاحيتُك لإستخدام البرنامج \n أعِدْ تسجيل الدخول',

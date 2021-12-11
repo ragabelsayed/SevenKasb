@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
-import '/helper/box.dart';
 import '/models/item.dart';
 import '/models/unit.dart';
 import '/providers/item_provider.dart';
@@ -57,17 +56,15 @@ class _ItemFormState extends State<ItemForm> {
       setWaiting();
       try {
         if (_item.unit.id != null) {
-          final newItem = await context.read(itemProvider).addItem(_item);
+          await context.read(itemProvider).addItem(_item);
           _toast('تم إضافة الصنف بنجاح', true);
           Navigator.of(context).pop();
-          Boxes.getItemBox().add(newItem);
         } else {
           final newUnit = await context.read(unitProvider).addUnit(_item.unit);
           _item.unit = newUnit;
-          final newItem = await context.read(itemProvider).addItem(_item);
+          await context.read(itemProvider).addItem(_item);
           _toast('تم إضافة الصنف بنجاح', true);
           Navigator.of(context).pop();
-          Boxes.getItemBox().add(newItem);
         }
       } catch (e) {
         _toast('لم تتم إضافة الصنف', false);

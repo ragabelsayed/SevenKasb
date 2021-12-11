@@ -39,7 +39,7 @@ class Item extends HiveObject {
     return Item(
       id: json['id'],
       name: json['name'],
-      type: json['type'],
+      // type: json['type'],
       price: json['price'].toString(),
       quentity: json['quentity'].toString(),
       unit: Unit(
