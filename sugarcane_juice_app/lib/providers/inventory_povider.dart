@@ -2,6 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:sugarcane_juice/helper/box.dart';
 import 'package:sugarcane_juice/models/item.dart';
 import 'auth.dart';
 import '/models/inventory.dart';
@@ -25,11 +27,11 @@ final inventoryProvider =
 class InventoryNotifier extends StateNotifier<List<Inventory>> {
   InventoryNotifier(this.authToken) : super([]);
   final String authToken;
+  final invBox = Boxes.getUserInventory();
 
   @override
-  Future<void> getInventory({required String date}) async {
+  Future<void> fetchInventoryData({required String date}) async {
     late Uri url;
-
     url = Uri.parse('http://10.0.2.2:5000/api/mobilebarren/$date');
 
     final response = await http.get(
@@ -45,7 +47,27 @@ class InventoryNotifier extends StateNotifier<List<Inventory>> {
     _loadedProducts.add(
       Inventory.fromJson(json: extractedData),
     );
-    state = [...state, ..._loadedProducts];
+
+    // state = [...state, ..._loadedProducts];
+    invBox.add(Inventory.fromJson(json: extractedData));
+  }
+
+  Future<void> lastSixtyDays() async {
+    DateTime lastInvDate = invBox.values.last.inventoryDate;
+    // DateTime theDayAfter = lastInvDate.add(const Duration(days: 1));
+    DateTime todey = DateTime.now();
+    if (invBox.isNotEmpty) {
+      for (var i = lastInvDate;
+          i.year <= todey.year && i.month <= todey.month && i.day < todey.day;
+          i = i.add(const Duration(days: 1))) {
+        await fetchInventoryData(date: DateFormat.yMd().format(i));
+        if (invBox.length > 60) {
+          invBox.values.first.delete();
+        }
+      }
+    } else {
+      await fetchInventoryData(date: DateFormat.yMd().format(todey));
+    }
   }
 }
 // final inventoryPurchasesProvider =
@@ -144,10 +166,17 @@ class InventoryNotifier extends StateNotifier<List<Inventory>> {
 // }
 
 class InventoryQueue {
-  // Queue<Inventory> queue = Queue<Inventory>();
   ListQueue<Inventory> queue = ListQueue<Inventory>(60);
+  final invList = Boxes.getUserInventory();
+  void lastSixtyDays(Inventory item) {
+    DateTime lastInvDate = invList.values.last.inventoryDate;
+    DateTime theDayAfter = lastInvDate.add(const Duration(days: 1));
 
-  void lastSixtyDays(List<Inventory> items) {
+    DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
+    DateFormat.yMd().format(lastInvDate);
+    for (var i = DateFormat.yMd().format(lastInvDate);
+        i != DateFormat.yMd().format(yesterday);
+        theDayAfter) {}
     // after get list of date from server
     // lof in each one
     // for (var item in items) {
