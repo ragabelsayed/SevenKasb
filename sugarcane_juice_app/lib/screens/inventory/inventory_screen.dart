@@ -21,7 +21,8 @@ class InventoryScreen extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Palette.primaryColor,
           leading: const MenuWidget(),
-          shape: AppConstants.appBarBorder,
+          elevation: 0.0,
+          // shape: AppConstants.appBarBorder,
           bottom: const TabBar(
             indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
             indicatorColor: Colors.amber,
