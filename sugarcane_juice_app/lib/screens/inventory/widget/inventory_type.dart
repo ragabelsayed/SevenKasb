@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import '/models/inventory.dart';
+import '/models/inventory.dart' as t;
 import '/config/constants.dart';
 import '/config/palette.dart';
 import 'daily_inventory.dart';
 import 'monthl_inventory.dart';
 
 class InventoryType extends StatelessWidget {
-  // final List<Inventory> invList;
+  final t.InventoryType type;
   final FToast fToast;
-  const InventoryType(
-      {Key? key,
-      // required this.invList,
-      required this.fToast})
+  const InventoryType({Key? key, required this.type, required this.fToast})
       : super(key: key);
 
   @override
@@ -39,8 +36,8 @@ class InventoryType extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            MonthlyInventory(),
-            DailyInventory(),
+            MonthlyInventory(type: type),
+            DailyInventory(type: type),
           ],
         ),
       ),

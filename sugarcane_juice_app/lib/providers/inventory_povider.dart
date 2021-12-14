@@ -23,9 +23,13 @@ final fetchInvProvider = Provider<FetchInventory>((ref) {
   return FetchInventory(_token['token']);
 });
 
-final inventoryProvider =
-    StateNotifierProvider<InventoryNotifier, List<Inv>>((ref) {
-  return InventoryNotifier();
+final inventoryPurchasesProvider =
+    StateNotifierProvider<InventoryPurchaseNotifier, List<Inv>>((ref) {
+  return InventoryPurchaseNotifier();
+});
+final inventorySalesProvider =
+    StateNotifierProvider<InventorySalesNotifier, List<Inv>>((ref) {
+  return InventorySalesNotifier();
 });
 
 class FetchInventory {
@@ -70,8 +74,44 @@ class FetchInventory {
   }
 }
 
-class InventoryNotifier extends StateNotifier<List<Inv>> {
-  InventoryNotifier() : super([]);
+class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
+  InventoryPurchaseNotifier() : super([]);
+  final invBoxList = invBox.values.toList();
+  List<Inv> invList = [];
+
+  void getInventory({required DateTime date, required int type}) {
+    bool isDateInBox = invBoxList.any((inv) =>
+        inv.inventoryDate.year == date.year &&
+        inv.inventoryDate.month == date.month &&
+        inv.inventoryDate.day == date.day);
+
+    if (isDateInBox) {
+      invList.clear();
+      Inventory item = invBoxList.firstWhere(
+        (inv) =>
+            inv.inventoryDate.year == date.year &&
+            inv.inventoryDate.month == date.month &&
+            inv.inventoryDate.day == date.day,
+      );
+      if (item.itemList.isNotEmpty) {
+        for (var inv in item.itemList) {
+          List<dynamic> items = inv['priceItems'];
+          var itemHistory = List.from(items.where((i) => i['type'] == type));
+          if (itemHistory.isNotEmpty) {
+            invList.add(Inv(
+              inv['item'],
+              itemHistory,
+            ));
+          }
+        }
+        state = [...invList];
+      }
+    } else {}
+  }
+}
+
+class InventorySalesNotifier extends StateNotifier<List<Inv>> {
+  InventorySalesNotifier() : super([]);
   final invBoxList = invBox.values.toList();
   List<Inv> invList = [];
 

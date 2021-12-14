@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'inventory_type.dart';
+import '/models/inventory.dart' as type;
 
 class SalesInventory extends StatelessWidget {
   final FToast fToast;
@@ -10,7 +10,10 @@ class SalesInventory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: InventoryType(fToast: fToast),
+      body: InventoryType(
+        fToast: fToast,
+        type: type.InventoryType.sales,
+      ),
     );
   }
 }

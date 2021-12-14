@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '/models/inventory.dart';
 import '/config/palette.dart';
 import '/providers/inventory_povider.dart';
 
 class DailyInventory extends StatelessWidget {
-  const DailyInventory({Key? key}) : super(key: key);
+  final InventoryType type;
+  const DailyInventory({Key? key, required this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +38,16 @@ class DailyInventory extends StatelessWidget {
             },
           );
           if (newDate != null) {
-            context
-                .read(inventoryProvider.notifier)
-                .getInventory(date: newDate, type: 0);
+            if (InventoryType.purchase == type) {
+              context
+                  .read(inventoryPurchasesProvider.notifier)
+                  .getInventory(date: newDate, type: 0);
+            }
+            if (InventoryType.sales == type) {
+              context
+                  .read(inventorySalesProvider.notifier)
+                  .getInventory(date: newDate, type: 1);
+            }
           }
         },
       ),
