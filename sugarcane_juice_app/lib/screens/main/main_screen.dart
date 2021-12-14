@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen>
     Future.delayed(Duration.zero, () {
       context.read(unitProvider).fetchAndSetData();
       context.read(itemProvider).fetchAndSetData();
-      context.read(inventoryProvider.notifier).lastSixtyDays();
+      context.read(fetchInvProvider).lastSixtyDays();
     });
   }
 

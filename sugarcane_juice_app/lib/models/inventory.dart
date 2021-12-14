@@ -70,3 +70,11 @@ class Inventory extends HiveObject {
     );
   }
 }
+
+class Inv {
+  final Item item;
+  // final List<Map<String, dynamic>> itemHistory;
+  final List<dynamic> itemHistory;
+
+  Inv(this.item, this.itemHistory);
+}

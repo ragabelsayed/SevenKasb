@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '/models/inventory.dart';
+// import '/models/inventory.dart';
 import '/config/constants.dart';
 import '/config/palette.dart';
 import 'daily_inventory.dart';

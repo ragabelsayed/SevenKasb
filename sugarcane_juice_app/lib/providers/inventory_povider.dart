@@ -6,6 +6,8 @@ import 'package:sugarcane_juice/helper/box.dart';
 import 'auth.dart';
 import '/models/inventory.dart';
 
+final invBox = Boxes.getUserInventory();
+
 abstract class MainInvenotry {
   Future<void> getInventory({
     required String date,
@@ -16,16 +18,19 @@ abstract class MainInvenotry {
   });
 }
 
-final inventoryProvider =
-    StateNotifierProvider<InventoryNotifier, List<Inventory>>((ref) {
+final fetchInvProvider = Provider<FetchInventory>((ref) {
   var _token = ref.watch(authProvider);
-  return InventoryNotifier(_token['token']);
+  return FetchInventory(_token['token']);
 });
 
-class InventoryNotifier extends StateNotifier<List<Inventory>> {
-  InventoryNotifier(this.authToken) : super([]);
+final inventoryProvider =
+    StateNotifierProvider<InventoryNotifier, List<Inv>>((ref) {
+  return InventoryNotifier();
+});
+
+class FetchInventory {
   final String authToken;
-  final invBox = Boxes.getUserInventory();
+  FetchInventory(this.authToken);
 
   Future<void> fetchInventoryData({required String date}) async {
     late Uri url;
@@ -63,8 +68,42 @@ class InventoryNotifier extends StateNotifier<List<Inventory>> {
       );
     }
   }
+}
 
-  void getInventory() => state = invBox.values.toList();
+class InventoryNotifier extends StateNotifier<List<Inv>> {
+  InventoryNotifier() : super([]);
+  final invBoxList = invBox.values.toList();
+  List<Inv> invList = [];
+
+  void getInventory({required DateTime date, required int type}) {
+    bool isDateInBox = invBoxList.any((inv) =>
+        inv.inventoryDate.year == date.year &&
+        inv.inventoryDate.month == date.month &&
+        inv.inventoryDate.day == date.day);
+
+    if (isDateInBox) {
+      invList.clear();
+      Inventory item = invBoxList.firstWhere(
+        (inv) =>
+            inv.inventoryDate.year == date.year &&
+            inv.inventoryDate.month == date.month &&
+            inv.inventoryDate.day == date.day,
+      );
+      if (item.itemList.isNotEmpty) {
+        for (var inv in item.itemList) {
+          List<dynamic> items = inv['priceItems'];
+          var itemHistory = List.from(items.where((i) => i['type'] == type));
+          if (itemHistory.isNotEmpty) {
+            invList.add(Inv(
+              inv['item'],
+              itemHistory,
+            ));
+          }
+        }
+        state = [...invList];
+      }
+    } else {}
+  }
 }
 
 // final inventoryPurchasesProvider =
