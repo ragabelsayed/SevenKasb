@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '/providers/bill_provider.dart';
 
 class ExpansionDataTable extends StatelessWidget {
-  final List<Map<String, dynamic>> cashItemHistory;
+  final List<dynamic> cashItemHistory;
+  // final List<Map<String, dynamic>> cashItemHistory;
   const ExpansionDataTable({Key? key, required this.cashItemHistory})
       : super(key: key);
 
@@ -50,7 +51,8 @@ class ExpansionDataTable extends StatelessWidget {
       .toList();
 
   List<DataRow> _getRow(
-      {required List<Map<String, dynamic>> cashHistory,
+      {required List<dynamic> cashHistory,
+      // required List<Map<String, dynamic>> cashHistory,
       required BuildContext context}) {
     List<double> sumQuentity = [];
     List<double> sumTotal = [];

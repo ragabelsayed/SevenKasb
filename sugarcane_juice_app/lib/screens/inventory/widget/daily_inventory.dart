@@ -4,14 +4,28 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '/models/inventory.dart';
 import '/config/palette.dart';
 import '/providers/inventory_povider.dart';
+import 'expansion_view.dart';
 
-class DailyInventory extends StatelessWidget {
+class DailyInventory extends ConsumerWidget {
   final InventoryType type;
   const DailyInventory({Key? key, required this.type}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final purchasesInventory = watch(inventoryPurchasesProvider);
+    final salesInventory = watch(inventorySalesProvider);
     return Scaffold(
+      body: type == InventoryType.purchase
+          ? ListView.builder(
+              itemCount: purchasesInventory.length,
+              itemBuilder: (context, i) =>
+                  ExpansionView(inventory: purchasesInventory[i]),
+            )
+          : ListView.builder(
+              itemCount: salesInventory.length,
+              itemBuilder: (context, i) =>
+                  ExpansionView(inventory: salesInventory[i]),
+            ),
       floatingActionButton: FloatingActionButton(
         child: const FaIcon(FontAwesomeIcons.calendarDay),
         backgroundColor: Colors.amber,

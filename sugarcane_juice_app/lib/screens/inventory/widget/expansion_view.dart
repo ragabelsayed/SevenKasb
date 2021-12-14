@@ -4,7 +4,8 @@ import '/widget/dialog_title.dart';
 import 'expansion_data_table.dart';
 
 class ExpansionView extends StatefulWidget {
-  final Inventory inventory;
+  // final Inventory inventory;
+  final Inv inventory;
   const ExpansionView({Key? key, required this.inventory}) : super(key: key);
   @override
   _ExpansionViewState createState() => _ExpansionViewState();
@@ -20,9 +21,9 @@ class _ExpansionViewState extends State<ExpansionView> {
         children: [
           Row(
             children: [
-              // DialogTitle(name: widget.inventory.item.name),
-              // const SizedBox(width: 5),
-              // DialogTitle(name: widget.inventory.item.unit.name),
+              DialogTitle(name: widget.inventory.item.name),
+              const SizedBox(width: 5),
+              DialogTitle(name: widget.inventory.item.unit.name),
             ],
           ),
           //   Text(
@@ -45,7 +46,7 @@ class _ExpansionViewState extends State<ExpansionView> {
       controlAffinity: ListTileControlAffinity.leading,
       maintainState: true,
       children: [
-        // ExpansionDataTable(cashItemHistory: widget.inventory.cashItemHistory),
+        ExpansionDataTable(cashItemHistory: widget.inventory.itemHistory),
       ],
     );
   }
