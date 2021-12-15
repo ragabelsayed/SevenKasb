@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:sugarcane_juice/helper/box.dart';
+import 'package:sugarcane_juice/models/item.dart';
 import 'auth.dart';
 import '/models/inventory.dart';
 
@@ -79,7 +80,7 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
   final invBoxList = invBox.values.toList();
   List<Inv> invList = [];
 
-  void getInventory({required DateTime date, required int type}) {
+  void getDailyInventory({required DateTime date, required int type}) {
     bool isDateInBox = invBoxList.any((inv) =>
         inv.inventoryDate.year == date.year &&
         inv.inventoryDate.month == date.month &&
@@ -106,7 +107,52 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
         }
         state = [...invList];
       }
-    } else {}
+    }
+  }
+
+  void getMonthlyInventory({required DateTime date, required int type}) {
+    bool isDateInBox = invBoxList.any((inv) =>
+        inv.inventoryDate.year == date.year &&
+        inv.inventoryDate.month == date.month);
+
+    if (isDateInBox) {
+      invList.clear();
+      List<Inventory> localInvs = invBoxList
+          .where((inv) => inv.inventoryDate.month == date.month)
+          .toList();
+
+      for (var localInv in localInvs) {
+        if (localInv.itemList.isNotEmpty) {
+          for (var inv in localInv.itemList) {
+            Item i = inv['item'];
+            List<dynamic> items = inv['priceItems'];
+            int invIndex = invList.indexWhere(
+              (e) => e.item.id == i.id && e.item.unit.id == i.unit.id,
+            );
+            // check is there old item if there then update it if not add new one.
+            if (invIndex != -1) {
+              Inv oldInv = invList.elementAt(invIndex);
+              var itemHistory =
+                  List.from(items.where((i) => i['type'] == type));
+              if (itemHistory.isNotEmpty) {
+                oldInv.itemHistory.addAll(itemHistory.toList());
+                invList[invIndex] = oldInv;
+              }
+            } else {
+              var itemHistory =
+                  List.from(items.where((i) => i['type'] == type));
+              if (itemHistory.isNotEmpty) {
+                invList.add(Inv(
+                  inv['item'],
+                  itemHistory,
+                ));
+              }
+            }
+          }
+        }
+      }
+      state = [...invList];
+    }
   }
 }
 
@@ -115,7 +161,7 @@ class InventorySalesNotifier extends StateNotifier<List<Inv>> {
   final invBoxList = invBox.values.toList();
   List<Inv> invList = [];
 
-  void getInventory({required DateTime date, required int type}) {
+  void getDailyInventory({required DateTime date, required int type}) {
     bool isDateInBox = invBoxList.any((inv) =>
         inv.inventoryDate.year == date.year &&
         inv.inventoryDate.month == date.month &&
@@ -142,7 +188,7 @@ class InventorySalesNotifier extends StateNotifier<List<Inv>> {
         }
         state = [...invList];
       }
-    } else {}
+    }
   }
 }
 

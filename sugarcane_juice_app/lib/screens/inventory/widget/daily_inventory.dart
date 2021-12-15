@@ -55,12 +55,12 @@ class DailyInventory extends ConsumerWidget {
             if (InventoryType.purchase == type) {
               context
                   .read(inventoryPurchasesProvider.notifier)
-                  .getInventory(date: newDate, type: 0);
+                  .getDailyInventory(date: newDate, type: 0);
             }
             if (InventoryType.sales == type) {
               context
                   .read(inventorySalesProvider.notifier)
-                  .getInventory(date: newDate, type: 1);
+                  .getDailyInventory(date: newDate, type: 1);
             }
           }
         },
