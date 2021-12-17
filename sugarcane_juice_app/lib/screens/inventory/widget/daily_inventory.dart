@@ -12,8 +12,8 @@ class DailyInventory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final purchasesInventory = watch(inventoryPurchasesProvider);
-    final salesInventory = watch(inventorySalesProvider);
+    final purchasesInventory = watch(invDailyPurchasesProvider);
+    final salesInventory = watch(invDailySalesProvider);
     return Scaffold(
       body: type == InventoryType.purchase
           ? ListView.builder(
@@ -54,12 +54,12 @@ class DailyInventory extends ConsumerWidget {
           if (newDate != null) {
             if (InventoryType.purchase == type) {
               context
-                  .read(inventoryPurchasesProvider.notifier)
+                  .read(invDailyPurchasesProvider.notifier)
                   .getDailyInventory(date: newDate, type: 0);
             }
             if (InventoryType.sales == type) {
               context
-                  .read(inventorySalesProvider.notifier)
+                  .read(invDailySalesProvider.notifier)
                   .getDailyInventory(date: newDate, type: 1);
             }
           }

@@ -24,13 +24,21 @@ final fetchInvProvider = Provider<FetchInventory>((ref) {
   return FetchInventory(_token['token']);
 });
 
-final inventoryPurchasesProvider =
-    StateNotifierProvider<InventoryPurchaseNotifier, List<Inv>>((ref) {
-  return InventoryPurchaseNotifier();
+final invDailyPurchasesProvider =
+    StateNotifierProvider<InvDailyPurchaseNotifier, List<Inv>>((ref) {
+  return InvDailyPurchaseNotifier();
 });
-final inventorySalesProvider =
-    StateNotifierProvider<InventorySalesNotifier, List<Inv>>((ref) {
-  return InventorySalesNotifier();
+final invDailySalesProvider =
+    StateNotifierProvider<InvDailySalesNotifier, List<Inv>>((ref) {
+  return InvDailySalesNotifier();
+});
+final invMonthlyPurchasesProvider =
+    StateNotifierProvider<InvMonthlyPurchaseNotifier, List<Inv>>((ref) {
+  return InvMonthlyPurchaseNotifier();
+});
+final invMonthlySalesProvider =
+    StateNotifierProvider<InvMonthlySalesNotifier, List<Inv>>((ref) {
+  return InvMonthlySalesNotifier();
 });
 
 class FetchInventory {
@@ -60,23 +68,31 @@ class FetchInventory {
       for (var i = lastInvDate;
           i.year <= todey.year && i.month <= todey.month && i.day < todey.day;
           i = i.add(const Duration(days: 1))) {
-        await fetchInventoryData(
-          date: DateFormat.yMd().format(i).replaceAll(RegExp(r'/'), '-'),
-        );
+        try {
+          await fetchInventoryData(
+            date: DateFormat.yMd().format(i).replaceAll(RegExp(r'/'), '-'),
+          );
+        } catch (e) {
+          print(e.toString());
+        }
         if (invBox.length > 60) {
           invBox.values.first.delete();
         }
       }
     } else {
-      await fetchInventoryData(
-        date: DateFormat.yMd().format(todey).replaceAll(RegExp(r'/'), '-'),
-      );
+      try {
+        await fetchInventoryData(
+          date: DateFormat.yMd().format(todey).replaceAll(RegExp(r'/'), '-'),
+        );
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
 }
 
-class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
-  InventoryPurchaseNotifier() : super([]);
+class InvDailyPurchaseNotifier extends StateNotifier<List<Inv>> {
+  InvDailyPurchaseNotifier() : super([]);
   final invBoxList = invBox.values.toList();
   List<Inv> invList = [];
 
@@ -88,6 +104,7 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
 
     if (isDateInBox) {
       invList.clear();
+      state.clear();
       Inventory item = invBoxList.firstWhere(
         (inv) =>
             inv.inventoryDate.year == date.year &&
@@ -109,6 +126,49 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
       }
     }
   }
+}
+
+class InvDailySalesNotifier extends StateNotifier<List<Inv>> {
+  InvDailySalesNotifier() : super([]);
+  final invBoxList = invBox.values.toList();
+  List<Inv> invList = [];
+
+  void getDailyInventory({required DateTime date, required int type}) {
+    bool isDateInBox = invBoxList.any((inv) =>
+        inv.inventoryDate.year == date.year &&
+        inv.inventoryDate.month == date.month &&
+        inv.inventoryDate.day == date.day);
+
+    if (isDateInBox) {
+      invList.clear();
+      state.clear();
+      Inventory item = invBoxList.firstWhere(
+        (inv) =>
+            inv.inventoryDate.year == date.year &&
+            inv.inventoryDate.month == date.month &&
+            inv.inventoryDate.day == date.day,
+      );
+      if (item.itemList.isNotEmpty) {
+        for (var inv in item.itemList) {
+          List<dynamic> items = inv['priceItems'];
+          var itemHistory = List.from(items.where((i) => i['type'] == type));
+          if (itemHistory.isNotEmpty) {
+            invList.add(Inv(
+              inv['item'],
+              itemHistory,
+            ));
+          }
+        }
+        state = [...invList];
+      }
+    }
+  }
+}
+
+class InvMonthlyPurchaseNotifier extends StateNotifier<List<Inv>> {
+  InvMonthlyPurchaseNotifier() : super([]);
+  final invBoxList = invBox.values.toList();
+  List<Inv> invList = [];
 
   void getMonthlyInventory({required DateTime date, required int type}) {
     bool isDateInBox = invBoxList.any((inv) =>
@@ -117,8 +177,11 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
 
     if (isDateInBox) {
       invList.clear();
+      state.clear();
       List<Inventory> localInvs = invBoxList
-          .where((inv) => inv.inventoryDate.month == date.month)
+          .where((inv) =>
+              inv.inventoryDate.year == date.year &&
+              inv.inventoryDate.month == date.month)
           .toList();
 
       for (var localInv in localInvs) {
@@ -156,38 +219,56 @@ class InventoryPurchaseNotifier extends StateNotifier<List<Inv>> {
   }
 }
 
-class InventorySalesNotifier extends StateNotifier<List<Inv>> {
-  InventorySalesNotifier() : super([]);
+class InvMonthlySalesNotifier extends StateNotifier<List<Inv>> {
+  InvMonthlySalesNotifier() : super([]);
   final invBoxList = invBox.values.toList();
   List<Inv> invList = [];
 
-  void getDailyInventory({required DateTime date, required int type}) {
+  void getMonthlyInventory({required DateTime date, required int type}) {
     bool isDateInBox = invBoxList.any((inv) =>
         inv.inventoryDate.year == date.year &&
-        inv.inventoryDate.month == date.month &&
-        inv.inventoryDate.day == date.day);
+        inv.inventoryDate.month == date.month);
 
     if (isDateInBox) {
       invList.clear();
-      Inventory item = invBoxList.firstWhere(
-        (inv) =>
-            inv.inventoryDate.year == date.year &&
-            inv.inventoryDate.month == date.month &&
-            inv.inventoryDate.day == date.day,
-      );
-      if (item.itemList.isNotEmpty) {
-        for (var inv in item.itemList) {
-          List<dynamic> items = inv['priceItems'];
-          var itemHistory = List.from(items.where((i) => i['type'] == type));
-          if (itemHistory.isNotEmpty) {
-            invList.add(Inv(
-              inv['item'],
-              itemHistory,
-            ));
+      state.clear();
+      List<Inventory> localInvs = invBoxList
+          .where((inv) =>
+              inv.inventoryDate.year == date.year &&
+              inv.inventoryDate.month == date.month)
+          .toList();
+
+      for (var localInv in localInvs) {
+        if (localInv.itemList.isNotEmpty) {
+          for (var inv in localInv.itemList) {
+            Item i = inv['item'];
+            List<dynamic> items = inv['priceItems'];
+            int invIndex = invList.indexWhere(
+              (e) => e.item.id == i.id && e.item.unit.id == i.unit.id,
+            );
+            // check is there old item if there then update it if not add new one.
+            if (invIndex != -1) {
+              Inv oldInv = invList.elementAt(invIndex);
+              var itemHistory =
+                  List.from(items.where((i) => i['type'] == type));
+              if (itemHistory.isNotEmpty) {
+                oldInv.itemHistory.addAll(itemHistory.toList());
+                invList[invIndex] = oldInv;
+              }
+            } else {
+              var itemHistory =
+                  List.from(items.where((i) => i['type'] == type));
+              if (itemHistory.isNotEmpty) {
+                invList.add(Inv(
+                  inv['item'],
+                  itemHistory,
+                ));
+              }
+            }
           }
         }
-        state = [...invList];
       }
+      state = [...invList];
     }
   }
 }
