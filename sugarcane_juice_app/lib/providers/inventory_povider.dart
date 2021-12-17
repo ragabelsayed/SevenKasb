@@ -57,36 +57,39 @@ class FetchInventory {
         'Authorization': 'Bearer $authToken',
       },
     );
-    final extractedData = json.decode(response.body) as Map<String, dynamic>;
-    invBox.add(Inventory.fromJson(json: extractedData));
+    if (response.statusCode >= 200 && response.statusCode < 400) {
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      invBox.add(Inventory.fromJson(json: extractedData));
+    } else {
+      return;
+    }
   }
 
   Future<void> lastSixtyDays() async {
     DateTime todey = DateTime.now();
     if (invBox.isNotEmpty) {
       DateTime lastInvDate = invBox.values.last.inventoryDate;
-      for (var i = lastInvDate;
-          i.year <= todey.year && i.month <= todey.month && i.day < todey.day;
-          i = i.add(const Duration(days: 1))) {
-        try {
-          await fetchInventoryData(
-            date: DateFormat.yMd().format(i).replaceAll(RegExp(r'/'), '-'),
-          );
-        } catch (e) {
-          print(e.toString());
-        }
+      invBox.values.last.delete();
+
+      for (lastInvDate;
+          lastInvDate.year <= todey.year &&
+              lastInvDate.month <= todey.month &&
+              lastInvDate.day < todey.day;
+          lastInvDate = lastInvDate.add(const Duration(days: 1))) {
+        await fetchInventoryData(
+          date: DateFormat.yMd()
+              .format(lastInvDate)
+              .replaceAll(RegExp(r'/'), '-'),
+        );
+
         if (invBox.length > 60) {
           invBox.values.first.delete();
         }
       }
     } else {
-      try {
-        await fetchInventoryData(
-          date: DateFormat.yMd().format(todey).replaceAll(RegExp(r'/'), '-'),
-        );
-      } catch (e) {
-        print(e.toString());
-      }
+      await fetchInventoryData(
+        date: DateFormat.yMd().format(todey).replaceAll(RegExp(r'/'), '-'),
+      );
     }
   }
 }
@@ -197,9 +200,21 @@ class InvMonthlyPurchaseNotifier extends StateNotifier<List<Inv>> {
               Inv oldInv = invList.elementAt(invIndex);
               var itemHistory =
                   List.from(items.where((i) => i['type'] == type));
+
               if (itemHistory.isNotEmpty) {
-                oldInv.itemHistory.addAll(itemHistory.toList());
-                invList[invIndex] = oldInv;
+                for (var item in itemHistory) {
+                  var indexPrice = oldInv.itemHistory
+                      .indexWhere((e) => e['price'] == item['price']);
+
+                  if (indexPrice != -1) {
+                    oldInv.itemHistory.elementAt(indexPrice)['quentity'] +=
+                        item['quentity'];
+                    invList[invIndex] = oldInv;
+                  } else {
+                    oldInv.itemHistory.add(item);
+                    invList[invIndex] = oldInv;
+                  }
+                }
               }
             } else {
               var itemHistory =
@@ -252,8 +267,19 @@ class InvMonthlySalesNotifier extends StateNotifier<List<Inv>> {
               var itemHistory =
                   List.from(items.where((i) => i['type'] == type));
               if (itemHistory.isNotEmpty) {
-                oldInv.itemHistory.addAll(itemHistory.toList());
-                invList[invIndex] = oldInv;
+                for (var item in itemHistory) {
+                  var indexPrice = oldInv.itemHistory
+                      .indexWhere((e) => e['price'] == item['price']);
+
+                  if (indexPrice != -1) {
+                    oldInv.itemHistory.elementAt(indexPrice)['quentity'] +=
+                        item['quentity'];
+                    invList[invIndex] = oldInv;
+                  } else {
+                    oldInv.itemHistory.add(item);
+                    invList[invIndex] = oldInv;
+                  }
+                }
               }
             } else {
               var itemHistory =
