@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sugarcane_juice/providers/inventory_povider.dart';
+import '/providers/inventory_povider.dart';
 import '/providers/item_provider.dart';
 import '/providers/unit_provider.dart';
 import '/config/constants.dart';

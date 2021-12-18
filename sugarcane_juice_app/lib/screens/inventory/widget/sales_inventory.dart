@@ -17,22 +17,3 @@ class SalesInventory extends StatelessWidget {
     );
   }
 }
-// class SalesInventory extends ConsumerWidget {
-//   final FToast fToast;
-//   const SalesInventory({Key? key, required this.fToast}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context, ScopedReader watch) {
-//     // final inventory = watch(inventorySalesProvider);
-//     return Scaffold(
-//       // body: ListView.builder(
-//       //   itemCount: inventory.length,
-//       //   itemBuilder: (context, i) => ExpansionView(inventory: inventory[i]),
-//       // ),
-//       floatingActionButton: LinearFlowWidget(
-//         fToast: fToast,
-//         inventoryType: InventoryType.sales,
-//       ),
-//     );
-//   }
-// }
