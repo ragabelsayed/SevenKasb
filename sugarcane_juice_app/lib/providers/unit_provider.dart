@@ -37,6 +37,8 @@ class UnitNotifier extends ChangeNotifier {
   List<Unit> get items => [..._items];
 
   Future<void> fetchAndSetData() async {
+    _items = _unitBox.values.toList();
+    notifyListeners();
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'charset': 'utf-8',
@@ -53,10 +55,12 @@ class UnitNotifier extends ChangeNotifier {
         );
       }
       _items = _loadedProducts;
+      notifyListeners();
       await _unitBox.clear();
       await _unitBox.addAll(_items);
     } else {
-      _items = _unitBox.values.toList();
+      // _items = _unitBox.values.toList();
+      return;
     }
   }
 
@@ -75,6 +79,8 @@ class UnitNotifier extends ChangeNotifier {
         id: json.decode(response.body)['unit']['id'],
         name: unit.name,
       );
+      _items.add(newUnit);
+      _unitBox.add(newUnit);
       return newUnit;
     } on FormatException {
       throw HttpException(

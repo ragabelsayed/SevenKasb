@@ -298,9 +298,12 @@ class _BillInputFormState extends State<BillInputForm> {
                 },
               ),
             ),
-            saveBtn: RoundedTextButton(
-              text: 'حفظ',
-              onPressed: !_isWaiting ? () => setWaiting() : () {},
+            saveBtn: Opacity(
+              opacity: _isWaiting ? 0.5 : 1.0,
+              child: RoundedTextButton(
+                text: 'حفظ',
+                onPressed: !_isWaiting ? () => setWaiting() : () {},
+              ),
             ),
           ),
         ],

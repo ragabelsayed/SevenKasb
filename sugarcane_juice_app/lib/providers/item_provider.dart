@@ -37,6 +37,8 @@ class ItemNotifier extends ChangeNotifier {
   }
 
   Future<void> fetchAndSetData() async {
+    _items = _itemBox.values.toList();
+    notifyListeners();
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'charset': 'utf-8',
@@ -53,10 +55,12 @@ class ItemNotifier extends ChangeNotifier {
         );
       }
       _items = _loadedProducts;
+      notifyListeners();
       await _itemBox.clear();
       await _itemBox.addAll(_items);
     } else {
-      _items = _itemBox.values.toList();
+      // _items = _itemBox.values.toList();
+      return;
     }
   }
 
