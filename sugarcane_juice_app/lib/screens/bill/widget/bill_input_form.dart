@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -102,6 +101,11 @@ class _BillInputFormState extends State<BillInputForm> {
           toastDuration: const Duration(seconds: 2),
         );
       }
+    } else {
+      setState(() {
+        _isWaiting = false;
+        _saveItOnce = false;
+      });
     }
   }
 
@@ -294,12 +298,9 @@ class _BillInputFormState extends State<BillInputForm> {
                 },
               ),
             ),
-            saveBtn: Opacity(
-              opacity: _isWaiting ? 0.5 : 1.0,
-              child: RoundedTextButton(
-                text: 'حفظ',
-                onPressed: !_isWaiting ? () => setWaiting() : () {},
-              ),
+            saveBtn: RoundedTextButton(
+              text: 'حفظ',
+              onPressed: !_isWaiting ? () => setWaiting() : () {},
             ),
           ),
         ],

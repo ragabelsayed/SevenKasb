@@ -116,12 +116,14 @@ class _UserFormState extends State<UserForm> {
                   const SizedBox(height: 5),
                   _buildTextFormField(
                     initValue: intl.DateFormat.yMd()
-                        .format(DateTime.parse(_user.dateOfBirth!)),
-                    // 'day - month - year',
+                        .format(DateTime.parse(_user.dateOfBirth!).year >= 1970
+                            ? DateTime.parse(_user.dateOfBirth!)
+                            : DateTime.parse('1970-01-01T00:00:00'))
+                        .replaceAll(RegExp(r'/'), '-'),
                     error: 'قُمْ بإدخال تاريخ الميلاد',
                     type: TextInputType.number,
                     action: TextInputAction.next,
-                    onSave: (value) => _user.dateOfBirth = value,
+                    readonly: true,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'المدينة: '),
@@ -137,7 +139,7 @@ class _UserFormState extends State<UserForm> {
                   const DialogTitle(name: 'رقم الهاتف: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: _user.telephone ?? '00-000-000-000',
+                    initValue: _user.telephone ?? '',
                     error: 'قُمْ بإدخال رقم الهاتف',
                     type: TextInputType.phone,
                     isNamberOnly: true,
@@ -196,13 +198,15 @@ class _UserFormState extends State<UserForm> {
     required TextInputType type,
     bool isNamberOnly = false,
     required TextInputAction action,
-    required Function(String) onSave,
+    Function(String)? onSave,
+    bool readonly = false,
   }) {
     return TextFormField(
       keyboardType: type,
       textInputAction: action,
       textDirection: TextDirection.rtl,
       maxLines: 1,
+      readOnly: readonly,
       inputFormatters: isNamberOnly
           ? [FilteringTextInputFormatter.allow(RegExp('[0-9]'))]
           : null,
@@ -225,7 +229,7 @@ class _UserFormState extends State<UserForm> {
           return error;
         }
       },
-      onSaved: (newValue) => onSave(newValue!),
+      onSaved: (newValue) => onSave!(newValue!),
     );
   }
 }

@@ -65,7 +65,7 @@ class DataTableForm extends StatelessWidget {
             quentity: billItem.quentity,
           );
           final cells = [
-            billItem.item.name,
+            "${billItem.item.unit.name} ${billItem.item.name}",
             billItem.price,
             billItem.quentity,
             billItem.item.total,
