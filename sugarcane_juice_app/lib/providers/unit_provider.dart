@@ -64,6 +64,12 @@ class UnitNotifier extends ChangeNotifier {
     }
   }
 
+  void addUnitOffline(Unit unit) {
+    _items.add(unit);
+    notifyListeners();
+    _unitBox.add(unit);
+  }
+
   Future<Unit> addUnit(Unit unit) async {
     try {
       final response = await http.post(

@@ -39,15 +39,15 @@ class _InputExtraExpensesFormState extends State<InputExtraExpensesForm> {
     if (_isValid) {
       _formKey.currentState!.save();
       try {
-        await context
-            .read(addExtraExpensesProvider)
-            .addExtra(extra: _extra, fToast: widget.ftoast, context: context);
-        // _toast(' تم اضافة المصروف', true);
+        await context.read(addExtraExpensesProvider).addExtra(extra: _extra);
+        _toast(' تم اضافة المصروف', true);
         Navigator.of(context).pop();
         _toast('اسحب لأسفل للتحديث', true);
       } catch (e) {
-        _toast('لم تتم إضافةُ المصروف', false);
+        // _toast('لم تتم إضافةُ المصروف', false);
+        await context.read(extraOfflineProvider.notifier).addExtra(_extra);
         Navigator.of(context).pop();
+        _toast('حدث خطأ ولقد تم الحفظ أوف لاين', false);
       }
     }
   }

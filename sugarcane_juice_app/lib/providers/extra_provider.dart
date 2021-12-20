@@ -1,10 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sugarcane_juice/providers/offline_provider.dart';
-import 'package:sugarcane_juice/widget/toast_view.dart';
 import '/models/extra_expenses.dart';
 import '/models/http_exception.dart';
 import '/providers/auth.dart';
@@ -61,66 +57,31 @@ class ExtraExpensesProvider {
     }
   }
 
-  Future<void> addExtra(
-      {required Extra extra, FToast? fToast, BuildContext? context}) async {
-    // try {
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'charset': 'utf-8',
-        'Authorization': 'Bearer $authToken',
-      },
-      body: json.encode({
-        'userId': userId,
-        'reason': extra.reason,
-        'paid': extra.cash,
-        'createdAt': extra.dataTime.toIso8601String(),
-      }),
-    );
-
-    if (response.statusCode >= 200 && response.statusCode < 400) {
-      if (fToast != null) {
-        return fToast.showToast(
-          child: const ToastView(
-            message: 'تم إضافة المصروف',
-            success: true,
-          ),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: const Duration(seconds: 2),
-        );
-      } else {
-        return;
-      }
-    }
-    if (response.statusCode >= 400 && response.statusCode < 500) {
-      if (fToast != null) {
-        await context!.read(extraOfflineProvider.notifier).addExtra(extra);
-        return fToast.showToast(
-          child: const ToastView(
-            message: 'حدث خطأ ولقد تم الحفظ أوف لاين',
-            success: true,
-          ),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: const Duration(seconds: 2),
-        );
-      } else {
-        throw HttpException('خطأ');
-      }
-    }
-    if (response.statusCode > 500) {
+  Future<void> addExtra({required Extra extra}) async {
+    try {
+      await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'charset': 'utf-8',
+          'Authorization': 'Bearer $authToken',
+        },
+        body: json.encode({
+          'userId': userId,
+          'reason': extra.reason,
+          'paid': extra.cash,
+          'createdAt': extra.dataTime.toIso8601String(),
+        }),
+      );
+    } on FormatException {
+      // throw true;
+      HttpException(
+        'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
+      );
+    } catch (error) {
       throw HttpException(
-        'تعذَّر الإتصال بالسيرفر برجاء التأكُّد من الإتصال بالشبكة',
+        'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
       );
     }
-    // } on FormatException {
-    //   throw true;
-    //   // HttpException(
-    //   //   'عفوا لقد انتهت صلاحيتك لستخدام البرنامج \n برجاء اعد تسجيل الدخول',
-    //   // );
-    // } catch (error) {
-    //   throw HttpException(
-    //     'تعذر الاتصال بالسيرفر برجاء التاكد من الاتصال بالشبكة الصحيحة',
-    //   );
   }
 }

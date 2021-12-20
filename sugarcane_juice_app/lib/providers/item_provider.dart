@@ -64,7 +64,13 @@ class ItemNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> addItem(Item item) async {
+  void addItemOffline(Item item) {
+    _items.add(item);
+    notifyListeners();
+    _itemBox.add(item);
+  }
+
+  Future<Item> addItem(Item item) async {
     try {
       final response = await http.post(
         url,
@@ -91,6 +97,7 @@ class ItemNotifier extends ChangeNotifier {
       _items.add(newItem);
       notifyListeners();
       _itemBox.add(newItem);
+      return newItem;
     } on FormatException {
       throw HttpException(
         'عفوًا لقد انتهت صلاحيتُك لإستخدام البرنامج \n أعِدْ تسجيل الدخول',

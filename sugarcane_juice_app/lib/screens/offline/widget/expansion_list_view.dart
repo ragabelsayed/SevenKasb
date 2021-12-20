@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '/providers/item_provider.dart';
+import '/providers/unit_provider.dart';
 import '/models/bill.dart';
 import '/providers/bill_provider.dart';
 import '/models/extra_expenses.dart';
@@ -50,9 +52,29 @@ class _ExpansionListViewState extends State<ExpansionListView> {
       try {
         await Future.forEach(
           bills,
-          (Bill bill) async => await context
-              .read(addBillProvider)
-              .addBill(bill: bill, isOffline: true),
+          (Bill bill) async {
+            for (var billItem in bill.offlineBillItems!) {
+              if (billItem.item.unit.id != null) {
+                if (billItem.item.id == null) {
+                  final newItem =
+                      await context.read(itemProvider).addItem(billItem.item);
+                  billItem.item = newItem;
+                }
+              }
+              if (billItem.item.unit.id == null) {
+                final newUnit = await context
+                    .read(unitProvider)
+                    .addUnit(billItem.item.unit);
+                billItem.item.unit = newUnit;
+                final newItem =
+                    await context.read(itemProvider).addItem(billItem.item);
+                billItem.item = newItem;
+              }
+            }
+            await context
+                .read(addBillProvider)
+                .addBill(bill: bill, isOffline: true);
+          },
         );
         _toast(' تم إرسال الفواتير', true);
         _toast(' سيتم الحذف من الجهاز', true);

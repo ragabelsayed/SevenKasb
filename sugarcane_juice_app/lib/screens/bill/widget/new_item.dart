@@ -67,7 +67,13 @@ class _ItemFormState extends State<ItemForm> {
           Navigator.of(context).pop();
         }
       } catch (e) {
-        _toast('لم تتم إضافة الصنف', false);
+        if (_item.unit.id != null) {
+          context.read(itemProvider).addItemOffline(_item);
+        } else {
+          context.read(unitProvider).addUnitOffline(_item.unit);
+          context.read(itemProvider).addItemOffline(_item);
+        }
+        _toast('حدث خطأ ولقد تم الحفظ اوف لاين', false);
         Navigator.of(context).pop();
       }
     }
