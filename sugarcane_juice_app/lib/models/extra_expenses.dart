@@ -32,7 +32,7 @@ class Extra extends HiveObject {
       id: json['id'],
       user: User(
         id: json['userNavigation']['id'],
-        knownAs: json['userNavigation']['knownAs'],
+        knownAs: json['userNavigation']['knownAs'] ?? '',
       ),
       reason: json['reason'],
       cash: json['paid'],
