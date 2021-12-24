@@ -18,7 +18,7 @@ Seven Kasb is a mobile app for the admin to follow and do some main operations t
     * Offline.
         - Purchase bill.
         - Extra expenses.
-    * Invenory.
+    * Inventory.
         - Daily.
         - Monthly.  
     * Settings.
