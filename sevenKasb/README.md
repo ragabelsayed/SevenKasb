@@ -1,4 +1,4 @@
-# seven_kasb_app
+# seven_kasb
 
 A new Flutter project.
 
