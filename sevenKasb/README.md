@@ -1,4 +1,4 @@
-# sugarcane_juice_app
+# seven_kasb
 
 A new Flutter project.
 
