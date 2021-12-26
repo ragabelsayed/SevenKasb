@@ -79,8 +79,8 @@ class FetchInventory {
     } else {
       await fetchInventoryData(
         date: DateFormat.yMd()
-            .format(todey)
-            // .format(DateTime(2021, 12, 8))
+            // .format(todey)
+            .format(DateTime(2021, 12, 8))
             .replaceAll(RegExp(r'/'), '-'),
       );
     }

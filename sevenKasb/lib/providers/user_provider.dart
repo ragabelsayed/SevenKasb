@@ -69,11 +69,11 @@ class UserDateNotifier extends StateNotifier<Map<String, dynamic>> {
           'Authorization': 'Bearer $authToken',
         },
         body: json.encode({
-          'username': user.userName,
-          'knownAs': user.knownAs,
+          'username': user.userName ?? '',
+          'knownAs': user.knownAs ?? '',
           'dateOfBirth': user.dateOfBirth,
-          'city': user.city,
-          'telephone': user.telephone,
+          'city': user.city ?? '',
+          'telephone': user.telephone ?? '',
         }),
       );
       state = {

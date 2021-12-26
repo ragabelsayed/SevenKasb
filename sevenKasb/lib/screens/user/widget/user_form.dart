@@ -27,11 +27,26 @@ class _UserFormState extends State<UserForm> {
   bool _iswaiting = false;
   bool _saveItOnce = false;
   late User _user;
+  late TextEditingController _nameController;
+  late TextEditingController _asKnownController;
+  late TextEditingController _dateController;
+  late TextEditingController _cityController;
+  late TextEditingController _namberController;
 
   @override
   void initState() {
     super.initState();
     _user = widget.userData['user'];
+    _nameController = TextEditingController(text: _user.userName ?? '');
+    _asKnownController = TextEditingController(text: _user.knownAs ?? '');
+    _dateController = TextEditingController(
+        text: intl.DateFormat.yMd()
+            .format(DateTime.parse(_user.dateOfBirth!).year >= 1970
+                ? DateTime.parse(_user.dateOfBirth!)
+                : DateTime.parse('1970-01-01T00:00:00'))
+            .replaceAll(RegExp(r'/'), '-'));
+    _cityController = TextEditingController(text: _user.city ?? '');
+    _namberController = TextEditingController(text: _user.telephone ?? '');
     Future.delayed(Duration.zero, () {
       widget.fToast.showToast(
         child: ToastView(
@@ -46,6 +61,11 @@ class _UserFormState extends State<UserForm> {
 
   Future<void> _saveForm() async {
     final _isValid = _formKey.currentState!.validate();
+    _user.userName = _nameController.text;
+    _user.knownAs = _asKnownController.text;
+    _user.dateOfBirth = _dateController.text;
+    _user.city = _cityController.text;
+    _user.telephone = _namberController.text;
     if (_isValid) {
       _formKey.currentState!.save();
       try {
@@ -60,6 +80,11 @@ class _UserFormState extends State<UserForm> {
         toast('خطأ! لم يتم التحديث', false);
         setState(() => _iswaiting = false);
       }
+    } else {
+      setState(() {
+        _saveItOnce = false;
+        _iswaiting = false;
+      });
     }
   }
 
@@ -76,6 +101,16 @@ class _UserFormState extends State<UserForm> {
         _iswaiting = true;
         _saveItOnce = true;
       });
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _asKnownController.dispose();
+    _dateController.dispose();
+    _cityController.dispose();
+    _namberController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,56 +130,53 @@ class _UserFormState extends State<UserForm> {
                   const DialogTitle(name: 'إسم المُستخدم: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: _user.userName ?? '',
                     error: 'قُمْ بإدخال اسم المستخدم',
                     type: TextInputType.name,
                     action: TextInputAction.next,
-                    onSave: (value) => _user.userName = value,
+                    controller: _nameController,
+                    onSave: (value) => _namberController.text = value,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'إسم الشُهرة: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: _user.knownAs ?? '',
                     error: 'قُمْ بإدخال اللقب',
                     type: TextInputType.emailAddress,
                     action: TextInputAction.next,
-                    onSave: (value) => _user.knownAs = value,
+                    controller: _asKnownController,
+                    onSave: (value) => _asKnownController.text = value,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'تاريخ الميلاد: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: intl.DateFormat.yMd()
-                        .format(DateTime.parse(_user.dateOfBirth!).year >= 1970
-                            ? DateTime.parse(_user.dateOfBirth!)
-                            : DateTime.parse('1970-01-01T00:00:00'))
-                        .replaceAll(RegExp(r'/'), '-'),
                     error: 'قُمْ بإدخال تاريخ الميلاد',
                     type: TextInputType.number,
                     action: TextInputAction.next,
                     readonly: true,
+                    controller: _dateController,
+                    onSave: (value) {},
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'المدينة: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: _user.city ?? 'Mansoura',
                     error: 'قُمْ بإدخال المدينة',
                     type: TextInputType.name,
                     action: TextInputAction.next,
-                    onSave: (value) => _user.city = value,
+                    controller: _cityController,
+                    onSave: (value) => _cityController.text = value,
                   ),
                   const SizedBox(height: 5),
                   const DialogTitle(name: 'رقم الهاتف: '),
                   const SizedBox(height: 5),
                   _buildTextFormField(
-                    initValue: _user.telephone ?? '',
                     error: 'قُمْ بإدخال رقم الهاتف',
                     type: TextInputType.phone,
                     isNamberOnly: true,
                     action: TextInputAction.done,
-                    onSave: (value) => _user.telephone = value,
+                    controller: _namberController,
+                    onSave: (value) => _namberController.text = value,
                   ),
                   const SizedBox(height: 50),
                   RoundedTextButton(
@@ -193,13 +225,13 @@ class _UserFormState extends State<UserForm> {
   }
 
   TextFormField _buildTextFormField({
-    required String initValue,
     required String error,
     required TextInputType type,
     bool isNamberOnly = false,
     required TextInputAction action,
-    Function(String)? onSave,
+    required Function(String) onSave,
     bool readonly = false,
+    required TextEditingController controller,
   }) {
     return TextFormField(
       keyboardType: type,
@@ -207,6 +239,7 @@ class _UserFormState extends State<UserForm> {
       textDirection: TextDirection.rtl,
       maxLines: 1,
       readOnly: readonly,
+      controller: controller,
       inputFormatters: isNamberOnly
           ? [FilteringTextInputFormatter.allow(RegExp('[0-9]'))]
           : null,
@@ -218,7 +251,6 @@ class _UserFormState extends State<UserForm> {
         errorBorder: AppConstants.errorBorder,
         focusedBorder: AppConstants.focusedBorder,
       ),
-      initialValue: initValue,
       onFieldSubmitted: (value) {
         if (value.isNotEmpty) {
           _formKey.currentState!.validate();
@@ -229,7 +261,7 @@ class _UserFormState extends State<UserForm> {
           return error;
         }
       },
-      onSaved: (newValue) => onSave!(newValue!),
+      onSaved: (newValue) => onSave(newValue!),
     );
   }
 }
