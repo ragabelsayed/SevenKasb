@@ -117,7 +117,7 @@ class BillView extends StatelessWidget {
     return DataTable(
       columns: _getColumns(billColumns),
       rows: _getRow(billItems: bill.billItems, context: context),
-      columnSpacing: 30,
+      columnSpacing: MediaQuery.of(context).size.width / 10,
       horizontalMargin: 0.0,
       headingRowHeight: 40,
       decoration: const BoxDecoration(
@@ -146,10 +146,9 @@ class BillView extends StatelessWidget {
           );
 
           final cells = [
-            billItem.item.name,
-            // billItem.quentity,
+            '${billItem.item.unit.name} ${billItem.item.name}',
             billItem.price,
-            '${billItem.quentity}  ${billItem.item.unit.name}',
+            billItem.quentity,
             billItem.item.total
           ].reversed.toList();
           return DataRow(
@@ -161,7 +160,18 @@ class BillView extends StatelessWidget {
   List<DataCell> _getCells(List<dynamic> cells) => cells
       .map(
         (cell) => DataCell(
-          Text('$cell'),
+          Tooltip(
+            child: SizedBox(
+              width: 40,
+              child: Text(
+                '$cell',
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            message: '$cell',
+          ),
           placeholder: true,
         ),
       )
