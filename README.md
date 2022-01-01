@@ -31,7 +31,7 @@ Seven Kasb is a mobile app for the admin to follow and do some main operations t
 | <img src="https://user-images.githubusercontent.com/58103293/147123650-b974ce21-3052-4096-b2e3-3fa9f9192b68.png" width="300" height="500"> | <img src="https://user-images.githubusercontent.com/58103293/147123652-f40c15aa-50ec-4583-8321-29c9456b66a0.png" width="300" height="500"> | <img src="https://user-images.githubusercontent.com/58103293/147123627-e22aff27-0108-4ded-84b2-6f36c87a9a4d.png" width="300" height="500"> | <img src="https://user-images.githubusercontent.com/58103293/147123619-b58bc027-195d-4826-908f-0853aaffe0b4.png" width="300" height="500"> |
 | <img src="https://user-images.githubusercontent.com/58103293/147123621-f9cee618-7d6f-4423-b87b-45e1f7481aa4.png" width="300" height="500"> | <img src="https://user-images.githubusercontent.com/58103293/147123600-4dd9f1d3-a5c2-4046-bea6-de8043dd83e4.png" width="300" height="500"> | <img src="https://user-images.githubusercontent.com/58103293/147123613-2e7c6c55-cce2-409d-beec-b409a4b2c608.png" width="300" height="500"> |                                                                                                                                            |
   ## Technology:
-- Flutter& Dart. 
+- Flutter & Dart. 
 - Riverbod state management.
 - Hive NoSQL package as local backend.
 - JWT for user authorization.
