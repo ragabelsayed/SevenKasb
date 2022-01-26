@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sugarcane_juice/helper/box.dart';
+import '/helper/box.dart';
 import '/models/user.dart';
 import '/providers/auth.dart';
 
@@ -30,6 +30,7 @@ class UserDateNotifier extends StateNotifier<Map<String, dynamic>> {
   final int userId;
 
   Future<void> fetchUserDate() async {
+    // Uri _url = Uri.parse('http://192.168.1.58:5000/api/users/$userId');
     Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
     final response = await http.get(_url, headers: {
       'Content-Type': 'application/json',
@@ -59,7 +60,8 @@ class UserDateNotifier extends StateNotifier<Map<String, dynamic>> {
   }
 
   Future<void> updateUser(User user) async {
-    Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
+    Uri _url = Uri.parse('http://192.168.1.58:5000/api/users/$userId');
+    // Uri _url = Uri.parse('http://10.0.2.2:5000/api/users/$userId');
     try {
       await http.put(
         _url,
@@ -99,7 +101,8 @@ class UserProvider {
     required String confirmPass,
   }) async {
     Uri _passurl =
-        Uri.parse('http://10.0.2.2:5000/api/auth/$userId/changepassword');
+        Uri.parse('http://192.168.1.58:5000/api/auth/$userId/changepassword');
+    // Uri.parse('http://10.0.2.2:5000/api/auth/$userId/changepassword');
     try {
       await http.put(
         _passurl,

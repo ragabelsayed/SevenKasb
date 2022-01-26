@@ -43,7 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isWaiting = false;
           _isError = !_isError;
-          _errorMessage = e.toString();
+          // _errorMessage = e.toString();
+          _errorMessage = 'حدث خطا! تاكد من الاسم والباسورد او الاتصال بسيرفر';
         });
       }
     } else {

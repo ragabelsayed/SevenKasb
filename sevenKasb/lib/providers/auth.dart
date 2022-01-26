@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sugarcane_juice/helper/box.dart';
-import 'package:sugarcane_juice/models/user.dart';
+import '/helper/box.dart';
+import '/models/user.dart';
 import '/screens/login/login_screen.dart';
 import '/models/http_exception.dart';
 
-// const uri = 'http://localhost:5000/api/auth/login';
 // AVD
-const uri = 'http://10.0.2.2:5000/api/auth/login';
+// const uri = 'http://10.0.2.2:5000/api/auth/login';
 // wifi ip address
-// const uri = 'http://192.168.1.7:5000/api/auth/login';
+const uri = 'http://192.168.1.58:5000/api/auth/login';
 // hostName
-// const uri = 'http://DESKTOP-Q8JB2O6:5000/api/auth/login';
+// const uri = 'http://khaled.asara.com/api/auth/login';
 Uri url = Uri.parse(uri);
 
 final authProvider = StateNotifierProvider<AuthNotifier, Map<String, dynamic>>(

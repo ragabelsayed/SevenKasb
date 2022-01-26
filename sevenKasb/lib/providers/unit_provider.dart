@@ -8,9 +8,9 @@ import '/models/unit.dart';
 import '/providers/auth.dart';
 
 // AVD
-const unitUri = 'http://10.0.2.2:5000/api/unit';
+// const unitUri = 'http://10.0.2.2:5000/api/unit';
 // wifi ip
-// const unitUri = 'http://192.168.1.7:5000/api/unit';
+const unitUri = 'http://192.168.1.58:5000/api/unit';
 
 Uri url = Uri.parse(unitUri);
 final unitProvider = ChangeNotifierProvider<UnitNotifier>((ref) {

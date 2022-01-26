@@ -36,8 +36,8 @@ class FetchInventory {
   FetchInventory(this.authToken);
 
   Future<void> fetchInventoryData({required String date}) async {
-    late Uri url;
-    url = Uri.parse('http://10.0.2.2:5000/api/mobilebarren/$date');
+    Uri url = Uri.parse('http://192.168.1.58:5000/api/mobilebarren/$date');
+    // url = Uri.parse('http://10.0.2.2:5000/api/mobilebarren/$date');
 
     final response = await http.get(
       url,
@@ -79,8 +79,8 @@ class FetchInventory {
     } else {
       await fetchInventoryData(
         date: DateFormat.yMd()
-            // .format(todey)
-            .format(DateTime(2021, 12, 8))
+            .format(todey)
+            // .format(DateTime(2021, 12, 8))
             .replaceAll(RegExp(r'/'), '-'),
       );
     }
